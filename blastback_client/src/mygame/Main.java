@@ -11,6 +11,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
@@ -29,7 +30,7 @@ public class Main extends SimpleApplication
     //Player fields
     RigidBodyControl player_rb;
     boolean left = false, right = false, up = false, down = false;
-    float moveSpeed = 15f;
+    float moveSpeed = 10f;
     Vector3f moveDirection = new Vector3f();
     
     public static void main(String[] args) {
@@ -44,7 +45,7 @@ public class Main extends SimpleApplication
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
         flyCam.setMoveSpeed(20f);
-        cam.setLocation(new Vector3f(0f, 10f, 0.1f));
+        cam.setLocation(new Vector3f(0f, 30f, -0.1f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         
         initKeys();
@@ -87,7 +88,7 @@ public class Main extends SimpleApplication
 
         player_rb = new RigidBodyControl(1f);
         player.addControl(player_rb);
-        player.setLocalTranslation(0f, 2.2f, 5f);
+        player.setLocalTranslation(0f, 2.2f, 0f);
         rootNode.attachChild(player);
         player_rb.setKinematic(false);
         bulletAppState.getPhysicsSpace().add(player_rb);
@@ -114,6 +115,7 @@ public class Main extends SimpleApplication
             moveDirection.addLocal(0f, 0f, 1f);
         }
         moveDirection.normalizeLocal().mult(moveSpeed);
+        player_rb.setPhysicsRotation(Quaternion.IDENTITY);
         player_rb.setLinearVelocity(moveDirection);
     }
     
