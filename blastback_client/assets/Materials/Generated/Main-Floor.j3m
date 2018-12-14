@@ -1,0 +1,19 @@
+Material MyMaterial : Common/MatDefs/Misc/Unshaded.j3md {
+    MaterialParameters {
+        BackfaceShadows : true
+        PointSize : 1.0
+        Color : 0.7997718 0.6562157 0.6268791 1.0
+        ColorMap : Textures/WoodenFloor.jpg
+    }
+    AdditionalRenderState {
+      PointSprite On
+      FaceCull Back
+      AlphaTestFalloff 0.0
+      DepthWrite On
+      ColorWrite On
+      PolyOffset 0.0 0.0
+      DepthTest On
+      Blend Off
+      Wireframe Off
+    }
+}
