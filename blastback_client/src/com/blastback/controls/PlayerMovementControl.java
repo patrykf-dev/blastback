@@ -12,16 +12,12 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.scene.control.Control;
-import com.sun.istack.internal.logging.Logger;
-import java.util.Set;
-import java.util.logging.Level;
 
 public class PlayerMovementControl extends AbstractControl {
 
-    private BulletAppState _appState;
+    private final BulletAppState _appState;
     private CharacterControl _charControl;
-    private float _speed = 0.1f;
+    private final float _speed = 0.1f;
     private Vector3f _direction = new Vector3f();
     private boolean _left = false, _right = false, _up = false, _down = false;
 
@@ -33,6 +29,7 @@ public class PlayerMovementControl extends AbstractControl {
      * This method is called when the control is added to the spatial, and when
      * the control is removed from the spatial (setting a null value). It can be
      * used for both initialization and cleanup.
+     * @param spatial
      */
     @Override
     public void setSpatial(Spatial spatial) {
