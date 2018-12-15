@@ -34,7 +34,6 @@ public class Main extends SimpleApplication {
     BulletAppState bulletAppState;
 
     //Player fields
-    CharacterControl player_rb;
     Geometry playerGeometry;
 
     public static void main(String[] args) {
@@ -84,35 +83,25 @@ public class Main extends SimpleApplication {
         player_mat.setColor("Color", ColorRGBA.Blue);
         playerGeometry.setMaterial(player_mat);
 
-        playerGeometry.addControl(new PlayerMovementControl());
-
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
         CharacterControl player_cc = new CharacterControl(shape, 0.1f);
         player_cc.setGravity(new Vector3f(0f, -1f, 0f));
-        player_rb = player_cc;
-        playerGeometry.addControl(player_rb);
+
+        
+        // Add controls to spatials
+        playerGeometry.addControl(player_cc);
+        playerGeometry.addControl(new PlayerMovementControl(bulletAppState));
+
+        // Attach spatials
         rootNode.attachChild(playerGeometry);
-        bulletAppState.getPhysicsSpace().add(player_rb);
-        player_rb.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
-        player_rb.setViewDirection(new Vector3f(1f, 0f, 0f));
-    }
-
-    private void playerUpdate(float tpf) {
-        PlayerMovementControl movControl = playerGeometry.getControl(PlayerMovementControl.class);
-
-        //movControl.updateDirection(left, right, up, down);
-        player_rb.setWalkDirection(movControl.getMoveDirection());
-
-        //Logger.getLogger(Main.class.getName()).log(Level.INFO, moveDirection.toString());
     }
 
     private void cameraUpdate(float tpf) {
-        cam.setLocation(player_rb.getPhysicsLocation().add(0f, 20f, 0f));
+        //cam.setLocation(player_rb.getPhysicsLocation().add(0f, 20f, 0f));
     }
 
     @Override
     public void simpleUpdate(float tpf) {
-        playerUpdate(tpf);
         cameraUpdate(tpf);
     }
 
@@ -137,12 +126,6 @@ public class Main extends SimpleApplication {
             if (name.equals("Down")) {
                 movControl.setDown(keyPressed);
             }
-        }
-    };
-
-    private final AnalogListener analogListener = new AnalogListener() {
-        @Override
-        public void onAnalog(String name, float value, float tpf) {
 
         }
     };
