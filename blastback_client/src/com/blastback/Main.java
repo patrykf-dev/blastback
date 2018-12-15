@@ -1,8 +1,8 @@
-package mygame;
+package com.blastback;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -87,11 +87,9 @@ public class Main extends SimpleApplication
         player_mat.setColor("Color", ColorRGBA.Blue);
         player.setMaterial(player_mat);
 
-        CollisionShape shape = new BoxCollisionShape(new Vector3f(0.5f, 1f, 0.5f));
-        CharacterControl player_cc = new CharacterControl(shape, 0.05f);
+        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
+        CharacterControl player_cc = new CharacterControl(shape, 0.1f);
         player_cc.setGravity(new Vector3f(0f, -1f, 0f));
-        player_cc.setJumpSpeed(20f);
-        player_cc.setFallSpeed(30f);
         player_rb = player_cc;
         player.addControl(player_rb);
         rootNode.attachChild(player);
@@ -146,7 +144,7 @@ public class Main extends SimpleApplication
         @Override
         public void onAction(String name, boolean keyPressed, float tpf)
         {
-            if (name.equals("Left")) 
+            if (name.equals("Left"))
             {
                 left = keyPressed;
             }
