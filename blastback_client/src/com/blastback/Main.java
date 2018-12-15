@@ -77,7 +77,7 @@ public class Main extends SimpleApplication {
     }
 
     private void initPlayer() {
-        player = assetManager.loadModel("Scenes/Player.j3o");
+        player = assetManager.loadModel("Materials/Player.j3o");
         
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
         CharacterControl player_cc = new CharacterControl(shape, 0.1f);
