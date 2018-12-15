@@ -3,12 +3,14 @@ package com.blastback_server;
 import com.blastback.sharedresources.messages.HelloMessage;
 import com.blastback_server.listeners.ServerListener;
 import com.jme3.app.SimpleApplication;
-import com.jme3.network.Message;
+import com.jme3.network.HostedConnection;
+
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.JmeContext;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,8 +46,12 @@ public class ServerMain extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         // reacting to messages...
-        Message message = new HelloMessage("Broadcast on tick!");
-        serverInstance.broadcast(message);
+        
+        Collection<HostedConnection> connections = serverInstance.getConnections();
+       Log(Integer.toString(connections.size()));
+        
+        //Message message = new HelloMessage("Broadcast on tick!");
+        //serverInstance.broadcast(message);
 
     }
     

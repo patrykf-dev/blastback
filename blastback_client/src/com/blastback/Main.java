@@ -21,6 +21,8 @@ import com.jme3.network.serializing.Serializer;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -37,6 +39,11 @@ public class Main extends SimpleApplication {
     private Client clientInstance;
     
     
+    Timer messageTimer;
+    //napisane tu zeby latwo bylo znalezc
+    int timerTick = 50;
+    
+    
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
@@ -50,12 +57,13 @@ public class Main extends SimpleApplication {
         cam.setLocation(new Vector3f(0f, 20f, 0.1f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
 
+        
         initScene();
         initPlayer();
         initKeys();
         registerMessages();
         initConnection();
-        
+        initTimer();
     }
 
     private void registerMessages()
@@ -75,6 +83,7 @@ public class Main extends SimpleApplication {
     }
 
     private void initKeys() {
+        
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
@@ -85,7 +94,13 @@ public class Main extends SimpleApplication {
         inputManager.addListener(actionListener, "Up");
         inputManager.addListener(actionListener, "Down");
     }
-
+    
+    @Override
+    public void destroy(){
+    clientInstance.close();
+    super.destroy();
+    }
+    
     private void initPlayer() {
         player = assetManager.loadModel("Models/Player.j3o");
         
@@ -102,11 +117,17 @@ public class Main extends SimpleApplication {
     }
 
     private void cameraUpdate(float tpf) {
+        
         //cam.setLocation(player_rb.getPhysicsLocation().add(0f, 20f, 0f));
+        
     }
 
     @Override
     public void simpleUpdate(float tpf) {
+        
+        
+        
+        
         cameraUpdate(tpf);
     }
 
@@ -123,6 +144,7 @@ public class Main extends SimpleApplication {
                 movControl.setLeft(keyPressed);
             }
             if (name.equals("Right")) {
+        
                 movControl.setRight(keyPressed);
             }
             if (name.equals("Up")) {
@@ -143,6 +165,7 @@ public class Main extends SimpleApplication {
             
 
             //Log("Creating Client on port " + port);
+            
             clientInstance = Network.connectToServer("localhost", port);
             clientInstance.addMessageListener(new ClientListener(), HelloMessage.class);
             clientInstance.start();
@@ -160,4 +183,30 @@ public class Main extends SimpleApplication {
     private void Log(String string) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
+    private void initTimer() 
+    {
+        messageTimer = new Timer();
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+                sendCoordinates();
+            }
+        };
+            
+        messageTimer.scheduleAtFixedRate(tt, 0, timerTick);
+    }
+    
+    private void sendCoordinates()
+    {
+        Vector3f coordsV3f = player.getLocalTranslation();
+        String coordString = String.format("%f;%f;%f", coordsV3f.x,coordsV3f.y,coordsV3f.z);
+        Message coordinates = new HelloMessage(coordString);
+        clientInstance.send(coordinates);
+    }
+
+    
 }

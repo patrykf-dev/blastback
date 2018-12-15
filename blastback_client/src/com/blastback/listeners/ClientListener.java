@@ -25,5 +25,7 @@ public class ClientListener implements MessageListener<Client>
       HelloMessage helloMessage = (HelloMessage) message;
       System.out.println("Client #"+source.getId()+" received: '"+helloMessage.getSomething()+"'");
     } // else...
+    
+    
   }
 }
