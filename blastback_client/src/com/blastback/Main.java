@@ -34,7 +34,7 @@ public class Main extends SimpleApplication {
     BulletAppState bulletAppState;
 
     //Player fields
-    Geometry playerGeometry;
+    Spatial player;
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -77,23 +77,18 @@ public class Main extends SimpleApplication {
     }
 
     private void initPlayer() {
-        Box box = new Box(0.5f, 1f, 0.5f);
-        playerGeometry = new Geometry("Player", box);
-        Material player_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        player_mat.setColor("Color", ColorRGBA.Blue);
-        playerGeometry.setMaterial(player_mat);
-
+        player = assetManager.loadModel("Scenes/Player.j3o");
+        
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
         CharacterControl player_cc = new CharacterControl(shape, 0.1f);
         player_cc.setGravity(new Vector3f(0f, -1f, 0f));
-
         
         // Add controls to spatials
-        playerGeometry.addControl(player_cc);
-        playerGeometry.addControl(new PlayerMovementControl(bulletAppState));
+        player.addControl(player_cc);
+        player.addControl(new PlayerMovementControl(bulletAppState));
 
         // Attach spatials
-        rootNode.attachChild(playerGeometry);
+        rootNode.attachChild(player);
     }
 
     private void cameraUpdate(float tpf) {
@@ -113,7 +108,7 @@ public class Main extends SimpleApplication {
 
         @Override
         public void onAction(String name, boolean keyPressed, float tpf) {
-            PlayerMovementControl movControl = playerGeometry.getControl(PlayerMovementControl.class);
+            PlayerMovementControl movControl = player.getControl(PlayerMovementControl.class);
             if (name.equals("Left")) {
                 movControl.setLeft(keyPressed);
             }
