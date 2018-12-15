@@ -1,6 +1,8 @@
 package com.blastback;
 
 import com.blastback.controls.PlayerMovementControl;
+import com.blastback.listeners.ClientListener;
+import com.blastback.sharedresources.messages.HelloMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -12,8 +14,13 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
+import com.jme3.network.Message;
+import com.jme3.network.Network;
+import com.jme3.network.serializing.Serializer;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
+import java.io.IOException;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -27,7 +34,9 @@ public class Main extends SimpleApplication {
 
     //Player fields
     Spatial player;
-
+    private Client clientInstance;
+    
+    
     public static void main(String[] args) {
         Main app = new Main();
         app.start();
@@ -44,8 +53,17 @@ public class Main extends SimpleApplication {
         initScene();
         initPlayer();
         initKeys();
+        registerMessages();
+        initConnection();
+        
     }
 
+    private void registerMessages()
+    {
+        Serializer.registerClass(HelloMessage.class);
+
+    }
+    
     private void initScene() {
         Spatial scene = assetManager.loadModel("Scenes/Main.j3o");
         CollisionShape col = CollisionShapeFactory.createMeshShape(scene);
@@ -116,4 +134,30 @@ public class Main extends SimpleApplication {
 
         }
     };
+
+    private void initConnection() {
+        
+        int port = 6143;
+        try {
+            
+            
+
+            //Log("Creating Client on port " + port);
+            clientInstance = Network.connectToServer("localhost", port);
+            clientInstance.addMessageListener(new ClientListener(), HelloMessage.class);
+            clientInstance.start();
+            
+            Message helloMessage = new HelloMessage("TESTING. TESTING.");
+            clientInstance.send(helloMessage);
+            
+            //Log("Server created succesfully");
+            
+        } catch (IOException ex) {
+            //Log(ex.getMessage());
+        }
+    }
+
+    private void Log(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
