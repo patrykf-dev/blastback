@@ -111,6 +111,7 @@ public class Main extends SimpleApplication {
         super.destroy();
         if(clientInstance != null)
         {
+            messageTimer.cancel();
             clientInstance.close();
         }
     }
@@ -223,10 +224,13 @@ public class Main extends SimpleApplication {
     }
     
     private void sendCoordinates()
-    {
-        Vector3f coordsV3f = player.getLocalTranslation();
-        String coordString = String.format("%f;%f;%f", coordsV3f.x,coordsV3f.y,coordsV3f.z);
-        Message coordinates = new HelloMessage(coordString);
-        clientInstance.send(coordinates);
+    {   
+        if (clientInstance.isConnected()) 
+        {
+            Vector3f coordsV3f = player.getLocalTranslation();
+            String coordString = String.format("%f;%f;%f", coordsV3f.x,coordsV3f.y,coordsV3f.z);
+            Message coordinates = new HelloMessage(coordString);
+            clientInstance.send(coordinates);
+        }
     }
 }
