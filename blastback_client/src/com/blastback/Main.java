@@ -11,8 +11,11 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
@@ -88,12 +91,21 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+        
+        inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
+                                        new MouseAxisTrigger(MouseInput.AXIS_X, false),
+                                        new MouseAxisTrigger(MouseInput.AXIS_Y, true),
+                                        new MouseAxisTrigger(MouseInput.AXIS_Y, false));
 
         inputManager.addListener(actionListener, "Right");
         inputManager.addListener(actionListener, "Left");
         inputManager.addListener(actionListener, "Up");
         inputManager.addListener(actionListener, "Down");
+        
+        inputManager.addListener(analogListener, "MouseMoved");
     }
+    
+
     
     @Override
     public void destroy(){
@@ -156,6 +168,18 @@ public class Main extends SimpleApplication {
 
         }
     };
+    
+    private final AnalogListener analogListener = new AnalogListener() {
+        @Override
+        public void onAnalog(String name, float value, float tpf) {
+                PlayerMovementControl movControl = player.getControl(PlayerMovementControl.class);
+                if (name.equals("MouseMoved")) {
+                    movControl.setRight(true); // Dude is moving to the right if mouse was moved
+                }
+        } 
+    };
+    
+    
 
     private void initConnection() {
         
