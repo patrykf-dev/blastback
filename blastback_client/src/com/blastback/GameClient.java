@@ -1,15 +1,12 @@
 package com.blastback;
 
 import com.blastback.appstates.InputManagerAppState;
-import com.blastback.controls.PlayerInputControl;
-import com.blastback.controls.PlayerMovementControl;
+import com.blastback.appstates.PlayerAppState;
 import com.blastback.listeners.ClientListener;
 import com.blastback.sharedresources.messages.HelloMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Vector3f;
@@ -22,8 +19,6 @@ import com.jme3.scene.Spatial;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import com.sun.istack.internal.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -35,6 +30,7 @@ public class GameClient extends SimpleApplication {
 
     BulletAppState bulletAppState;
     InputManagerAppState inputAppState;
+    PlayerAppState playerAppState;
 
     //Player fields
     Spatial player;
@@ -71,7 +67,10 @@ public class GameClient extends SimpleApplication {
 
         
         initScene();
-        initPlayer();
+        
+        playerAppState = new PlayerAppState();
+        stateManager.attach(playerAppState);
+        
         registerMessages();
         initConnection();
     }
@@ -100,27 +99,6 @@ public class GameClient extends SimpleApplication {
             messageTimer.cancel();
             clientInstance.close();
         }
-    }
-    
-    private void initPlayer() {
-        player = assetManager.loadModel("Models/Player.j3o");
-        
-        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
-        CharacterControl player_cc = new CharacterControl(shape, 0.1f);
-        player_cc.setGravity(new Vector3f(0f, -1f, 0f));
-        
-        // Add controls to spatials
-        player.addControl(player_cc);
-        player.addControl(new PlayerMovementControl(bulletAppState));
-        PlayerInputControl inputControl = new PlayerInputControl();
-        player.addControl(inputControl);
-        inputAppState.addListener(inputControl.getKeyboardListener());
-        inputAppState.addListener(inputControl.getMouseListener());
-
-        // Attach spatials
-        rootNode.attachChild(player);
-        
-        Logger.getLogger(GameClient.class).log(Level.SEVERE, "InitPlayer Invoked");
     }
 
     private void cameraUpdate(float tpf) 

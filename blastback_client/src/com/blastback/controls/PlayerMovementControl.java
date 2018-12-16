@@ -5,7 +5,6 @@
  */
 package com.blastback.controls;
 
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -15,17 +14,10 @@ import com.jme3.scene.control.AbstractControl;
 
 public class PlayerMovementControl extends AbstractControl
 {
-
-    private final BulletAppState _appState;
     private CharacterControl _charControl;
     private final float _speed = 0.1f;
     private Vector3f _direction = new Vector3f();
     private boolean _left = false, _right = false, _up = false, _down = false;
-
-    public PlayerMovementControl(BulletAppState appState)
-    {
-        _appState = appState;
-    }
 
     /**
      * This method is called when the control is added to the spatial, and when
@@ -41,11 +33,6 @@ public class PlayerMovementControl extends AbstractControl
         if (spatial != null)
         {
             _charControl = this.getSpatial().getControl(CharacterControl.class);
-            _appState.getPhysicsSpace().add(_charControl);
-
-            // TODO: move it from here
-            _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
-            _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
         }
     }
 

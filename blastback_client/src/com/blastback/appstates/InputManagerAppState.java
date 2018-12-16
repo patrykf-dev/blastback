@@ -16,10 +16,8 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
-import com.sun.istack.internal.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  *
@@ -34,7 +32,6 @@ public class InputManagerAppState extends BaseAppState
     public InputManagerAppState()
     {
         _listeners = new ArrayList<>();
-        Logger.getLogger(InputManagerAppState.class).log(Level.SEVERE, "Constructor Invoked");
     }
 
     @Override
@@ -43,7 +40,6 @@ public class InputManagerAppState extends BaseAppState
         _app = (GameClient)app;
         _inputManager = _app.getInputManager();
         initKeys();
-        Logger.getLogger(InputManagerAppState.class).log(Level.SEVERE, "Initialize Invoked");
     }
 
     @Override
@@ -52,14 +48,7 @@ public class InputManagerAppState extends BaseAppState
         
         for(InputListener listener : _listeners)
         {
-            if(listener instanceof AnalogListener)
-            {
-                _inputManager.addListener(listener, "MouseMoved");
-            }
-            else if (listener instanceof ActionListener)
-            {
-                _inputManager.addListener(listener, "Right", "Left", "Up", "Down");
-            }
+            registerListener(listener);
         }
     }
 
@@ -68,7 +57,7 @@ public class InputManagerAppState extends BaseAppState
     {
         for (InputListener listener : _listeners) 
         {
-            _inputManager.removeListener(listener);
+            unregisterListener(listener);
         }
     }
     
@@ -78,27 +67,52 @@ public class InputManagerAppState extends BaseAppState
         
     }
     
-    private void initKeys() {
-
+    public void addListener(InputListener listener)
+    {
+        _listeners.add(listener);
+        if(isEnabled())
+        {
+            registerListener(listener);
+        }
+    }
+    
+    public void removeListener(InputListener listener)
+    {
+        _listeners.remove(listener);
+        if(isEnabled())
+        {
+            unregisterListener(listener);
+        }
+    }
+    
+    private void initKeys()
+    {
         _inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         _inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         _inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         _inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
 
         _inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
-                new MouseAxisTrigger(MouseInput.AXIS_X, false),
-                new MouseAxisTrigger(MouseInput.AXIS_Y, true),
-                new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+                                               new MouseAxisTrigger(MouseInput.AXIS_X, false),
+                                               new MouseAxisTrigger(MouseInput.AXIS_Y, true),
+                                               new MouseAxisTrigger(MouseInput.AXIS_Y, false));
     }
     
-    public void addListener(InputListener listener)
+    private void registerListener(InputListener listener)
     {
-        _listeners.add(listener);
+        if (listener instanceof AnalogListener)
+        {
+            _inputManager.addListener(listener, "MouseMoved");
+        } 
+        else if (listener instanceof ActionListener)
+        {
+            _inputManager.addListener(listener, "Right", "Left", "Up", "Down");
+        }
     }
     
-    public void removeListener(InputListener listener)
+    private void unregisterListener(InputListener listener)
     {
-        _listeners.remove(listener);
+        _inputManager.removeListener(listener);
     }
     
 }
