@@ -1,5 +1,7 @@
 package com.blastback;
 
+import com.blastback.appstates.InputManagerAppState;
+import com.blastback.controls.PlayerInputControl;
 import com.blastback.controls.PlayerMovementControl;
 import com.blastback.listeners.ClientListener;
 import com.blastback.sharedresources.messages.HelloMessage;
@@ -10,12 +12,6 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
@@ -26,6 +22,8 @@ import com.jme3.scene.Spatial;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -33,9 +31,10 @@ import java.util.TimerTask;
  *
  * @author normenhansen
  */
-public class Main extends SimpleApplication {
+public class GameClient extends SimpleApplication {
 
     BulletAppState bulletAppState;
+    InputManagerAppState inputAppState;
 
     //Player fields
     Spatial player;
@@ -46,24 +45,33 @@ public class Main extends SimpleApplication {
     //napisane tu zeby latwo bylo znalezc
     int timerTick = 50;
     
+//    public GameClient()
+//    {
+//        super(new BulletAppState(), new InputManagerAppState(), new StatsAppState(), new AudioListenerState(), new DebugKeysAppState());
+//    }
     
     public static void main(String[] args) {
-        Main app = new Main();
+        GameClient app = new GameClient();
         app.start();
     }
 
     @Override
     public void simpleInitApp() {
         flyCam.setEnabled(false);
+        
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
+        
+        inputAppState = new InputManagerAppState();
+        stateManager.attach(inputAppState);
+        inputAppState.setEnabled(true);
+        
         cam.setLocation(new Vector3f(0f, 20f, 0.1f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
 
         
         initScene();
         initPlayer();
-        initKeys();
         registerMessages();
         initConnection();
     }
@@ -82,28 +90,6 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(scene);
         bulletAppState.getPhysicsSpace().add(map_rb);
     }
-
-    private void initKeys() {
-        
-        inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
-        inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
-        inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
-        inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-        
-        inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
-                                        new MouseAxisTrigger(MouseInput.AXIS_X, false),
-                                        new MouseAxisTrigger(MouseInput.AXIS_Y, true),
-                                        new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-
-        inputManager.addListener(actionListener, "Right");
-        inputManager.addListener(actionListener, "Left");
-        inputManager.addListener(actionListener, "Up");
-        inputManager.addListener(actionListener, "Down");
-        
-        inputManager.addListener(analogListener, "MouseMoved");
-    }
-    
-
     
     @Override
     public void destroy()
@@ -126,9 +112,15 @@ public class Main extends SimpleApplication {
         // Add controls to spatials
         player.addControl(player_cc);
         player.addControl(new PlayerMovementControl(bulletAppState));
+        PlayerInputControl inputControl = new PlayerInputControl();
+        player.addControl(inputControl);
+        inputAppState.addListener(inputControl.getKeyboardListener());
+        inputAppState.addListener(inputControl.getMouseListener());
 
         // Attach spatials
         rootNode.attachChild(player);
+        
+        Logger.getLogger(GameClient.class).log(Level.SEVERE, "InitPlayer Invoked");
     }
 
     private void cameraUpdate(float tpf) 
@@ -145,38 +137,6 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleRender(RenderManager rm) {
     }
-
-    private final ActionListener actionListener = new ActionListener() {
-
-        @Override
-        public void onAction(String name, boolean keyPressed, float tpf) {
-            PlayerMovementControl movControl = player.getControl(PlayerMovementControl.class);
-            if (name.equals("Left")) {
-                movControl.setLeft(keyPressed);
-            }
-            if (name.equals("Right")) {
-        
-                movControl.setRight(keyPressed);
-            }
-            if (name.equals("Up")) {
-                movControl.setUp(keyPressed);
-            }
-            if (name.equals("Down")) {
-                movControl.setDown(keyPressed);
-            }
-
-        }
-    };
-    
-    private final AnalogListener analogListener = new AnalogListener() {
-        @Override
-        public void onAnalog(String name, float value, float tpf) {
-                PlayerMovementControl movControl = player.getControl(PlayerMovementControl.class);
-                if (name.equals("MouseMoved")) {
-                    //movControl.setRight(true); // Dude is moving to the right if mouse was moved
-                }
-        } 
-    };
 
     private void initConnection() {
         

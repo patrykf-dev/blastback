@@ -16,12 +16,12 @@ import java.util.logging.Logger;
 
 
 
-public class ServerMain extends SimpleApplication {
+public class GameServer extends SimpleApplication {
 
     private Server serverInstance;
     
     public static void main(String[] args) {
-        ServerMain app = new ServerMain();
+        GameServer app = new GameServer();
         app.start(JmeContext.Type.Headless);
     }
 
@@ -74,6 +74,6 @@ public class ServerMain extends SimpleApplication {
     
     private void Log(String msg)
     {
-        Logger.getLogger(ServerMain.class.getName()).log(Level.INFO, "\t[LOG] " + msg);
+        Logger.getLogger(GameServer.class.getName()).log(Level.INFO, "\t[LOG] " + msg);
     }
 }

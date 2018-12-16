@@ -13,7 +13,8 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
-public class PlayerMovementControl extends AbstractControl {
+public class PlayerMovementControl extends AbstractControl
+{
 
     private final BulletAppState _appState;
     private CharacterControl _charControl;
@@ -21,7 +22,8 @@ public class PlayerMovementControl extends AbstractControl {
     private Vector3f _direction = new Vector3f();
     private boolean _left = false, _right = false, _up = false, _down = false;
 
-    public PlayerMovementControl(BulletAppState appState) {
+    public PlayerMovementControl(BulletAppState appState)
+    {
         _appState = appState;
     }
 
@@ -29,15 +31,18 @@ public class PlayerMovementControl extends AbstractControl {
      * This method is called when the control is added to the spatial, and when
      * the control is removed from the spatial (setting a null value). It can be
      * used for both initialization and cleanup.
+     *
      * @param spatial
      */
     @Override
-    public void setSpatial(Spatial spatial) {
+    public void setSpatial(Spatial spatial)
+    {
         super.setSpatial(spatial);
-        if (spatial != null) {
+        if (spatial != null)
+        {
             _charControl = this.getSpatial().getControl(CharacterControl.class);
             _appState.getPhysicsSpace().add(_charControl);
-            
+
             // TODO: move it from here
             _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
             _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
@@ -45,19 +50,24 @@ public class PlayerMovementControl extends AbstractControl {
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    protected void controlUpdate(float tpf)
+    {
         _direction.set(Vector3f.ZERO);
 
-        if (_right) {
+        if (_right)
+        {
             _direction.addLocal(1f, 0f, 0f);
         }
-        if (_left) {
+        if (_left)
+        {
             _direction.addLocal(-1f, 0f, 0f);
         }
-        if (_up) {
+        if (_up)
+        {
             _direction.addLocal(0f, 0f, -1f);
         }
-        if (_down) {
+        if (_down)
+        {
             _direction.addLocal(0f, 0f, 1f);
         }
 
@@ -65,36 +75,44 @@ public class PlayerMovementControl extends AbstractControl {
         _charControl.setWalkDirection(_direction);
     }
 
-    public float getMoveSpeed() {
+    public float getMoveSpeed()
+    {
         return _speed;
     }
 
-    public Vector3f getMoveDirection() {
+    public Vector3f getMoveDirection()
+    {
         return _direction;
     }
 
-    public void setMoveDirection(Vector3f moveDirection) {
+    public void setMoveDirection(Vector3f moveDirection)
+    {
         this._direction = moveDirection;
     }
 
-    public void setLeft(boolean left) {
+    public void setLeft(boolean left)
+    {
         this._left = left;
     }
 
-    public void setRight(boolean right) {
+    public void setRight(boolean right)
+    {
         this._right = right;
     }
 
-    public void setUp(boolean up) {
+    public void setUp(boolean up)
+    {
         this._up = up;
     }
 
-    public void setDown(boolean down) {
+    public void setDown(boolean down)
+    {
         this._down = down;
     }
 
     @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
+    protected void controlRender(RenderManager rm, ViewPort vp)
+    {
         // No need to render anything here
     }
 }
