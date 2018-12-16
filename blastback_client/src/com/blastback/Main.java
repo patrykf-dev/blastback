@@ -66,13 +66,11 @@ public class Main extends SimpleApplication {
         initKeys();
         registerMessages();
         initConnection();
-        initTimer();
     }
 
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
-
     }
     
     private void initScene() {
@@ -108,9 +106,13 @@ public class Main extends SimpleApplication {
 
     
     @Override
-    public void destroy(){
-    clientInstance.close();
-    super.destroy();
+    public void destroy()
+    {
+        super.destroy();
+        if(clientInstance != null)
+        {
+            clientInstance.close();
+        }
     }
     
     private void initPlayer() {
@@ -128,18 +130,14 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(player);
     }
 
-    private void cameraUpdate(float tpf) {
-        
+    private void cameraUpdate(float tpf) 
+    {
         //cam.setLocation(player_rb.getPhysicsLocation().add(0f, 20f, 0f));
-        
     }
 
     @Override
-    public void simpleUpdate(float tpf) {
-        
-        
-        
-        
+    public void simpleUpdate(float tpf) 
+    {
         cameraUpdate(tpf);
     }
 
@@ -174,20 +172,16 @@ public class Main extends SimpleApplication {
         public void onAnalog(String name, float value, float tpf) {
                 PlayerMovementControl movControl = player.getControl(PlayerMovementControl.class);
                 if (name.equals("MouseMoved")) {
-                    movControl.setRight(true); // Dude is moving to the right if mouse was moved
+                    //movControl.setRight(true); // Dude is moving to the right if mouse was moved
                 }
         } 
     };
-    
-    
 
     private void initConnection() {
         
         int port = 6143;
-        try {
-            
-            
-
+        try 
+        {
             //Log("Creating Client on port " + port);
             
             clientInstance = Network.connectToServer("localhost", port);
@@ -197,9 +191,13 @@ public class Main extends SimpleApplication {
             Message helloMessage = new HelloMessage("TESTING. TESTING.");
             clientInstance.send(helloMessage);
             
+            initTimer();
+            
             //Log("Server created succesfully");
             
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             //Log(ex.getMessage());
         }
     }
@@ -231,6 +229,4 @@ public class Main extends SimpleApplication {
         Message coordinates = new HelloMessage(coordString);
         clientInstance.send(coordinates);
     }
-
-    
 }
