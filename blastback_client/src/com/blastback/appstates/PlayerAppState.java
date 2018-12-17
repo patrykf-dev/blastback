@@ -87,4 +87,9 @@ public class PlayerAppState extends BaseAppState
         _player.addControl(_inputControl);
     }
     
+    public Vector3f getPlayerInfo()
+    {
+        return _charControl.getPhysicsLocation().clone();
+    }
+    
 }
