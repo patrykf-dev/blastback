@@ -1,14 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.blastback.shared.networking;
 
-/**
- *
- * @author Patryk
- */
-public class BlastbackServer {
-    
+import com.jme3.network.Server;
+import java.util.List;
+
+
+public class BlastbackServer
+{
+    private Server _server;
+    private String _ip;
+    private int _port;
+    private BlastbackRoom _idleRoom;
+    private List<BlastbackRoom> _rooms;
+    private List<BlastbackClient> _clients;
 }
