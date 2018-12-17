@@ -3,7 +3,7 @@ package com.blastback;
 import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.PlayerAppState;
 import com.blastback.listeners.ClientListener;
-import com.blastback.sharedresources.messages.HelloMessage;
+import com.blastback.shared.messages.HelloMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;

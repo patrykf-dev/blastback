@@ -5,7 +5,7 @@
  */
 package com.blastback.listeners;
 
-import com.blastback.sharedresources.messages.HelloMessage;
+import com.blastback.shared.messages.HelloMessage;
 import com.jme3.network.Client;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;

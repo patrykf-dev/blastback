@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.blastback_server.listeners;
+package com.blastback.listeners;
 
-import com.blastback.sharedresources.messages.HelloMessage;
+import com.blastback.shared.messages.HelloMessage;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
