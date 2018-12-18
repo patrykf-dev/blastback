@@ -14,6 +14,7 @@ import com.jme3.scene.control.AbstractControl;
 
 public class PlayerMovementControl extends AbstractControl
 {
+
     private CharacterControl _charControl;
     private final float _speed = 0.1f;
     private Vector3f _direction = new Vector3f();
@@ -95,6 +96,11 @@ public class PlayerMovementControl extends AbstractControl
     public void setDown(boolean down)
     {
         this._down = down;
+    }
+
+    public void setRotation(Vector3f direction)
+    {
+        _charControl.setViewDirection(direction);
     }
 
     @Override

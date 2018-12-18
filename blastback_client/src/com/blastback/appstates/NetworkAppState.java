@@ -119,7 +119,7 @@ public class NetworkAppState extends BaseAppState
     {
         if (_clientInstance.isConnected())
         {
-            Vector3f coordsV3f = _playerAppState.getPlayerInfo();
+            Vector3f coordsV3f = _playerAppState.getPlayerPosition();
             String coordString = String.format("%f;%f;%f", coordsV3f.x, coordsV3f.y, coordsV3f.z);
             Message coordinates = new HelloMessage(coordString);
             _clientInstance.send(coordinates);

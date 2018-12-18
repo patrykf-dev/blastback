@@ -23,10 +23,11 @@ import com.jme3.scene.Spatial;
  */
 public class PlayerAppState extends BaseAppState
 {
+
     private GameClient _app;
     private InputManagerAppState _inputAppState;
     private BulletAppState _bulletAppState;
-    
+
     private Spatial _player;
     private PlayerInputControl _inputControl;
     private CharacterControl _charControl;
@@ -34,10 +35,10 @@ public class PlayerAppState extends BaseAppState
     @Override
     protected void initialize(Application app)
     {
-        _app = (GameClient)app;
+        _app = (GameClient) app;
         _inputAppState = _app.getStateManager().getState(InputManagerAppState.class);
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
-        
+
         initPlayer();
     }
 
@@ -46,9 +47,9 @@ public class PlayerAppState extends BaseAppState
     {
         _inputAppState.addListener(_inputControl.getKeyboardListener());
         _inputAppState.addListener(_inputControl.getMouseListener());
-        
+
         _app.getRootNode().attachChild(_player);
-        
+
         _bulletAppState.getPhysicsSpace().add(_charControl);
 
         _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
@@ -62,16 +63,16 @@ public class PlayerAppState extends BaseAppState
         _inputAppState.removeListener(_inputControl.getMouseListener());
 
         _app.getRootNode().detachChild(_player);
-        
+
         _bulletAppState.getPhysicsSpace().remove(_charControl);
     }
 
     @Override
     protected void cleanup(Application app)
     {
-        
+
     }
-    
+
     private void initPlayer()
     {
         _player = _app.getAssetManager().loadModel("Models/Player.j3o");
@@ -86,10 +87,10 @@ public class PlayerAppState extends BaseAppState
         _inputControl = new PlayerInputControl();
         _player.addControl(_inputControl);
     }
-    
-    public Vector3f getPlayerInfo()
+
+    public Vector3f getPlayerPosition()
     {
         return _charControl.getPhysicsLocation().clone();
     }
-    
+
 }

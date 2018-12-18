@@ -5,8 +5,11 @@
  */
 package com.blastback.controls;
 
+import com.blastback.appstates.InputManagerAppState;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -18,6 +21,7 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class PlayerInputControl extends AbstractControl
 {
+
     private ActionListener _keyboardListener;
     private AnalogListener _mouseListener;
     private PlayerMovementControl _movementControl;
@@ -76,7 +80,7 @@ public class PlayerInputControl extends AbstractControl
 
             }
         };
-        
+
         _mouseListener = new AnalogListener()
         {
             @Override
@@ -84,7 +88,10 @@ public class PlayerInputControl extends AbstractControl
             {
                 if (name.equals("MouseMoved"))
                 {
-                    //_movementControl.setRight(true); // Dude is moving to the right if mouse was moved
+                    Vector2f cursor2d = InputManagerAppState.cursorPosition.clone();
+                    Vector3f cursor3d = InputManagerAppState.cursorDirection.clone();
+                    cursor3d.setY(0.0f);
+                    _movementControl.setRotation(cursor3d);
                 }
             }
         };
@@ -99,5 +106,5 @@ public class PlayerInputControl extends AbstractControl
     {
         return _mouseListener;
     }
-    
+
 }
