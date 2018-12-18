@@ -27,7 +27,8 @@ public class InputManagerAppState extends BaseAppState
 {
     private GameClient _app;
     private InputManager _inputManager;
-    private List<InputListener> _listeners;
+    
+    private final List<InputListener> _listeners;
     
     public InputManagerAppState()
     {
