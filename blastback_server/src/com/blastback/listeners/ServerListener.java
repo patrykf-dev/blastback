@@ -24,10 +24,11 @@ public class ServerListener implements MessageListener<HostedConnection>
         {
             // do something with the message
             HelloMessage helloMessage = (HelloMessage) message;
-            System.out.println("Server received '" + helloMessage.getSomething() + "' from client #" + source.getId());
-            Message response = new HelloMessage("RESPONDED");
-            source.send(response);
-
-        } // else....
+            System.out.println("Server received '" + helloMessage.getContent() + "' from client #" + source.getId());
+            
+//            String msgReceived = helloMessage.getContent();
+//            Message response = new HelloMessage("RESPONDED");
+//            source.send(response);
+        }
     }
 }

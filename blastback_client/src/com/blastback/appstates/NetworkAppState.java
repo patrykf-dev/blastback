@@ -21,16 +21,14 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Eryk
- */
+
 public class NetworkAppState extends BaseAppState
 {
 
     private GameClient _app;
     private PlayerAppState _playerAppState;
-
+    private SimulationAppState _simulationAppState;
+    
     private Client _clientInstance;
     private Timer _messageTimer;
     private final int _timerTick = 50;
@@ -120,7 +118,8 @@ public class NetworkAppState extends BaseAppState
         if (_clientInstance.isConnected())
         {
             Vector3f coordsV3f = _playerAppState.getPlayerPosition();
-            String coordString = String.format("%f;%f;%f", coordsV3f.x, coordsV3f.y, coordsV3f.z);
+            
+            String coordString = String.format("%d;%f;%f;%f", _clientInstance.getId(), coordsV3f.x, coordsV3f.y, coordsV3f.z);
             Message coordinates = new HelloMessage(coordString);
             _clientInstance.send(coordinates);
         }

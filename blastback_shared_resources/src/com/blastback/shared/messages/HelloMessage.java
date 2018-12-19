@@ -27,7 +27,7 @@ public class HelloMessage extends AbstractMessage
         hello = s;
     } // custom constructor
 
-    public String getSomething()
+    public String getContent()
     {
         return hello;
     }

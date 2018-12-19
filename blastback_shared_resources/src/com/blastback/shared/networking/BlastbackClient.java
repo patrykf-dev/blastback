@@ -13,5 +13,38 @@ public class BlastbackClient
     private String _name;
     private int _roomId;
     private PlayerState _state;
+
+    public static int getCOUNTER()
+    {
+        return COUNTER;
+    }
+
+    public Client getClient()
+    {
+        return _client;
+    }
+
+    public int getId()
+    {
+        return _id;
+    }
+
+    public String getName()
+    {
+        return _name;
+    }
+
+    public int getRoomId()
+    {
+        return _roomId;
+    }
+
+    public PlayerState getState()
+    {
+        return _state;
+    }
+    
+    
+    
     
 }
