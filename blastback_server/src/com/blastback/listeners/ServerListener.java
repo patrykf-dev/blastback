@@ -5,7 +5,9 @@
  */
 package com.blastback.listeners;
 
+import com.blastback.gsonclassServer.Person;
 import com.blastback.shared.messages.HelloMessage;
+import com.google.gson.Gson;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -24,7 +26,13 @@ public class ServerListener implements MessageListener<HostedConnection>
         {
             // do something with the message
             HelloMessage helloMessage = (HelloMessage) message;
-            System.out.println("Server received '" + helloMessage.getContent() + "' from client #" + source.getId());
+            String data = helloMessage.getContent();
+            
+            // We need to know class name
+            Gson gson = new Gson();
+            Person Mydata = gson.fromJson(data, Person.class);
+            
+            System.out.println("Server received '" + Mydata.getinfo() + "' from client #" + source.getId());System.out.println("Server received '" + helloMessage.getContent() + "' from client #" + source.getId());
             
 //            String msgReceived = helloMessage.getContent();
 //            Message response = new HelloMessage("RESPONDED");

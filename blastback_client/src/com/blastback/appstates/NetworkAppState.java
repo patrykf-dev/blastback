@@ -6,6 +6,7 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
+import com.blastback.gsonclassClient.Person;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.HelloMessage;
 import com.jme3.app.Application;
@@ -20,6 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.gson.Gson;
 
 
 public class NetworkAppState extends BaseAppState
@@ -120,8 +122,13 @@ public class NetworkAppState extends BaseAppState
             Vector3f coordsV3f = _playerAppState.getPlayerPosition();
             
             String coordString = String.format("%d;%f;%f;%f", _clientInstance.getId(), coordsV3f.x, coordsV3f.y, coordsV3f.z);
-            Message coordinates = new HelloMessage(coordString);
-            _clientInstance.send(coordinates);
+            
+            Person temp = new Person("Stefan",11,true);
+            Gson gson = new Gson();
+            String json = gson.toJson(temp);
+            
+            Message data = new HelloMessage(json);
+            _clientInstance.send(data);
         }
     }
 
