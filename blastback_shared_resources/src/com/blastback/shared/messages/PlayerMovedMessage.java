@@ -1,24 +1,23 @@
 package com.blastback.shared.messages;
 
-import com.blastback.shared.networking.data.PlayerState;
-import com.jme3.math.Vector3f;
+import com.blastback.shared.messages.data.ClientCoordinates;
 
 
 /**
  * This type of message is supposed to be sent by CLIENT. 
  * @author Patryk
  */
-public class PlayerMovedMessage extends BaseBlastbackMessage<Vector3f>
+public class PlayerMovedMessage extends BaseBlastbackMessage<ClientCoordinates>
 {
-    public PlayerMovedMessage(Vector3f param)
+    public PlayerMovedMessage(ClientCoordinates param)
     {
         super(param);
         _content = _gsonInstance.toJson(param);
     }
 
     @Override
-    public Vector3f deserialize()
+    public ClientCoordinates deserialize()
     {
-        return _gsonInstance.fromJson(_content, Vector3f.class);
+        return _gsonInstance.fromJson(_content, ClientCoordinates.class);
     }
 }

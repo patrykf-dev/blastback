@@ -5,7 +5,7 @@
  */
 package com.blastback.listeners;
 
-import com.blastback.shared.networking.data.ClientCoordinatesMessageData;
+import com.blastback.shared.messages.data.ClientCoordinates;
 import com.blastback.shared.messages.HelloMessage;
 import com.google.gson.Gson;
 import com.jme3.network.HostedConnection;
@@ -30,7 +30,7 @@ public class ServerListener implements MessageListener<HostedConnection>
             HelloMessage helloMessage = (HelloMessage) message;
             String data = helloMessage.getContent();
 
-            ClientCoordinatesMessageData personInstance = gson.fromJson(data, ClientCoordinatesMessageData.class);
+            ClientCoordinates personInstance = gson.fromJson(data, ClientCoordinates.class);
             
             System.out.println("Server received '" + personInstance.getCoordinates() + "' from client #" + source.getId());
 
