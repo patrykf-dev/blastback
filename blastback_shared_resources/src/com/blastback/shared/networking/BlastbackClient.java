@@ -14,10 +14,6 @@ public class BlastbackClient
     private int _roomId;
     private PlayerState _state;
 
-    public static int getCOUNTER()
-    {
-        return COUNTER;
-    }
 
     public Client getClient()
     {
@@ -43,8 +39,9 @@ public class BlastbackClient
     {
         return _state;
     }
-    
-    
-    
-    
+
+    public void setRoomId(int _roomId)
+    {
+        this._roomId = _roomId;
+    }    
 }
