@@ -6,7 +6,7 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
-import com.blastback.shared.networking.data.Person;
+import com.blastback.shared.networking.data.ClientCoordinatesMessageData;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.HelloMessage;
 import com.jme3.app.Application;
@@ -120,20 +120,10 @@ public class NetworkAppState extends BaseAppState
         {
             Vector3f coordsV3f = _playerAppState.getPlayerPosition();
             
-            String coordString = String.format("%d;%f;%f;%f", _clientInstance.getId(), coordsV3f.x, coordsV3f.y, coordsV3f.z);
-            
-            Person temp = new Person("Stefan",11,true);
             Gson gson = new Gson();
-            
-            
-            String serialized = gson.toJson(temp);
-            
-            Log("SERIALIZED JSON TO: " + serialized);
-            
-            Person deserialized = gson.fromJson(serialized, Person.class);
-            
-            Log("DESERIALIZED JSON TO: " + deserialized.getinfo());
-            
+            ClientCoordinatesMessageData DataForJson = 
+                    new ClientCoordinatesMessageData(coordsV3f.x, coordsV3f.y, coordsV3f.z);
+            String serialized = gson.toJson(DataForJson);
             
             Message data = new HelloMessage(serialized);
             _clientInstance.send(data);

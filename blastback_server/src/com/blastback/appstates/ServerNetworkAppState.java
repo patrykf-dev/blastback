@@ -77,10 +77,8 @@ public class ServerNetworkAppState extends BaseAppState
     public void update(float tpf)
     {
         Collection<HostedConnection> connections = _serverInstance.getConnections();
-        Log(Integer.toString(connections.size()));
+        //Log(Integer.toString(connections.size()));
         String msg = createBroadcastMessage();
-        
-        
         
         Message message = new HelloMessage(msg);
         _serverInstance.broadcast(message);
@@ -97,10 +95,8 @@ public class ServerNetworkAppState extends BaseAppState
             rc += String.format("%d;%f;%f;%f\n", c.getId() , tr.x, tr.y, tr.z);
         }
         
-        
         return rc;
     }
-    
     
     private void registerMessages()
     {

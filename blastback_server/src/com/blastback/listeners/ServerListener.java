@@ -5,7 +5,7 @@
  */
 package com.blastback.listeners;
 
-import com.blastback.shared.networking.data.Person;
+import com.blastback.shared.networking.data.ClientCoordinatesMessageData;
 import com.blastback.shared.messages.HelloMessage;
 import com.google.gson.Gson;
 import com.jme3.network.HostedConnection;
@@ -26,23 +26,20 @@ public class ServerListener implements MessageListener<HostedConnection>
     {
         if (message instanceof HelloMessage)
         {
-            System.out.println("\t\tASDASDASDAS");
-            
-            
-            // do something with the message
+            Gson gson = new Gson();
             HelloMessage helloMessage = (HelloMessage) message;
             String data = helloMessage.getContent();
+
+            ClientCoordinatesMessageData personInstance = gson.fromJson(data, ClientCoordinatesMessageData.class);
             
-            System.out.println("Server received raw: " + data + "' from client #" + source.getId());
-            
-            
-            // We need to know class name
-            Gson gson = new Gson();
-            Person personInstance = gson.fromJson(data, Person.class);
-            
-            System.out.println("Server received '" + personInstance.getinfo() + "' from client #" + source.getId());
+            System.out.println("Server received '" + personInstance.getCoordinates() + "' from client #" + source.getId());
 
         }
+    }
+    
+    private void Log(String msg)
+    {
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "\t[LOG] {0}", msg);
     }
     
 }
