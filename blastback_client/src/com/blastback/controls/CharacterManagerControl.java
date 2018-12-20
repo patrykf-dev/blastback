@@ -83,14 +83,14 @@ public class CharacterManagerControl extends AbstractControl
 
     public void enableCharacter(Node root, PhysicsSpace space)
     {
-        root.detachChild(spatial);
-        space.remove(spatial);
+        root.attachChild(spatial);
+        space.add(spatial);
     }
     
     public void disableCharacter(Node root, PhysicsSpace space)
     {
-        root.attachChild(spatial);
-        space.add(spatial);
+        root.detachChild(spatial);
+        space.remove(spatial);
     }
 
     

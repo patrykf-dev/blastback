@@ -93,7 +93,12 @@ public class SimulationDataAppState extends BaseAppState{
     private void sendSimulationData()
     {
         Server server = _ServerNetworkAppState.getServer();
-        PlayerStateInfo[] arr = (PlayerStateInfo[])simData.getdata().toArray();
+        PlayerStateInfo[] arr = new PlayerStateInfo[simData.getdata().size()];
+        for(int i = 0; i < simData.getdata().size(); i++)
+        {
+            arr[i] = (PlayerStateInfo)simData.getdata().get(i);
+        }
+        
         PlayerStateInfosMessage message = new PlayerStateInfosMessage(new PlayerStateInfoContainer(arr));
         server.broadcast(message);
     }

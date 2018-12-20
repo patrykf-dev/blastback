@@ -5,6 +5,7 @@ import com.blastback.controls.CharacterManagerControl;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
@@ -18,6 +19,7 @@ import com.jme3.network.Message;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SimulationAppState extends BaseAppState
@@ -227,18 +229,16 @@ public class SimulationAppState extends BaseAppState
             {
                 if(message instanceof PlayerStateInfosMessage)
                 {
-                    PlayerStateInfosMessage xD = (PlayerStateInfosMessage)message;
-                    //System.out.println(xD.getContent());
-                    //ArrayList<PlayerStateInfo> infos = (ArrayList<PlayerStateInfo>)xD.deserialize();
-                    //System.out.println(infos.get(0).toString());
-//                    if(infos != null)
-//                    {
-//                        setClientsInfo(infos);
-//                    }
+                    PlayerStateInfosMessage msg = (PlayerStateInfosMessage)message;
+                    PlayerStateInfo[] arr = msg.deserialize().getArray();
+                    List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
+                    setClientsInfo(infos);
                 }
             }
             
         };
     }
+    
+    
     
 }
