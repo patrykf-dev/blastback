@@ -12,7 +12,7 @@ public class SimulationAppState extends BaseAppState
     private int _clientId;
     private List<PlayerState> _states;
     
-    public void SetClientsInfo(String msg)
+    public void setClientsInfo(String msg)
     {
         
     }
