@@ -2,6 +2,7 @@ package com.blastback.controls;
 
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
 import com.google.gson.Gson;
 import com.jme3.bullet.control.CharacterControl;
@@ -84,12 +85,19 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             Vector3f location = _charControl.getPhysicsLocation();
             Vector3f viewDirection = _charControl.getViewDirection();
 
-            Gson gson = new Gson();
+            
+            
             ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
-            String serialized = gson.toJson(DataForJson);
-
-            Message data = new HelloMessage(serialized);
-            client.send(data);
+            Message m = new PlayerMovedMessage(DataForJson);
+            
+           
+            
+            
+           
+            
+            
+            //client.send(data);
+            client.send(m);
         }
     }
     

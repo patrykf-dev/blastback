@@ -6,7 +6,12 @@
 package com.blastback.appstates;
 
 import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerHitMessage;
+import com.blastback.shared.messages.PlayerMovedMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
+import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
@@ -92,5 +97,10 @@ public class NetworkAppState extends BaseAppState
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
+        Serializer.registerClass(BaseBlastbackMessage.class);
+        Serializer.registerClass(PlayerMovedMessage.class);
+        Serializer.registerClass(PlayerShotMessage.class);
+        Serializer.registerClass(PlayerStateInfosMessage.class);
+        Serializer.registerClass(PlayerHitMessage.class);
     }
 }

@@ -6,6 +6,8 @@
 package com.blastback.listeners;
 
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
+import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -27,5 +29,16 @@ public class ClientListener implements MessageListener<Client>
             System.out.println("Client #" + source.getId() + " received: '" + helloMessage.getContent() + "'");
         } // else...
 
+        if(message instanceof PlayerShotMessage)
+        {
+            PlayerShotMessage PSMessage  = (PlayerShotMessage) message;
+        }
+        
+        if(message instanceof PlayerStateInfosMessage)
+        {
+            PlayerStateInfosMessage PSIMessage  = (PlayerStateInfosMessage) message;
+           
+        }
+        
     }
 }

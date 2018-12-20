@@ -2,6 +2,7 @@ package com.blastback.shared.messages;
 
 import com.google.gson.Gson;
 import com.jme3.network.AbstractMessage;
+import com.jme3.network.serializing.Serializable;
 
 /**
  * Base class for all bastblack messages - containing a string we can easily
@@ -10,6 +11,7 @@ import com.jme3.network.AbstractMessage;
  * @author Patryk
  * @param <T> is the type that given message stores
  */
+@Serializable
 public abstract class BaseBlastbackMessage<T> extends AbstractMessage
 {
     protected String _content;

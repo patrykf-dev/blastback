@@ -7,7 +7,12 @@ package com.blastback.appstates;
 
 import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
+import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerHitMessage;
+import com.blastback.shared.messages.PlayerMovedMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
+import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.networking.BlastbackClient;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
@@ -81,7 +86,7 @@ public class ServerNetworkAppState extends BaseAppState
         String msg = createBroadcastMessage();
         
         Message message = new HelloMessage(msg);
-        _serverInstance.broadcast(message);
+       // _serverInstance.broadcast(message);
     }
 
     
@@ -101,6 +106,11 @@ public class ServerNetworkAppState extends BaseAppState
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
+        Serializer.registerClass(BaseBlastbackMessage.class);
+        Serializer.registerClass(PlayerMovedMessage.class);
+        Serializer.registerClass(PlayerHitMessage.class);
+        Serializer.registerClass(PlayerShotMessage.class);
+        Serializer.registerClass(PlayerStateInfosMessage.class);
     }
 
     private void initConnection()
@@ -109,7 +119,8 @@ public class ServerNetworkAppState extends BaseAppState
         {
             Log("Creating server on port " + _port);
             _serverInstance = Network.createServer(_port);
-            _serverInstance.addMessageListener(new ServerListener(), HelloMessage.class);
+            //TODO: add more message types to be handled by the listener
+            _serverInstance.addMessageListener(new ServerListener(), PlayerMovedMessage.class);
             _serverInstance.start();
             Log("Server created succesfully");
         } catch (IOException ex)
