@@ -27,7 +27,6 @@ public class ServerListener implements MessageListener<HostedConnection>
     @Override
     public void messageReceived(HostedConnection source, Message message)
     {
-       
         
         if (message instanceof HelloMessage)
         {

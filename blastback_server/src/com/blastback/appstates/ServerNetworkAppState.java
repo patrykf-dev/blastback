@@ -100,6 +100,10 @@ public class ServerNetworkAppState extends BaseAppState
        // _serverInstance.broadcast(message);
     }
 
+    public Server getServer()
+    {
+        return _serverInstance;
+    }
     
     private String createBroadcastMessage()
     {
@@ -131,7 +135,7 @@ public class ServerNetworkAppState extends BaseAppState
             Log("Creating server on port " + _port);
             _serverInstance = Network.createServer(_port);
             //TODO: add more message types to be handled by the listener
-            this.addListener(new ServerListener());
+            //this.addListener(new ServerListener());
             //_serverInstance.addMessageListener(new ServerListener(), PlayerMovedMessage.class);
             _serverInstance.start();
             Log("Server created succesfully");
@@ -146,7 +150,7 @@ public class ServerNetworkAppState extends BaseAppState
         Logger.getLogger(GameServer.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
     }
 
-       public void addListener(MessageListener listener)
+    public void addListener(MessageListener listener)
     {
         _messageListeners.add(listener);
         if (isEnabled())
