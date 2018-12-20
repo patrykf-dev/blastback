@@ -19,6 +19,11 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
     {
         return _content;
     }
+    
+    public BaseBlastbackMessage()
+    {
+        _gsonInstance = new Gson();
+    }
 
     /**
      * Contructor here is also responsible for SERIALIZING received param, which is to be implemented in inheriting classes.

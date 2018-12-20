@@ -5,25 +5,18 @@ import com.jme3.math.Vector3f;
 
 public class PlayerState
 {
-    private int _hp;
-    private Vector3f _localTranslation;
-    private boolean _rightDirection;
-    private boolean _leftDirection;
-    private boolean _upDirection;
-    private boolean _downDirection;
+    private final int _hp;
+    private final Vector3f _localTranslation;
+    private final Vector3f _localRotation;
 
-    public PlayerState(int _hp, Vector3f _localTranslation)
+    public PlayerState(int hp, Vector3f localTranslation,Vector3f localRotation)
     {
-        this._hp = _hp;
-        this._localTranslation = _localTranslation;
-        this._rightDirection = false;
-        this._leftDirection = false;
-        this._upDirection = false;
-        this._downDirection = false;
+        this._hp = hp;
+        this._localTranslation = localTranslation;
+        this._localRotation = localRotation;
+        
     }
 
-    
-    
     
     public int getHp()
     {
@@ -35,25 +28,11 @@ public class PlayerState
         return _localTranslation;
     }
 
-    public boolean isRightDirection()
+    public Vector3f getLocalRotation()
     {
-        return _rightDirection;
+        return _localRotation;
     }
 
-    public boolean isLeftDirection()
-    {
-        return _leftDirection;
-    }
-
-    public boolean isUpDirection()
-    {
-        return _upDirection;
-    }
-
-    public boolean isDownDirection()
-    {
-        return _downDirection;
-    }
 
 
 
