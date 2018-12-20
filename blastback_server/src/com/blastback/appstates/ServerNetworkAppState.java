@@ -20,6 +20,7 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.math.Vector3f;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
+import com.jme3.network.MessageListener;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
@@ -36,7 +37,7 @@ import java.util.logging.Logger;
  */
 public class ServerNetworkAppState extends BaseAppState
 {
-
+    private List<MessageListener> _messageListeners;
     private Server _serverInstance;
     private List<BlastbackClient> _clients;
     private final int _port;
@@ -45,12 +46,14 @@ public class ServerNetworkAppState extends BaseAppState
     {
         _port = 7777;
         _clients = new ArrayList<>();
+        _messageListeners = new ArrayList<>();
     }
 
     public ServerNetworkAppState(int port)
     {
         _port = port;
         _clients = new ArrayList<>();
+        _messageListeners = new ArrayList<>();
     }
 
     @Override
@@ -69,11 +72,19 @@ public class ServerNetworkAppState extends BaseAppState
     protected void onEnable()
     {
         initConnection();
+        for (MessageListener listener : _messageListeners)
+        {
+            registerListener(listener);
+        }
     }
 
     @Override
     protected void onDisable()
     {
+        for (MessageListener listener : _messageListeners)
+        {
+            unregisterListener(listener);
+        }
         Log("Server destroyed");
         _serverInstance.close();
     }
@@ -120,7 +131,8 @@ public class ServerNetworkAppState extends BaseAppState
             Log("Creating server on port " + _port);
             _serverInstance = Network.createServer(_port);
             //TODO: add more message types to be handled by the listener
-            _serverInstance.addMessageListener(new ServerListener(), PlayerMovedMessage.class);
+            this.addListener(new ServerListener());
+            //_serverInstance.addMessageListener(new ServerListener(), PlayerMovedMessage.class);
             _serverInstance.start();
             Log("Server created succesfully");
         } catch (IOException ex)
@@ -134,4 +146,33 @@ public class ServerNetworkAppState extends BaseAppState
         Logger.getLogger(GameServer.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
     }
 
+       public void addListener(MessageListener listener)
+    {
+        _messageListeners.add(listener);
+        if (isEnabled())
+        {
+            registerListener(listener);
+        }
+    }
+
+    public void removeListener(MessageListener listener)
+    {
+        _messageListeners.remove(listener);
+        if (isEnabled())
+        {
+            unregisterListener(listener);
+        }
+    }
+
+    private void registerListener(MessageListener listener)
+    {
+        _serverInstance.addMessageListener(listener);
+    }
+
+    private void unregisterListener(MessageListener listener)
+    {
+        _serverInstance.removeMessageListener(listener);
+    }
+
+    
 }

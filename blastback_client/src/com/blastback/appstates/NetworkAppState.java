@@ -15,29 +15,36 @@ import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
+import com.jme3.network.MessageListener;
 import com.jme3.network.Network;
 import com.jme3.network.serializing.Serializer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class NetworkAppState extends BaseAppState
-{   
+{
+
     private Client _clientInstance;
     private final int _port;
     private final String _ip;
+
+    private List<MessageListener> _messageListeners;
 
     public NetworkAppState()
     {
         _ip = "localhost";
         _port = 7777;
+        _messageListeners = new ArrayList<>();
     }
 
     public NetworkAppState(String ip, int port)
     {
         _ip = ip;
         _port = port;
+        _messageListeners = new ArrayList<>();
     }
 
     public Client getClientInstance()
@@ -54,16 +61,26 @@ public class NetworkAppState extends BaseAppState
     @Override
     protected void onEnable()
     {
+
         initConnection();
+        for (MessageListener listener : _messageListeners)
+        {
+            registerListener(listener);
+        }
     }
 
     @Override
     protected void onDisable()
     {
+        for (MessageListener listener : _messageListeners)
+        {
+            unregisterListener(listener);
+        }
         if (_clientInstance != null)
         {
             _clientInstance.close();
         }
+        
     }
 
     @Override
@@ -77,9 +94,8 @@ public class NetworkAppState extends BaseAppState
         {
             Log("Creating Client on port " + _port);
 
-            
             _clientInstance = Network.connectToServer(_ip, _port);
-            _clientInstance.addMessageListener(new ClientListener(), HelloMessage.class);
+            this.addListener(new ClientListener());
             _clientInstance.start();
 
             Log("Server created succesfully");
@@ -92,6 +108,34 @@ public class NetworkAppState extends BaseAppState
     private void Log(String msg)
     {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "\t[LOG] {0}", msg);
+    }
+
+    public void addListener(MessageListener listener)
+    {
+        _messageListeners.add(listener);
+        if (isEnabled())
+        {
+            registerListener(listener);
+        }
+    }
+
+    public void removeListener(MessageListener listener)
+    {
+        _messageListeners.remove(listener);
+        if (isEnabled())
+        {
+            unregisterListener(listener);
+        }
+    }
+
+    private void registerListener(MessageListener listener)
+    {
+        _clientInstance.addMessageListener(listener);
+    }
+
+    private void unregisterListener(MessageListener listener)
+    {
+        _clientInstance.removeMessageListener(listener);
     }
 
     private void registerMessages()
