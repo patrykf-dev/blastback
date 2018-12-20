@@ -1,7 +1,8 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
-import com.blastback.shared.networking.data.PlayerState;
+import com.blastback.controls.CharacterManagerControl;
+import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import java.util.List;
@@ -10,7 +11,9 @@ public class SimulationAppState extends BaseAppState
 {
     private GameClient _app;
     private int _clientId;
-    private List<PlayerState> _states;
+    private List<PlayerStateInfo> _clientsInfo;
+    
+    private List<CharacterManagerControl> _characters;
     
     public void setClientsInfo(String msg)
     {

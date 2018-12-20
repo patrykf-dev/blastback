@@ -10,6 +10,11 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class HelloMessage extends BaseBlastbackMessage<String>
 {
+    public HelloMessage()
+    {
+        super();
+    }
+    
     public HelloMessage(String param)
     {
         super(param);

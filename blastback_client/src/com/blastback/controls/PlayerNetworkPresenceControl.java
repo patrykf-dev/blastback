@@ -81,11 +81,11 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         Client client = _network.getClientInstance();
         if (client != null && client.isConnected())
         {
-            Vector3f coordsV3f = _charControl.getPhysicsLocation();
+            Vector3f location = _charControl.getPhysicsLocation();
+            Vector3f viewDirection = _charControl.getViewDirection();
 
             Gson gson = new Gson();
-            ClientCoordinates DataForJson
-                    = new ClientCoordinates(coordsV3f.x, coordsV3f.y, coordsV3f.z);
+            ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
             String serialized = gson.toJson(DataForJson);
 
             Message data = new HelloMessage(serialized);
