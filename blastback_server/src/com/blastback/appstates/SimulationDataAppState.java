@@ -11,6 +11,7 @@ import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.blastback.shared.messages.data.SimulationData;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
@@ -92,7 +93,8 @@ public class SimulationDataAppState extends BaseAppState{
     private void sendSimulationData()
     {
         Server server = _ServerNetworkAppState.getServer();
-        PlayerStateInfosMessage message = new PlayerStateInfosMessage(simData.getdata());
+        PlayerStateInfo[] arr = (PlayerStateInfo[])simData.getdata().toArray();
+        PlayerStateInfosMessage message = new PlayerStateInfosMessage(new PlayerStateInfoContainer(arr));
         server.broadcast(message);
     }
     

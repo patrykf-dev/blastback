@@ -1,6 +1,7 @@
 package com.blastback.shared.messages;
 
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.jme3.network.serializing.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,26 +12,24 @@ import java.util.List;
  * @author Patryk
  */
 @Serializable
-public class PlayerStateInfosMessage extends BaseBlastbackMessage<List<PlayerStateInfo>>
+public class PlayerStateInfosMessage extends BaseBlastbackMessage<PlayerStateInfoContainer>
 {
-    private static final List<PlayerStateInfo> LIST_TOKEN = new ArrayList<>();
-
     
     public PlayerStateInfosMessage()
     {
         super();
     }
     
-    public PlayerStateInfosMessage(List<PlayerStateInfo> param)
+    public PlayerStateInfosMessage(PlayerStateInfoContainer param)
     {
         super(param);
         _content = _gsonInstance.toJson(param);
     }
 
     @Override
-    public List<PlayerStateInfo> deserialize()
+    public PlayerStateInfoContainer deserialize()
     {
-        return _gsonInstance.fromJson(_content, LIST_TOKEN.getClass());
+        return _gsonInstance.fromJson(_content, PlayerStateInfoContainer.class);
     }
 
 }
