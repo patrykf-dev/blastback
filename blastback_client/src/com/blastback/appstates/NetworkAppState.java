@@ -6,7 +6,7 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
-import com.blastback.gsonclassClient.Person;
+import com.blastback.shared.networking.data.Person;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.HelloMessage;
 import com.jme3.app.Application;
@@ -84,13 +84,12 @@ public class NetworkAppState extends BaseAppState
         {
             Log("Creating Client on port " + _port);
 
+            
             _clientInstance = Network.connectToServer(_ip, _port);
             _clientInstance.addMessageListener(new ClientListener(), HelloMessage.class);
             _clientInstance.start();
 
-            Message helloMessage = new HelloMessage("TESTING. TESTING.");
-            _clientInstance.send(helloMessage);
-
+            
             initTimer();
 
             Log("Server created succesfully");
@@ -125,9 +124,18 @@ public class NetworkAppState extends BaseAppState
             
             Person temp = new Person("Stefan",11,true);
             Gson gson = new Gson();
-            String json = gson.toJson(temp);
             
-            Message data = new HelloMessage(json);
+            
+            String serialized = gson.toJson(temp);
+            
+            Log("SERIALIZED JSON TO: " + serialized);
+            
+            Person deserialized = gson.fromJson(serialized, Person.class);
+            
+            Log("DESERIALIZED JSON TO: " + deserialized.getinfo());
+            
+            
+            Message data = new HelloMessage(serialized);
             _clientInstance.send(data);
         }
     }

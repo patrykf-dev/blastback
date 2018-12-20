@@ -5,12 +5,14 @@
  */
 package com.blastback.listeners;
 
-import com.blastback.gsonclassServer.Person;
+import com.blastback.shared.networking.data.Person;
 import com.blastback.shared.messages.HelloMessage;
 import com.google.gson.Gson;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,19 +26,23 @@ public class ServerListener implements MessageListener<HostedConnection>
     {
         if (message instanceof HelloMessage)
         {
+            System.out.println("\t\tASDASDASDAS");
+            
+            
             // do something with the message
             HelloMessage helloMessage = (HelloMessage) message;
             String data = helloMessage.getContent();
             
+            System.out.println("Server received raw: " + data + "' from client #" + source.getId());
+            
+            
             // We need to know class name
             Gson gson = new Gson();
-            Person Mydata = gson.fromJson(data, Person.class);
+            Person personInstance = gson.fromJson(data, Person.class);
             
-            System.out.println("Server received '" + Mydata.getinfo() + "' from client #" + source.getId());System.out.println("Server received '" + helloMessage.getContent() + "' from client #" + source.getId());
-            
-//            String msgReceived = helloMessage.getContent();
-//            Message response = new HelloMessage("RESPONDED");
-//            source.send(response);
+            System.out.println("Server received '" + personInstance.getinfo() + "' from client #" + source.getId());
+
         }
     }
+    
 }
