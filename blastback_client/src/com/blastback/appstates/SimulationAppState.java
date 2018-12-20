@@ -2,6 +2,8 @@ package com.blastback.appstates;
 
 import com.blastback.GameClient;
 import com.blastback.controls.CharacterManagerControl;
+import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -11,8 +13,11 @@ import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
+import com.jme3.network.Message;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationAppState extends BaseAppState
@@ -21,7 +26,15 @@ public class SimulationAppState extends BaseAppState
     private BulletAppState _bulletAppState;
     private NetworkAppState _network;
     
-    private List<CharacterManagerControl> _characters;
+    private final ArrayList<CharacterManagerControl> _characters;
+    
+    private ClientListener _listener;
+    
+    public SimulationAppState()
+    {
+        initListener();
+        _characters = new ArrayList<>();
+    }
     
     @Override
     protected void initialize(Application app)
@@ -40,6 +53,7 @@ public class SimulationAppState extends BaseAppState
     @Override
     protected void onEnable()
     {
+        _network.addListener(_listener);
         Node root = _app.getRootNode();
         PhysicsSpace space = _bulletAppState.getPhysicsSpace();
         for(CharacterManagerControl character : _characters)
@@ -52,6 +66,7 @@ public class SimulationAppState extends BaseAppState
     @Override
     protected void onDisable()
     {
+        _network.removeListener(_listener);
         Node root = _app.getRootNode();
         PhysicsSpace space = _bulletAppState.getPhysicsSpace();
         for (CharacterManagerControl character : _characters)
@@ -201,6 +216,29 @@ public class SimulationAppState extends BaseAppState
         {
             _characters.remove(_characters.size() - 1);
         }
+    }
+    
+    private void initListener()
+    {
+        _listener = new ClientListener()
+        {
+            @Override
+            public void messageReceived(Client source, Message message)
+            {
+                if(message instanceof PlayerStateInfosMessage)
+                {
+                    PlayerStateInfosMessage xD = (PlayerStateInfosMessage)message;
+                    //System.out.println(xD.getContent());
+                    //ArrayList<PlayerStateInfo> infos = (ArrayList<PlayerStateInfo>)xD.deserialize();
+                    //System.out.println(infos.get(0).toString());
+//                    if(infos != null)
+//                    {
+//                        setClientsInfo(infos);
+//                    }
+                }
+            }
+            
+        };
     }
     
 }

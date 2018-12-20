@@ -4,6 +4,7 @@ import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.appstates.PlayerAppState;
+import com.blastback.appstates.SimulationAppState;
 import com.blastback.appstates.TopDownCameraAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
@@ -30,7 +31,8 @@ public class GameClient extends SimpleApplication
                 new MapAppState(),
                 new PlayerAppState(),
                 new TopDownCameraAppState(),
-                new NetworkAppState());
+                new NetworkAppState(),
+                new SimulationAppState());
     }
 
     public static void main(String[] args)

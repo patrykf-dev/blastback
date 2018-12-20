@@ -130,12 +130,18 @@ public class NetworkAppState extends BaseAppState
 
     private void registerListener(MessageListener listener)
     {
-        _clientInstance.addMessageListener(listener);
+        if(_clientInstance != null)
+        {
+            _clientInstance.addMessageListener(listener);
+        }
     }
 
     private void unregisterListener(MessageListener listener)
     {
-        _clientInstance.removeMessageListener(listener);
+        if(_clientInstance != null)
+        {
+            _clientInstance.removeMessageListener(listener);
+        }
     }
 
     private void registerMessages()
