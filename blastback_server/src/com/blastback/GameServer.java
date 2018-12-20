@@ -1,6 +1,7 @@
 package com.blastback;
 
 import com.blastback.appstates.ServerNetworkAppState;
+import com.blastback.appstates.SimulationDataAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.system.JmeContext;
 
@@ -9,8 +10,8 @@ public class GameServer extends SimpleApplication
 
     public GameServer()
     {
-        super(new ServerNetworkAppState());
-
+        super(new ServerNetworkAppState(),
+              new SimulationDataAppState());
     }
 
     public static void main(String[] args)
