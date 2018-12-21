@@ -21,8 +21,11 @@ import com.jme3.network.Client;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.Server;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -84,16 +87,40 @@ public class SimulationDataAppState extends BaseAppState{
             @Override
             public void run()
             {
+                deleteInactivePlayers();
                 sendSimulationData();
             }
         };
         _messageTimer.scheduleAtFixedRate(tt, 0, _timerTick);
     }
     
+    private void deleteInactivePlayers()
+    {
+    
+        Server server = _ServerNetworkAppState.getServer();
+        
+        Iterator<PlayerStateInfo> it = simData.getdata().iterator();
+        
+
+        while (it.hasNext()) 
+        {
+            PlayerStateInfo psi  = it.next();
+            HostedConnection connection = server.getConnection(psi.getClientId());
+            if(connection == null)
+            {
+             it.remove();
+            }
+        }
+        
+        
+        //TODO: Send Disconnect message
+        
+    }
     private void sendSimulationData()
     {
         Server server = _ServerNetworkAppState.getServer();
         PlayerStateInfo[] arr = new PlayerStateInfo[simData.getdata().size()];
+        
         for(int i = 0; i < simData.getdata().size(); i++)
         {
             arr[i] = (PlayerStateInfo)simData.getdata().get(i);
@@ -134,5 +161,9 @@ public class SimulationDataAppState extends BaseAppState{
             }
             
         };
+    }
+    private void Log(String msg)
+    {
+        Logger.getLogger(GameServer.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
     }
 }
