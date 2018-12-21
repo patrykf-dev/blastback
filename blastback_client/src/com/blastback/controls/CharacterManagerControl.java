@@ -8,6 +8,8 @@ package com.blastback.controls;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.CharacterControl;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -23,7 +25,11 @@ public class CharacterManagerControl extends AbstractControl
 {
     private int _id;
     private CharacterControl _charControl;
+    private RigidBodyControl _rbControl;
+    
     //TODO: INTERPOLATION DATA
+    private Vector3f _targetPosition;
+    private Vector3f _targetRotation;
     
     public CharacterManagerControl(int id)
     {
@@ -45,7 +51,10 @@ public class CharacterManagerControl extends AbstractControl
     @Override
     protected void controlUpdate(float tpf)
     {
-        
+        Vector3f nextPos = FastMath.interpolateLinear(0.05f, _charControl.getPhysicsLocation(), _targetPosition);
+        Vector3f nextRot = FastMath.interpolateLinear(0.05f, _charControl.getViewDirection(), _targetRotation);
+        setPosition(nextPos);
+        setRotation(nextRot);
     }
 
     @Override
@@ -71,14 +80,22 @@ public class CharacterManagerControl extends AbstractControl
         setRotation(state.getPlayerState().getLocalRotation());
     }
     
-    public void setPosition(Vector3f position)
+    /**
+     * Method sets new position to which affected character should move making the character move smoothly towards desired position.
+     * @param position 
+     */
+    public void setTargetPosition(Vector3f position)
     {
-        _charControl.setPhysicsLocation(position);
+        _targetPosition = position;
     }
     
-    public void setRotation(Vector3f rotation)
+    /**
+     * Method sets new rotation for the affected character, making it interpolate its local rotation towards the desired rotation smoothly.
+     * @param rotation 
+     */
+    public void setTargetRotation(Vector3f rotation)
     {
-        _charControl.setViewDirection(rotation);
+        _targetRotation = rotation;
     }
 
     public void enableCharacter(Node root, PhysicsSpace space)
@@ -92,8 +109,14 @@ public class CharacterManagerControl extends AbstractControl
         root.detachChild(spatial);
         space.remove(spatial);
     }
+    
+    private void setPosition(Vector3f position)
+    {
+        _charControl.setPhysicsLocation(position);
+    }
 
-    
-    
-    
+    private void setRotation(Vector3f rotation)
+    {
+        _charControl.setViewDirection(rotation);
+    }
 }

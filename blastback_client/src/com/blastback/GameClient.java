@@ -38,6 +38,7 @@ public class GameClient extends SimpleApplication
     public static void main(String[] args)
     {
         GameClient app = new GameClient();
+        app.setPauseOnLostFocus(false);
         app.start();
     }
 

@@ -166,8 +166,8 @@ public class SimulationAppState extends BaseAppState
             {
                 if (character.getId() == state.getClientId())
                 {
-                    character.setPosition(state.getPlayerState().getLocalTranslation());
-                    character.setRotation(state.getPlayerState().getLocalRotation());
+                    character.setTargetPosition(state.getPlayerState().getLocalTranslation());
+                    character.setTargetRotation(state.getPlayerState().getLocalRotation());
                     processed++;
                 }
             }
