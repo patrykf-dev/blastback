@@ -6,7 +6,10 @@
 package com.blastback.controls;
 
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
@@ -67,12 +70,11 @@ public class CharacterManagerControl extends AbstractControl
     {
         return _id;
     }
-
-    public void setId(int _id)
-    {
-        this._id = _id;
-    }
     
+    /**
+     * Overrides current character state with given PlayerStateInfo.
+     * @param state 
+     */
     public void setFromState(PlayerStateInfo state)
     {
         _id = state.getClientId();
@@ -97,13 +99,23 @@ public class CharacterManagerControl extends AbstractControl
     {
         _targetRotation = rotation;
     }
-
+    
+    /**
+     * Enables character by attaching it to given scene node and physics space.
+     * @param root Scene node that character needs to be attached to.
+     * @param space Physics space that character needs to be added to.
+     */
     public void enableCharacter(Node root, PhysicsSpace space)
     {
         root.attachChild(spatial);
         space.add(spatial);
     }
     
+    /**
+     * Disables character by detaching it from given scene node and physics space.
+     * @param root Scene node to which character is currently attached.
+     * @param space Physics space to which character is currently added.
+     */
     public void disableCharacter(Node root, PhysicsSpace space)
     {
         root.detachChild(spatial);
@@ -118,5 +130,28 @@ public class CharacterManagerControl extends AbstractControl
     private void setRotation(Vector3f rotation)
     {
         _charControl.setViewDirection(rotation);
+    }    
+    
+    /**
+     * Creates a spatial with necessary controls and returns its
+     * CharacterManagerControl.
+     * @param assetManager reference to SimpleApplication's assetManager.
+     * @return CharacterManagerControl associated with created character.
+     */
+    public static CharacterManagerControl createCharacter(AssetManager assetManager)
+    {
+        Spatial character = assetManager.loadModel("Models/Player.j3o");
+
+        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
+        CharacterControl charControl = new CharacterControl(shape, 0.1f);
+        charControl.setGravity(new Vector3f(0f, -1f, 0f));
+
+        // Add controls to spatials
+        character.addControl(charControl);
+
+        CharacterManagerControl manager = new CharacterManagerControl();
+        character.addControl(manager);
+
+        return manager;
     }
 }

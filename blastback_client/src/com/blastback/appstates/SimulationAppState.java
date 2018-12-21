@@ -77,21 +77,43 @@ public class SimulationAppState extends BaseAppState
         }
     }
     
+    private void initListener()
+    {
+        _listener = new ClientListener()
+        {
+            @Override
+            public void messageReceived(Client source, Message message)
+            {
+                if (message instanceof PlayerStateInfosMessage)
+                {
+                    PlayerStateInfosMessage msg = (PlayerStateInfosMessage) message;
+                    PlayerStateInfo[] arr = msg.deserialize().getArray();
+                    List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
+                    updateSimulation(infos);
+                }
+            }
+        };
+    }
     
-    public void setClientsInfo(List<PlayerStateInfo> playerStates)
+    /**
+     * Method interprets received PlayerStateInfosMessage and updates 
+     * simulation accordingly. (Wrapper function).
+     * @param playerStates 
+     */
+    public void updateSimulation(List<PlayerStateInfo> playerStates)
     {    
         removeLocalPlayerState(playerStates);
         
         if (playerStates.size() != _characters.size())
         {
-            correctCharacters(playerStates);
+            resetCharacters(playerStates);
         }
         
         int processed = updateCharacters(playerStates);
         
         if(processed != playerStates.size())
         {
-            correctCharacters(playerStates);
+            resetCharacters(playerStates);
         }
     }
     
@@ -100,7 +122,7 @@ public class SimulationAppState extends BaseAppState
      * Then all characters are reset (id, position and rotation) to match given state.
      * @param playerStates List of characters' states that need to be simulated (must not contain local player state!).
      */
-    private void correctCharacters(List<PlayerStateInfo> playerStates)
+    private void resetCharacters(List<PlayerStateInfo> playerStates)
     {
         disableCharacters();
         
@@ -112,27 +134,6 @@ public class SimulationAppState extends BaseAppState
         }
         
         enableCharacters();
-    }
-    
-    /**
-     * Creates a spatial with necessary controls and returns its CharacterManagerControl.
-     * @return 
-     */
-    private CharacterManagerControl createCharacter()
-    {
-        Spatial character = _app.getAssetManager().loadModel("Models/Player.j3o");
-
-        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
-        CharacterControl charControl = new CharacterControl(shape, 0.1f);
-        charControl.setGravity(new Vector3f(0f, -1f, 0f));
-
-        // Add controls to spatials
-        character.addControl(charControl);
-
-        CharacterManagerControl manager = new CharacterManagerControl();
-        character.addControl(manager);
-
-        return manager;
     }
     
     /**
@@ -154,8 +155,8 @@ public class SimulationAppState extends BaseAppState
     
     /**
      * Method updates local character spatials based on received list of player states.
-     * @param playerStates
-     * @return 
+     * @param playerStates states of remote clients (no local player info).
+     * @return Number of characters that were properly updated.
      */
     private int updateCharacters(List<PlayerStateInfo> playerStates)
     {
@@ -205,40 +206,19 @@ public class SimulationAppState extends BaseAppState
     
     /**
      * Resizes simulated characters list.
+     * (ALL CHARACTERS PRESENT IN THE LIST MUST BE DISABLED EARLIER)
      * @param size 
      */
     private void setCharacterListSize(int size)
     {
         while (_characters.size() < size)
         {
-            _characters.add(createCharacter());
+            _characters.add(CharacterManagerControl.createCharacter(_app.getAssetManager()));
         }
 
         while (_characters.size() > size)
         {
             _characters.remove(_characters.size() - 1);
         }
-    }
-    
-    private void initListener()
-    {
-        _listener = new ClientListener()
-        {
-            @Override
-            public void messageReceived(Client source, Message message)
-            {
-                if(message instanceof PlayerStateInfosMessage)
-                {
-                    PlayerStateInfosMessage msg = (PlayerStateInfosMessage)message;
-                    PlayerStateInfo[] arr = msg.deserialize().getArray();
-                    List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
-                    setClientsInfo(infos);
-                }
-            }
-            
-        };
-    }
-    
-    
-    
+    }    
 }
