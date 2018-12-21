@@ -13,6 +13,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -27,12 +28,12 @@ import com.jme3.scene.control.AbstractControl;
 public class CharacterManagerControl extends AbstractControl
 {
     private int _id;
-    private CharacterControl _charControl;
     private RigidBodyControl _rbControl;
     
     //TODO: INTERPOLATION DATA
-    private Vector3f _targetPosition;
-    private Vector3f _targetRotation;
+    private final Vector3f _targetPosition = new Vector3f();
+    private final Quaternion _targetRotation = new Quaternion();
+    private static float _lerpFactor = 0.05f;
     
     public CharacterManagerControl(int id)
     {
@@ -48,14 +49,14 @@ public class CharacterManagerControl extends AbstractControl
     public void setSpatial(Spatial spatial)
     {
         super.setSpatial(spatial);
-        _charControl = spatial.getControl(CharacterControl.class);
+        _rbControl = spatial.getControl(RigidBodyControl.class);
     }
 
     @Override
     protected void controlUpdate(float tpf)
     {
-        Vector3f nextPos = FastMath.interpolateLinear(0.05f, _charControl.getPhysicsLocation(), _targetPosition);
-        Vector3f nextRot = FastMath.interpolateLinear(0.05f, _charControl.getViewDirection(), _targetRotation);
+        Vector3f nextPos = FastMath.interpolateLinear(_lerpFactor, spatial.getLocalTranslation(), _targetPosition);
+        Quaternion nextRot = new Quaternion().slerp(spatial.getLocalRotation(), _targetRotation, _lerpFactor);
         setPosition(nextPos);
         setRotation(nextRot);
     }
@@ -78,8 +79,10 @@ public class CharacterManagerControl extends AbstractControl
     public void setFromState(PlayerStateInfo state)
     {
         _id = state.getClientId();
-        setPosition(state.getPlayerState().getLocalTranslation());
-        setRotation(state.getPlayerState().getLocalRotation());
+        setTargetPosition(state.getPlayerState().getLocalTranslation());
+        setPosition(_targetPosition);
+        setTargetRotation(state.getPlayerState().getLocalRotation());
+        setRotation(_targetRotation);
     }
     
     /**
@@ -88,7 +91,7 @@ public class CharacterManagerControl extends AbstractControl
      */
     public void setTargetPosition(Vector3f position)
     {
-        _targetPosition = position;
+        _targetPosition.set(position);
     }
     
     /**
@@ -97,7 +100,7 @@ public class CharacterManagerControl extends AbstractControl
      */
     public void setTargetRotation(Vector3f rotation)
     {
-        _targetRotation = rotation;
+        _targetRotation.lookAt(rotation, Vector3f.UNIT_Y);
     }
     
     /**
@@ -122,14 +125,22 @@ public class CharacterManagerControl extends AbstractControl
         space.remove(spatial);
     }
     
+    /**
+     * "Snaps" character to desired position.
+     * @param position 
+     */
     private void setPosition(Vector3f position)
     {
-        _charControl.setPhysicsLocation(position);
+        spatial.setLocalTranslation(position);
     }
 
-    private void setRotation(Vector3f rotation)
+    /**
+     * "Snaps" character to desired rotation.
+     * @param rotation 
+     */
+    private void setRotation(Quaternion rotation)
     {
-        _charControl.setViewDirection(rotation);
+        spatial.setLocalRotation(rotation);
     }    
     
     /**
@@ -143,11 +154,11 @@ public class CharacterManagerControl extends AbstractControl
         Spatial character = assetManager.loadModel("Models/Player.j3o");
 
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
-        CharacterControl charControl = new CharacterControl(shape, 0.1f);
-        charControl.setGravity(new Vector3f(0f, -1f, 0f));
+        RigidBodyControl rbControl = new RigidBodyControl(shape, 1.0f);
+        rbControl.setKinematic(true);
 
         // Add controls to spatials
-        character.addControl(charControl);
+        character.addControl(rbControl);
 
         CharacterManagerControl manager = new CharacterManagerControl();
         character.addControl(manager);
