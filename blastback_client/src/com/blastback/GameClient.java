@@ -10,7 +10,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
+import de.lessvoid.nifty.Nifty;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -44,6 +46,17 @@ public class GameClient extends SimpleApplication
     {
         //BulletAppState gives UnsatisfiedLinkError when attached in constructor
         stateManager.attach(new BulletAppState());
+        
+        // Disable the black fps box
+        setDisplayFps(false);
+        setDisplayStatView(false);
+        
+        // Link nifty
+        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
+                assetManager, inputManager, audioRenderer, guiViewPort);
+        Nifty nifty = niftyDisplay.getNifty();
+        nifty.fromXml("Interface/StartScreen.xml", "start");
+        guiViewPort.addProcessor(niftyDisplay);
     }
 
     @Override

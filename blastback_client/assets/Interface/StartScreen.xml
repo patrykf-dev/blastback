@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://raw.githubusercontent.com/void256/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd https://raw.githubusercontent.com/void256/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
+    <screen id="start" controller="GameClient.Main">
+        <!--<layer id="background" childLayout="vertical">
+            <panel id="panel_top" height="25%" width="50%" valign="center" childLayout="center">
+                <text text="HUD goes here like that..." font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+            </panel>
+        </layer>-->
+        <layer id="foreground" childLayout="vertical">
+            <panel id="panel_top" height="20%" width="100%" align="center" childLayout="horizontal" backgroundColor="#0000">
+                <panel id="panel_sep1" height="100%" width="40%" backgroundColor="#0000"/>
+                <panel id="panel_timer" height="100%" width="20%" backgroundColor="#8888" childLayout="center">
+                    <text text="TIMER 00:00" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                </panel>
+                <panel id="panel_sep2" height="100%" width="40%" backgroundColor="#0000"/>
+            </panel>
+            
+            <panel id="panel_mid" height="60%" width="100%" align="center" backgroundColor="#0000"/>
+            
+            <panel id="panel_bottom" height="20%" width="100%" align="center" childLayout="horizontal"
+                   backgroundColor="#0000">
+                <panel id="panel_weapon_type" height="100%" width="25%" backgroundColor="#8888" childLayout="center">
+                    <text text="Weaopn type: UZI" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                </panel>
+                <panel id="panel_bottom_left" height="50%" width="50%" backgroundColor="#0000"/>
+                <panel id="panel_ammo" height="100%" width="25%" backgroundColor="#8888" childLayout="center">
+                    <text text="AMMO!!! 10/10" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                </panel>
+            </panel>
+        </layer>
+    </screen>
+</nifty>
