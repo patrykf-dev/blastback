@@ -3,9 +3,14 @@ package com.blastback.controls;
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.shared.messages.HelloMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
+import com.blastback.shared.messages.data.ShootEventArgs;
+import com.blastback.shared.observer.BlastbackEventArgs;
+import com.blastback.shared.observer.BlastbackEventListener;
 import com.google.gson.Gson;
 import com.jme3.bullet.control.CharacterControl;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
@@ -24,6 +29,8 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     private Timer _messageTimer;
     private final int _timerTick = 50;
     
+    private BlastbackEventListener _listener;
+    
     public PlayerNetworkPresenceControl(NetworkAppState networkAppState)
     {
         _network = networkAppState;
@@ -36,6 +43,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         if(enabled && _messageTimer == null)
         {
             initTimer();
+            initListeners();
         }
         else if (_messageTimer != null)
         {
@@ -90,15 +98,28 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
             Message m = new PlayerMovedMessage(DataForJson);
             
-           
-            
-            
-           
-            
-            
+
             //client.send(data);
             client.send(m);
         }
+    }
+
+    private void initListeners() 
+    {
+        _listener = new BlastbackEventListener() {
+            @Override
+            public void invoke(BlastbackEventArgs e) {
+                Client client = _network.getClientInstance();
+                if (client != null && client.isConnected())
+                {
+                    Vector3f shotPosition = _charControl.getPhysicsLocation();
+                    Quaternion shotRotation = new Quaternion(0,0,0,1);
+                    ShootEventArgs DataForJson = new ShootEventArgs(shotPosition,shotRotation);                  
+                    Message m = new PlayerShotMessage(DataForJson);
+                    client.send(m);
+                }
+            }
+        };
     }
     
 }
