@@ -93,12 +93,12 @@ public class PlayerAppState extends BaseAppState
 
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
         _charControl = new CharacterControl(shape, 0.1f);
-        _charControl.setGravity(new Vector3f(0f, -1f, 0f));
+        _charControl.setGravity(new Vector3f(0f, -10f, 0f));
 
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
-        _player.addControl(new PlayerShootingControl());
+        _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
         
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);
