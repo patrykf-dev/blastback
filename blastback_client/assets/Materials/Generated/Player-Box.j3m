@@ -1,8 +1,7 @@
 Material MyMaterial : Common/MatDefs/Misc/Unshaded.j3md {
     MaterialParameters {
-        BackfaceShadows : true
-        PointSize : 1.0
-        Color : 0000 0.37815034 0.692637 1.0
+        GlowMap : Textures/texture_brick.png
+        ColorMap : Textures/texture_brick.png
     }
     AdditionalRenderState {
       PointSprite On

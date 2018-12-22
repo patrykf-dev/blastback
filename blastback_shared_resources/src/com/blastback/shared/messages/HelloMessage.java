@@ -1,34 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.blastback.shared.messages;
 
-import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
 
 /**
- *
- * @author Marcin
+ * This type of message is made mainly for testing purposes.
+ * @author Patryk
  */
 @Serializable
-public class HelloMessage extends AbstractMessage
+public class HelloMessage extends BaseBlastbackMessage<String>
 {
-
-    private String hello;       // custom message data
-
     public HelloMessage()
     {
-    }    // empty constructor
-
-    public HelloMessage(String s)
+        super();
+    }
+    
+    public HelloMessage(String param)
     {
-        hello = s;
-    } // custom constructor
+        super(param);
+        _content = param;
+    }
 
-    public String getSomething()
+    @Override
+    public String deserialize()
     {
-        return hello;
+        return _content;
     }
 }
