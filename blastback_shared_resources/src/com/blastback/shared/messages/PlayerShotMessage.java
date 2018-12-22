@@ -1,6 +1,7 @@
 package com.blastback.shared.messages;
 
 import com.blastback.shared.messages.data.ClientCoordinates;
+import com.blastback.shared.messages.data.ShootEventArgs;
 import com.jme3.network.serializing.Serializable;
 
 /**
@@ -8,7 +9,7 @@ import com.jme3.network.serializing.Serializable;
  * @author Patryk
  */
 @Serializable
-public class PlayerShotMessage extends BaseBlastbackMessage<ClientCoordinates>
+public class PlayerShotMessage extends BaseBlastbackMessage<ShootEventArgs>
 {
     
     
@@ -17,15 +18,15 @@ public class PlayerShotMessage extends BaseBlastbackMessage<ClientCoordinates>
         super();
     }
 
-    public PlayerShotMessage(ClientCoordinates param)
+    public PlayerShotMessage(ShootEventArgs param)
     {
         super(param);
         _content = _gsonInstance.toJson(param);
     }
 
     @Override
-    public ClientCoordinates deserialize()
+    public ShootEventArgs deserialize()
     {
-        return _gsonInstance.fromJson(_content, ClientCoordinates.class);
+        return _gsonInstance.fromJson(_content, ShootEventArgs.class);
     }
 }

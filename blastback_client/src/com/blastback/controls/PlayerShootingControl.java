@@ -1,6 +1,7 @@
 package com.blastback.controls;
 
-import com.blastback.events.ShootEventArgs;
+
+import com.blastback.shared.messages.data.ShootEventArgs;
 import com.blastback.shared.observer.BlastbackEvent;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.blastback.events;
+package com.blastback.shared.messages.data;
 
 import com.blastback.shared.observer.BlastbackEventArgs;
 import com.jme3.math.Quaternion;
