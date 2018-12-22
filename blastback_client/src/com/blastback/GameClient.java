@@ -1,5 +1,6 @@
 package com.blastback;
 
+import com.blastback.appstates.BackgroundAudioAppState;
 import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
@@ -32,7 +33,8 @@ public class GameClient extends SimpleApplication
                 new PlayerAppState(),
                 new TopDownCameraAppState(),
                 new NetworkAppState(),
-                new SimulationAppState());
+                new SimulationAppState(),
+                new BackgroundAudioAppState());
     }
 
     public static void main(String[] args)
