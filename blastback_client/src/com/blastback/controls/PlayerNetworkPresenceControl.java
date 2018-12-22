@@ -29,7 +29,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     private Timer _messageTimer;
     private final int _timerTick = 50;
     
-    private BlastbackEventListener _listener;
+    private BlastbackEventListener<ShootEventArgs> _listener;
     
     public PlayerNetworkPresenceControl(NetworkAppState networkAppState)
     {
@@ -106,14 +106,14 @@ public class PlayerNetworkPresenceControl extends AbstractControl
 
     private void initListeners() 
     {
-        _listener = new BlastbackEventListener() {
+        _listener = new BlastbackEventListener<ShootEventArgs>() {
             @Override
-            public void invoke(BlastbackEventArgs e) {
+            public void invoke(ShootEventArgs e) {
                 Client client = _network.getClientInstance();
                 if (client != null && client.isConnected())
                 {
-                    Vector3f shotPosition = _charControl.getPhysicsLocation();
-                    Quaternion shotRotation = new Quaternion(0,0,0,1);
+                    Vector3f shotPosition = e.getShotPosition();
+                    Quaternion shotRotation = e.getShotRotation();
                     ShootEventArgs DataForJson = new ShootEventArgs(shotPosition,shotRotation);                  
                     Message m = new PlayerShotMessage(DataForJson);
                     client.send(m);
