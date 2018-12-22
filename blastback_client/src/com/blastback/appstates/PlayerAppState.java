@@ -9,6 +9,7 @@ import com.blastback.GameClient;
 import com.blastback.controls.PlayerInputControl;
 import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
+import com.blastback.controls.PlayerShootingControl;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
@@ -97,6 +98,7 @@ public class PlayerAppState extends BaseAppState
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
+        _player.addControl(new PlayerShootingControl());
         
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);

@@ -25,6 +25,7 @@ public class PlayerInputControl extends AbstractControl
     private ActionListener _keyboardListener;
     private AnalogListener _mouseListener;
     private PlayerMovementControl _movementControl;
+    private PlayerShootingControl _shootingControl;
 
     public PlayerInputControl()
     {
@@ -38,6 +39,7 @@ public class PlayerInputControl extends AbstractControl
         if (spatial != null)
         {
             _movementControl = spatial.getControl(PlayerMovementControl.class);
+            _shootingControl = spatial.getControl(PlayerShootingControl.class);
         }
     }
 
@@ -66,7 +68,6 @@ public class PlayerInputControl extends AbstractControl
                 }
                 if (name.equals("Right"))
                 {
-
                     _movementControl.setRight(keyPressed);
                 }
                 if (name.equals("Up"))
@@ -76,6 +77,10 @@ public class PlayerInputControl extends AbstractControl
                 if (name.equals("Down"))
                 {
                     _movementControl.setDown(keyPressed);
+                }
+                if (name.equals("Shoot") && keyPressed)
+                {
+                    _shootingControl.shoot(keyPressed);
                 }
 
             }

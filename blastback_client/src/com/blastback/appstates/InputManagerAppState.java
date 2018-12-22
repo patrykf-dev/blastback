@@ -17,6 +17,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -143,6 +144,7 @@ public class InputManagerAppState extends BaseAppState
                 new MouseAxisTrigger(MouseInput.AXIS_X, false),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+        _inputManager.addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
     }
 
     private void registerListener(RawInputListener listener)
@@ -157,7 +159,7 @@ public class InputManagerAppState extends BaseAppState
             _inputManager.addListener(listener, "MouseMoved");
         } else if (listener instanceof ActionListener)
         {
-            _inputManager.addListener(listener, "Right", "Left", "Up", "Down");
+            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot");
         }
     }
 
