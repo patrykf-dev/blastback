@@ -1,6 +1,7 @@
 package com.blastback.controls;
 
-import com.blastback.events.ShootEvent;
+import com.blastback.events.ShootEventArgs;
+import com.blastback.shared.observer.BlastbackEvent;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -8,7 +9,7 @@ import com.jme3.scene.control.AbstractControl;
 
 public class PlayerShootingControl extends AbstractControl
 {
-    public final ShootEvent onShootEvent = new ShootEvent();
+    public final BlastbackEvent<ShootEventArgs> onShootEvent = new BlastbackEvent<>();
     
     private final Vector3f _barrelOffset;
     
@@ -40,7 +41,8 @@ public class PlayerShootingControl extends AbstractControl
         if(spatial != null)
         {
             Vector3f shotPosition = spatial.getLocalTranslation().add(spatial.getLocalRotation().mult(_barrelOffset));
-            onShootEvent.notify(shotPosition, spatial.getLocalRotation());
+            ShootEventArgs eventArgs = new ShootEventArgs(shotPosition, spatial.getLocalRotation());
+            onShootEvent.notify(eventArgs);
         }
     }
     

@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.blastback.listeners;
-
-import com.blastback.events.ShootEvent.ShootEventArgs;
-
+package com.blastback.shared.observer;
 
 /**
  *
  * @author Eryk
  */
-public interface ShootEventListener
-{    
-    public void invoke(ShootEventArgs e);
+public abstract class BlastbackEventArgs
+{
+    
 }
