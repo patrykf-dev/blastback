@@ -1,5 +1,6 @@
 package com.blastback;
 
+import com.blastback.appstates.BulletFactoryAppState;
 import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
@@ -30,6 +31,7 @@ public class GameClient extends SimpleApplication
                 new InputManagerAppState(),
                 new MapAppState(),
                 new PlayerAppState(),
+                new BulletFactoryAppState(),
                 new TopDownCameraAppState(),
                 new NetworkAppState(),
                 new SimulationAppState());
