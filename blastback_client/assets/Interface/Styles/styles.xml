@@ -2,18 +2,54 @@
 
 <nifty-styles xmlns="http://nifty-gui.sourceforge.net/nifty-styles-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-styles-1.3.xsd http://nifty-gui.sourceforge.net/nifty-styles-1.3.xsd">
 
-    <style id="nifty-textfield#field">
-        <attributes childLayout="center" backgroundColor="#4444"/>
+    <!-- the background of the textfield -->
+    <style id="nifty-textfield#panel">
+        <attributes childLayout="overlay" height="23px"/>
         <effect>
-            <onActive name="border" color="#ffff" post="true" inset="1px" />
-
-            <!-- This should change the regular colour -->
-            <onFocus name="colorBar" color="#ff00" post="true" inset="1px" />
-
-            <!-- Rollover effect -->
-            <onHover name="changeMouseCursor" id="textFieldCursor" />
-            <onHover name="border" color="#ffff" post="true" />
+            <onHover name="changeMouseCursor" id="textFieldCursor"/>
+            <onHover name="border" color="#ffff" post="true"/>
         </effect>
     </style>
 
+    <!-- the actual input field -->
+    <style id="nifty-textfield#field">
+        <attributes childLayout="center" childClip="true"  padding="0px,2px"/>
+        <effect>
+            <onActive name="border" color="#222f" post="true" inset="1px"/>
+            <onFocus name="colorBar" color="#000f" post="true" inset="1px"/> <!-- color of focused textfield-->
+            <onEnabled name="renderQuad" startColor="#2228" endColor="#2220" post="true" length="150"/>
+            <onDisabled name="renderQuad" startColor="#2220" endColor="#2228" post="true" length="150"/>
+        </effect>
+    </style>
+
+     <!-- the text in the input field --> 
+    <style id="nifty-textfield#text">
+        <attributes color="#ffff" selectionColor="#f00f" visibleToMouse="false" align="left" valign="center"
+                    textHAlign="left" font="Interface/Fonts/BetterArial.fnt"/>
+        <effect>
+            <onFocus name="textColor" post="false" color="#ffff"/>
+        </effect>
+    </style>
+    
+    
+    
+     <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <!-- style for the button background panel -->
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <style id="nifty-button#panel">
+        <attributes paddingLeft="7px" paddingRight="7px" childLayout="center" visibleToMouse="true" border="#ffff"/>
+        <effect>
+            <onHover name="border" color="#ffff" post="true"/>
+            <onEnabled name="renderQuad" startColor="#2228" endColor="#2220" post="true" length="150"/>
+            <onDisabled name="renderQuad" startColor="#2220" endColor="#2228" post="true" length="150"/>
+        </effect>
+    </style>
+
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <!-- style for the button text -->
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <style id="nifty-button#text">
+        <attributes align="center" valign="center" textHAlign="center" textVAlign="center" visibleToMouse="false"
+        font="Interface/Fonts/BetterArial.fnt"/>
+    </style>
 </nifty-styles>

@@ -55,7 +55,7 @@ public class GameClient extends SimpleApplication
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
                 assetManager, inputManager, audioRenderer, guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/Screens/screens.xml", "start-screen");
+        nifty.fromXml("Interface/Screens/screens.xml", "hud");
         guiViewPort.addProcessor(niftyDisplay);
     }
 

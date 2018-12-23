@@ -2,18 +2,18 @@
 <nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://raw.githubusercontent.com/void256/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd https://raw.githubusercontent.com/void256/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd">
     
     <!-- load styles -->
-    <useControls filename = "nifty-default-controls.xml" />
     <useStyles filename = "nifty-default-styles.xml" />
     <useStyles filename="Interface/Styles/styles.xml" />
+    <useControls filename = "nifty-default-controls.xml" />
     
     
     <!-- HUD SCREEN -->
-    <screen id="hud" controller="GameClient.Main">
+    <screen id="hud" controller="com.​blastback.​appstates.ScreenAppState">
         <layer id="foreground" childLayout="vertical">
             <panel id="panel_top" height="20%" width="100%" align="center" childLayout="horizontal" backgroundColor="#0000">
                 <panel id="panel_sep1" height="100%" width="40%" backgroundColor="#0000"/>
                 <panel id="panel_timer" height="100%" width="20%" backgroundColor="#8888" childLayout="center">
-                    <text text="TIMER 00:00" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                    <text text="TIMER 00:00" font="Interface/Fonts/BetterArial.fnt" width="100%" height="100%"/>
                 </panel>
                 <panel id="panel_sep2" height="100%" width="40%" backgroundColor="#0000"/>
             </panel>
@@ -23,11 +23,11 @@
             <panel id="panel_bottom" height="20%" width="100%" align="center" childLayout="horizontal"
                    backgroundColor="#0000">
                 <panel id="panel_weapon_type" height="100%" width="25%" backgroundColor="#8888" childLayout="center">
-                    <text text="Weaopn type: UZI" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                    <text text="Weaopn type: UZI" font="Interface/Fonts/BetterArial.fnt" width="100%" height="100%"/>
                 </panel>
                 <panel id="panel_bottom_left" height="50%" width="50%" backgroundColor="#0000"/>
                 <panel id="panel_ammo" height="100%" width="25%" backgroundColor="#8888" childLayout="center">
-                    <text text="AMMO!!! 10/10" font="Interface/Fonts/Arial.fnt" width="100%" height="100%"/>
+                    <text text="AMMO!!! 10/10" font="Interface/Fonts/BetterArial.fnt" width="100%" height="100%"/>
                 </panel>
             </panel>
         </layer>
@@ -36,7 +36,7 @@
     
     
     <!-- START SCREEN -->
-    <screen id="start-screen" controller="GameClient.Main">
+    <screen id="start-screen" controller="com.​blastback.​appstates.ScreenAppState">
         <layer id="foreground" childLayout="horizontal" backgroundColor="#000000">
             <panel id="panel_left" height="100%" width="65%" childLayout="vertical">
                 <panel id="panel_sep1" height="5%" width="100%" align="center"/>
@@ -47,9 +47,9 @@
                 
                 <panel id="panel_connection" height="30%" width="100%" align="center" childLayout="horizontal">
                     <panel id="panel_menu_left" width="50%" height="100%" childLayout="vertical">
-                        <text text="Username" font="Interface/Fonts/Arial.fnt" width="100%" height="33%"/>
-                        <text text="Server ip" font="Interface/Fonts/Arial.fnt" width="100%" height="33%"/>
-                        <text text="Server port" font="Interface/Fonts/Arial.fnt" width="100%" height="33%"/>
+                        <text text="Username" font="Interface/Fonts/BetterArial.fnt" width="100%" height="33%"/>
+                        <text text="Server ip" font="Interface/Fonts/BetterArial.fnt" width="100%" height="33%"/>
+                        <text text="Server port" font="Interface/Fonts/BetterArial.fnt" width="100%" height="33%"/>
                     </panel>
                     
                     <panel id="panel_menu_right" width="50%" height="100%" childLayout="vertical">
@@ -68,8 +68,14 @@
                 </panel>
                 
                 <panel id="panel_menu" height="30%" width="100%" align="center" childLayout="vertical">
-                    <text text="Join" font="Interface/Fonts/Arial.fnt" width="100%" height="50%"/>
-                    <text text="Exit" font="Interface/Fonts/Arial.fnt" width="100%" height="50%"/>
+                    <control id="btn_join" name="button" label="Join" align="center" width="40%" height="33%"
+                             visibleToMouse="true">
+                        <interact onClick="joinClick()" />
+                    </control>
+                    <control id="btn_exit" name="button" label="Exit" align="center" width="40%" height="33%"
+                             visibleToMouse="true">
+                        <interact onClick="exitClick()" />
+                    </control>
                 </panel>
                 
                 
