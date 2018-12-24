@@ -25,6 +25,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
 {
     private final NetworkAppState _network;
     private CharacterControl _charControl;
+    private PlayerShootingControl _shootingControl;
     
     private Timer _messageTimer;
     private final int _timerTick = 50;
@@ -34,20 +35,28 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     public PlayerNetworkPresenceControl(NetworkAppState networkAppState)
     {
         _network = networkAppState;
+        initListeners();
     }
 
     @Override
     public void setEnabled(boolean enabled)
     {
         super.setEnabled(enabled);
-        if(enabled && _messageTimer == null)
+        if(enabled)
         {
-            initTimer();
-            initListeners();
+            if(_messageTimer == null)
+            {
+                initTimer();
+            }
+            _shootingControl.onShootEvent.addListener(_listener);
         }
-        else if (_messageTimer != null)
+        else
         {
+            if(_messageTimer != null)
+            {
             _messageTimer.cancel();
+            }
+            _shootingControl.onShootEvent.removeListener(_listener);
         }
     }
 
@@ -56,6 +65,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     {
         super.setSpatial(spatial);
         _charControl = spatial.getControl(CharacterControl.class);
+        _shootingControl = spatial.getControl(PlayerShootingControl.class);
         initTimer();
     }
     
@@ -84,7 +94,18 @@ public class PlayerNetworkPresenceControl extends AbstractControl
 
         _messageTimer.scheduleAtFixedRate(tt, 0, _timerTick);
     }
-    
+
+    private void initListeners() 
+    {
+        _listener = new BlastbackEventListener<ShootEventArgs>() {
+            @Override
+            public void invoke(ShootEventArgs e) 
+            {
+                sendShotMessage(e);
+            }
+        };
+    }
+
     private void sendPlayerInfo()
     {
         Client client = _network.getClientInstance();
@@ -93,33 +114,25 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             Vector3f location = _charControl.getPhysicsLocation();
             Vector3f viewDirection = _charControl.getViewDirection();
 
-            
-            
             ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
             Message m = new PlayerMovedMessage(DataForJson);
-            
 
             //client.send(data);
             client.send(m);
         }
     }
-
-    private void initListeners() 
+    
+    private void sendShotMessage(ShootEventArgs e)
     {
-        _listener = new BlastbackEventListener<ShootEventArgs>() {
-            @Override
-            public void invoke(ShootEventArgs e) {
-                Client client = _network.getClientInstance();
-                if (client != null && client.isConnected())
-                {
-                    Vector3f shotPosition = e.getShotPosition();
-                    Quaternion shotRotation = e.getShotRotation();
-                    ShootEventArgs DataForJson = new ShootEventArgs(shotPosition,shotRotation);                  
-                    Message m = new PlayerShotMessage(DataForJson);
-                    client.send(m);
-                }
-            }
-        };
+        Client client = _network.getClientInstance();
+        if (client != null && client.isConnected())
+        {
+            Vector3f shotPosition = e.getShotPosition();
+            Quaternion shotRotation = e.getShotRotation();
+            ShootEventArgs DataForJson = new ShootEventArgs(shotPosition, shotRotation);
+            Message m = new PlayerShotMessage(DataForJson);
+            client.send(m);
+        }
     }
     
 }

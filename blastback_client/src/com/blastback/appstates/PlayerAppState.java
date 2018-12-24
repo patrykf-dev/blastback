@@ -102,6 +102,7 @@ public class PlayerAppState extends BaseAppState
         
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);
+        _networkPresenceControl.setEnabled(true);
         
         _inputControl = new PlayerInputControl();
         _player.addControl(_inputControl);

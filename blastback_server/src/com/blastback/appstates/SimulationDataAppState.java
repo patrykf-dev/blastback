@@ -8,6 +8,7 @@ package com.blastback.appstates;
 import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
 import com.blastback.shared.messages.PlayerMovedMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
 import com.blastback.shared.messages.data.PlayerStateInfo;
@@ -18,6 +19,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
+import com.jme3.network.Filters;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.Server;
@@ -157,6 +159,11 @@ public class SimulationDataAppState extends BaseAppState{
                     }
                     
                     //System.out.println("Server received '" + coordinates.getCoordinates() + "' from client #" + source.getId());
+                }
+                else if (message instanceof PlayerShotMessage)
+                {
+                    Server server = _ServerNetworkAppState.getServer();
+                    server.broadcast(Filters.notEqualTo(source), message);
                 }
             }
             

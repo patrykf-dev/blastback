@@ -3,8 +3,10 @@ package com.blastback.appstates;
 import com.blastback.GameClient;
 import com.blastback.controls.CharacterManagerControl;
 import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.messages.data.ShootEventArgs;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -30,6 +32,9 @@ public class SimulationAppState extends BaseAppState
     
     private final ArrayList<CharacterManagerControl> _characters;
     
+    private final List<PlayerStateInfo> _pendingInfos = new ArrayList<>();
+    private final List<ShootEventArgs> _pendingBullets = new ArrayList<>();
+    
     private ClientListener _listener;
     
     public SimulationAppState()
@@ -37,6 +42,31 @@ public class SimulationAppState extends BaseAppState
         initListener();
         _characters = new ArrayList<>();
     }
+
+    @Override
+    public void update(float tpf)
+    {
+        Node root = _app.getRootNode();
+        PhysicsSpace space = _bulletAppState.getPhysicsSpace();
+        synchronized(_pendingInfos)
+        {
+            if(_pendingInfos.isEmpty() == false)
+            {
+                updateSimulation(_pendingInfos);
+                _pendingInfos.clear();
+            }
+        }
+        synchronized(_pendingBullets)
+        {
+            for(ShootEventArgs e : _pendingBullets)
+            {
+                BulletFactoryAppState.createBullet(root, space, e, 20, 20f, true);
+            }
+            _pendingBullets.clear();
+        }
+    }
+    
+    
     
     @Override
     protected void initialize(Application app)
@@ -84,12 +114,30 @@ public class SimulationAppState extends BaseAppState
             @Override
             public void messageReceived(Client source, Message message)
             {
+                Node root = _app.getRootNode();
+                PhysicsSpace space = _bulletAppState.getPhysicsSpace();
                 if (message instanceof PlayerStateInfosMessage)
                 {
                     PlayerStateInfosMessage msg = (PlayerStateInfosMessage) message;
                     PlayerStateInfo[] arr = msg.deserialize().getArray();
                     List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
-                    updateSimulation(infos);
+                    synchronized(_pendingInfos)
+                    {
+                        _pendingInfos.clear();
+                        for(PlayerStateInfo state : infos)
+                        {
+                            _pendingInfos.add(state);
+                        }
+                    }
+                }
+                else if (message instanceof PlayerShotMessage)
+                {
+                    PlayerShotMessage msg = (PlayerShotMessage)message;
+                    ShootEventArgs e = msg.deserialize();
+                    synchronized(_pendingBullets)
+                    {
+                        _pendingBullets.add(e);
+                    }
                 }
             }
         };

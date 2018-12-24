@@ -50,10 +50,10 @@ public class BulletFactoryAppState extends BaseAppState
     {
     }
     
-    public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, int damage, float speed)
+    public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, int damage, float speed, boolean dummy)
     {
         Spatial bullet = _assetManager.loadModel("Models/Bullet.j3o");
-        BulletControl bulletControl = new BulletControl(damage, speed, 1f);
+        BulletControl bulletControl = new BulletControl(damage, speed, 1f, dummy);
         bullet.addControl(bulletControl);
         bulletControl.setPhysicsLocation(eventArgs.getShotPosition());
         bulletControl.setPhysicsRotation(eventArgs.getShotRotation());

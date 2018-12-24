@@ -22,12 +22,14 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
     private final int _damage;
     private final float _speed;
     private boolean _isDestroyed = false;
+    private final boolean _isDummy;
     
-    public BulletControl(int damage, float speed, float mass)
+    public BulletControl(int damage, float speed, float mass, boolean dummy)
     {
         _damage = damage;
         _speed = speed;
         this.mass = mass;
+        _isDummy = dummy;
     }
 
     @Override
@@ -50,7 +52,10 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
         if(event.getNodeA() == spatial || event.getNodeB() == spatial)
         {
             destroyBullet();
-            System.out.println("Collided!");
+            if(_isDummy == false)
+            {
+                System.out.println("Collided!");
+            }
         }
     }
 

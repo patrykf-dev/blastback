@@ -3,7 +3,6 @@ package com.blastback.controls;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import java.util.Observable;
 
 public class CharacterHealthControl extends AbstractControl
 {
@@ -34,6 +33,24 @@ public class CharacterHealthControl extends AbstractControl
         
     }
     
+    /**
+     * Method to be used on simulated characters (update their state periodically)
+     * @param health 
+     */
+    public void setHealth(int health)
+    {
+        _currentHealth = Math.max(health, 0);
+        if(_currentHealth<=0)
+        {
+            _currentHealth = 0;
+            onDeath();
+        }
+    }
+    
+    /**
+     * Method to be used on local player (as a response to PlayerHit message)
+     * @param amount 
+     */
     public void takeDamage(int amount)
     {
         _currentHealth -= amount;
