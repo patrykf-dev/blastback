@@ -7,10 +7,12 @@ package com.blastback.appstates;
 
 import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
+import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
+import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.blastback.shared.messages.data.SimulationData;
@@ -139,6 +141,8 @@ public class SimulationDataAppState extends BaseAppState{
             @Override
             public void messageReceived(HostedConnection source, Message message) 
             {
+                Server server = _ServerNetworkAppState.getServer();
+                
                 if(message instanceof PlayerMovedMessage)
                 {
                     PlayerStateInfo playerUpdate = simData.find(source.getId());
@@ -162,8 +166,17 @@ public class SimulationDataAppState extends BaseAppState{
                 }
                 else if (message instanceof PlayerShotMessage)
                 {
-                    Server server = _ServerNetworkAppState.getServer();
                     server.broadcast(Filters.notEqualTo(source), message);
+                }
+                else if (message instanceof PlayerHitMessage)
+                {
+                    PlayerHitMessage msg = (PlayerHitMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    HostedConnection conn = server.getConnection(data.getTargetId());
+                    if(conn != null)
+                    {
+                        conn.send(message);
+                    }
                 }
             }
             

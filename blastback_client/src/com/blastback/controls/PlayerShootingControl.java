@@ -14,6 +14,7 @@ import com.jme3.scene.control.AbstractControl;
 public class PlayerShootingControl extends AbstractControl
 {
     public final BlastbackEvent<ShootEventArgs> onShootEvent = new BlastbackEvent<>();
+    public final BlastbackEvent<BulletControl> onBulletCreated = new BlastbackEvent<>();
     
     private CharacterControl _charControl;
     
@@ -54,7 +55,8 @@ public class PlayerShootingControl extends AbstractControl
         Vector3f shotPosition = spatial.getLocalTranslation().add(spatial.getLocalRotation().mult(_barrelOffset));
         ShootEventArgs eventArgs = new ShootEventArgs(shotPosition, spatial.getLocalRotation());
         onShootEvent.notify(eventArgs);
-        BulletFactoryAppState.createBullet(spatial.getParent(), _charControl.getPhysicsSpace(), eventArgs, 20, 20f, false);
+        BulletControl bullet = BulletFactoryAppState.createBullet(spatial.getParent(), _charControl.getPhysicsSpace(), eventArgs, 20, 20f, false);
+        onBulletCreated.notify(bullet);
     }
     
 }

@@ -5,6 +5,8 @@
  */
 package com.blastback.controls;
 
+import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.observer.BlastbackEvent;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
@@ -18,12 +20,15 @@ import com.jme3.scene.Spatial;
  */
 public class BulletControl extends RigidBodyControl implements PhysicsCollisionListener
 {
+
+    public BlastbackEvent<HitEventArgs> onPlayerHitEvent = new BlastbackEvent<>();
+
     private float _ttl = 0.75f;
     private final int _damage;
     private final float _speed;
     private boolean _isDestroyed = false;
     private final boolean _isDummy;
-    
+
     public BulletControl(int damage, float speed, float mass, boolean dummy)
     {
         _damage = damage;
@@ -38,7 +43,7 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
         super.setPhysicsSpace(space);
         fire();
     }
-    
+
     @Override
     public void setSpatial(Spatial spatial)
     {
@@ -48,14 +53,32 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
     @Override
     public void collision(PhysicsCollisionEvent event)
     {
-        if(_isDestroyed) return;
-        if(event.getNodeA() == spatial || event.getNodeB() == spatial)
+        if (_isDestroyed)
         {
-            destroyBullet();
-            if(_isDummy == false)
+            return;
+        }
+        Spatial bullet, target;
+        if (event.getNodeA() == spatial || event.getNodeB() == spatial)
+        {
+            if (event.getNodeA() == spatial)
             {
-                System.out.println("Collided!");
+                bullet = event.getNodeA();
+                target = event.getNodeB();
+            } else
+            {
+                bullet = event.getNodeB();
+                target = event.getNodeA();
             }
+            if (_isDummy == false)
+            {
+                CharacterManagerControl characterControl = target.getControl(CharacterManagerControl.class);
+                if(characterControl != null)
+                {
+                    HitEventArgs eventArgs = new HitEventArgs(characterControl.getId(), _damage);
+                    onPlayerHitEvent.notify(eventArgs);
+                }
+            }
+            destroyBullet();
         }
     }
 
@@ -79,7 +102,7 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
     {
         setLinearVelocity(getPhysicsRotation().mult(Vector3f.UNIT_Z.mult((-1f) * _speed)));
     }
-    
+
     private void destroyBullet()
     {
         if (spatial.getParent() != null)
@@ -90,7 +113,8 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
         {
             this.getPhysicsSpace().remove(this);
         }
+        onPlayerHitEvent.clearListeners();
         _isDestroyed = true;
     }
-    
+
 }

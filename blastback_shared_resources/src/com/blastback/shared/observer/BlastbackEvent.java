@@ -13,7 +13,7 @@ import java.util.List;
  * @author Eryk
  * @param <T>
  */
-public class BlastbackEvent<T extends BlastbackEventArgs>
+public class BlastbackEvent<T>
 {
     
     private final List<BlastbackEventListener<T>> _listeners;
@@ -42,5 +42,10 @@ public class BlastbackEvent<T extends BlastbackEventArgs>
     public void removeListener(BlastbackEventListener<T> listener)
     {
         _listeners.remove(listener);
+    }
+    
+    public void clearListeners()
+    {
+        _listeners.clear();
     }
 }

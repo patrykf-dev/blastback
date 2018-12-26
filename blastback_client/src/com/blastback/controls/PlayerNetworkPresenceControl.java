@@ -2,9 +2,11 @@ package com.blastback.controls;
 
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
+import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.ShootEventArgs;
 import com.blastback.shared.observer.BlastbackEventArgs;
 import com.blastback.shared.observer.BlastbackEventListener;
@@ -30,7 +32,9 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     private Timer _messageTimer;
     private final int _timerTick = 50;
     
-    private BlastbackEventListener<ShootEventArgs> _listener;
+    private BlastbackEventListener<ShootEventArgs> _shotListener;
+    private BlastbackEventListener<HitEventArgs> _hitListener;
+    private BlastbackEventListener<BulletControl> _bulletListener;
     
     public PlayerNetworkPresenceControl(NetworkAppState networkAppState)
     {
@@ -48,7 +52,8 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             {
                 initTimer();
             }
-            _shootingControl.onShootEvent.addListener(_listener);
+            _shootingControl.onShootEvent.addListener(_shotListener);
+            _shootingControl.onBulletCreated.addListener(_bulletListener);
         }
         else
         {
@@ -56,7 +61,8 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             {
             _messageTimer.cancel();
             }
-            _shootingControl.onShootEvent.removeListener(_listener);
+            _shootingControl.onShootEvent.removeListener(_shotListener);
+            _shootingControl.onBulletCreated.removeListener(_bulletListener);
         }
     }
 
@@ -97,11 +103,29 @@ public class PlayerNetworkPresenceControl extends AbstractControl
 
     private void initListeners() 
     {
-        _listener = new BlastbackEventListener<ShootEventArgs>() {
+        _shotListener = new BlastbackEventListener<ShootEventArgs>() {
             @Override
             public void invoke(ShootEventArgs e) 
             {
                 sendShotMessage(e);
+            }
+        };
+        
+        _hitListener = new BlastbackEventListener<HitEventArgs>()
+        {
+            @Override
+            public void invoke(HitEventArgs e)
+            {
+                sendHitMessage(e);
+            }
+        };
+
+        _bulletListener = new BlastbackEventListener<BulletControl>()
+        {
+            @Override
+            public void invoke(BulletControl e)
+            {
+                e.onPlayerHitEvent.addListener(_hitListener);
             }
         };
     }
@@ -117,7 +141,6 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
             Message m = new PlayerMovedMessage(DataForJson);
 
-            //client.send(data);
             client.send(m);
         }
     }
@@ -127,10 +150,17 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         Client client = _network.getClientInstance();
         if (client != null && client.isConnected())
         {
-            Vector3f shotPosition = e.getShotPosition();
-            Quaternion shotRotation = e.getShotRotation();
-            ShootEventArgs DataForJson = new ShootEventArgs(shotPosition, shotRotation);
-            Message m = new PlayerShotMessage(DataForJson);
+            Message m = new PlayerShotMessage(e);
+            client.send(m);
+        }
+    }
+    
+    private void sendHitMessage(HitEventArgs e)
+    {
+        Client client = _network.getClientInstance();
+        if (client != null && client.isConnected())
+        {
+            Message m = new PlayerHitMessage(e);
             client.send(m);
         }
     }

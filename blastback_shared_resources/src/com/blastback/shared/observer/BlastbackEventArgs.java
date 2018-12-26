@@ -9,7 +9,7 @@ package com.blastback.shared.observer;
  *
  * @author Eryk
  */
-public abstract class BlastbackEventArgs
+public class BlastbackEventArgs
 {
-    
+    public static BlastbackEventArgs VOID = new BlastbackEventArgs();
 }

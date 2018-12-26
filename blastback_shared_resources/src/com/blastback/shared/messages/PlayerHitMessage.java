@@ -5,7 +5,7 @@
  */
 package com.blastback.shared.messages;
 
-import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.messages.data.HitEventArgs;
 import com.jme3.network.serializing.Serializable;
 
 /**
@@ -13,7 +13,7 @@ import com.jme3.network.serializing.Serializable;
  * @author Marcin
  */
 @Serializable
-public class PlayerHitMessage extends BaseBlastbackMessage<PlayerStateInfo>
+public class PlayerHitMessage extends BaseBlastbackMessage<HitEventArgs>
 {
     
     public PlayerHitMessage()
@@ -21,15 +21,15 @@ public class PlayerHitMessage extends BaseBlastbackMessage<PlayerStateInfo>
         super();
     }
     
-    public PlayerHitMessage(PlayerStateInfo param)
+    public PlayerHitMessage(HitEventArgs param)
     {
         super(param);
          _content = _gsonInstance.toJson(param);
     }
    
     @Override
-    public PlayerStateInfo deserialize()
+    public HitEventArgs deserialize()
     {
-        return _gsonInstance.fromJson(_content, PlayerStateInfo.class);
+        return _gsonInstance.fromJson(_content, HitEventArgs.class);
     }
 }

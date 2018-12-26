@@ -10,7 +10,7 @@ package com.blastback.shared.observer;
  * @author Eryk
  * @param <T>
  */
-public interface BlastbackEventListener<T extends BlastbackEventArgs>
+public interface BlastbackEventListener<T>
 {
     public void invoke (T e);
 }

@@ -6,10 +6,16 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
+import com.blastback.controls.CharacterHealthControl;
 import com.blastback.controls.PlayerInputControl;
 import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
 import com.blastback.controls.PlayerShootingControl;
+import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.PlayerHitMessage;
+import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.observer.BlastbackEventArgs;
+import com.blastback.shared.observer.BlastbackEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
@@ -17,6 +23,8 @@ import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
+import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
 
 /**
@@ -33,7 +41,11 @@ public class PlayerAppState extends BaseAppState
     private Spatial _player;
     private PlayerInputControl _inputControl;
     private CharacterControl _charControl;
+    private CharacterHealthControl _healthControl;
     private PlayerNetworkPresenceControl _networkPresenceControl;
+    
+    private ClientListener _listener;
+    private BlastbackEventListener<BlastbackEventArgs> _deathListener;
 
     @Override
     protected void initialize(Application app)
@@ -43,6 +55,7 @@ public class PlayerAppState extends BaseAppState
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _networkAppState = _app.getStateManager().getState(NetworkAppState.class);
 
+        initListeners();
         initPlayer();
     }
 
@@ -63,6 +76,8 @@ public class PlayerAppState extends BaseAppState
         {
             _networkPresenceControl.setEnabled(true);
         }
+        
+        _networkAppState.addListener(_listener);
     }
 
     @Override
@@ -79,6 +94,8 @@ public class PlayerAppState extends BaseAppState
         {
             _networkPresenceControl.setEnabled(false);
         }
+        
+        _networkAppState.removeListener(_listener);
     }
 
     @Override
@@ -99,6 +116,9 @@ public class PlayerAppState extends BaseAppState
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
         _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
+        _healthControl = new CharacterHealthControl();
+        _player.addControl(_healthControl);
+        _healthControl.onDeathEvent.addListener(_deathListener);
         
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);
@@ -107,10 +127,45 @@ public class PlayerAppState extends BaseAppState
         _inputControl = new PlayerInputControl();
         _player.addControl(_inputControl);
     }
+    
+    private void initListeners()
+    {
+        _listener = new ClientListener()
+        {
+            @Override
+            public void messageReceived(Client source, Message message)
+            {
+                if(message instanceof PlayerHitMessage)
+                {
+                    PlayerHitMessage msg = (PlayerHitMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    _healthControl.takeDamage(data.getDamage());
+                }
+            }
+            
+        };
+        
+        _deathListener = new BlastbackEventListener<BlastbackEventArgs>()
+        {
+            @Override
+            public void invoke(BlastbackEventArgs e)
+            {
+                respawnPlayer();
+            }
+        };
+    }
 
     public Vector3f getPlayerPosition()
     {
         return _charControl.getPhysicsLocation().clone();
+    }
+    
+    private void respawnPlayer()
+    {
+        _healthControl.resetHealth();
+
+        _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
+        _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
     }
 
 }

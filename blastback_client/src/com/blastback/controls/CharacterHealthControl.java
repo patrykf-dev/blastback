@@ -1,11 +1,14 @@
 package com.blastback.controls;
 
+import com.blastback.shared.observer.BlastbackEvent;
+import com.blastback.shared.observer.BlastbackEventArgs;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 
 public class CharacterHealthControl extends AbstractControl
 {
+    public BlastbackEvent<BlastbackEventArgs> onDeathEvent = new BlastbackEvent<>();
     private final int _maxHealth;
     private int _currentHealth;
     
@@ -73,6 +76,6 @@ public class CharacterHealthControl extends AbstractControl
     
     private void onDeath()
     {
-        
+        onDeathEvent.notify(BlastbackEventArgs.VOID);
     }
 }

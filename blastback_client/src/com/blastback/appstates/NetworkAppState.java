@@ -31,7 +31,7 @@ public class NetworkAppState extends BaseAppState
     private final int _port;
     private final String _ip;
 
-    private List<MessageListener> _messageListeners;
+    private final List<MessageListener> _messageListeners;
 
     public NetworkAppState()
     {
