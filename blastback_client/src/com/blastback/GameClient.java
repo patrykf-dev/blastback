@@ -4,16 +4,14 @@ import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.appstates.PlayerAppState;
-import com.blastback.appstates.ScreenAppState;
+import com.blastback.appstates.GUIAppState;
 import com.blastback.appstates.TopDownCameraAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
-import de.lessvoid.nifty.Nifty;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -33,7 +31,8 @@ public class GameClient extends SimpleApplication
                 new MapAppState(),
                 new PlayerAppState(),
                 new TopDownCameraAppState(),
-                new NetworkAppState());
+                new NetworkAppState(),
+                new GUIAppState());
     }
 
     public static void main(String[] args)
@@ -47,17 +46,10 @@ public class GameClient extends SimpleApplication
     {
         //BulletAppState gives UnsatisfiedLinkError when attached in constructor
         stateManager.attach(new BulletAppState());
-        
+
         // Disable the black fps box
         setDisplayFps(false);
-        setDisplayStatView(false);        
-        
-        // Link nifty
-        NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
-                assetManager, inputManager, audioRenderer, guiViewPort);
-        Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/Screens/screens.xml", "start-screen");
-        guiViewPort.addProcessor(niftyDisplay);
+        setDisplayStatView(false);
     }
 
     @Override
