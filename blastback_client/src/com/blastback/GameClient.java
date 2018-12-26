@@ -4,6 +4,7 @@ import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.appstates.PlayerAppState;
+import com.blastback.appstates.ScreenAppState;
 import com.blastback.appstates.TopDownCameraAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
@@ -49,13 +50,13 @@ public class GameClient extends SimpleApplication
         
         // Disable the black fps box
         setDisplayFps(false);
-        setDisplayStatView(false);
+        setDisplayStatView(false);        
         
         // Link nifty
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
                 assetManager, inputManager, audioRenderer, guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/Screens/screens.xml", "hud");
+        nifty.fromXml("Interface/Screens/screens.xml", "start-screen");
         guiViewPort.addProcessor(niftyDisplay);
     }
 

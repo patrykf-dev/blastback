@@ -47,7 +47,7 @@ public class ScreenAppState extends BaseAppState implements ScreenController
     public void exitClick()
     {
         Log("EXIT BUTTON CLICKED");
-        getApplication().stop();
+        //getApplication().stop();
     }
     
     
@@ -89,7 +89,7 @@ public class ScreenAppState extends BaseAppState implements ScreenController
 
     @Override
     public void bind(Nifty nifty, Screen screen)
-    {
+    {        
     }
 
     @Override
