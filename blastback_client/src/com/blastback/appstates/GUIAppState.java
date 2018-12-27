@@ -15,10 +15,6 @@ import java.util.logging.Logger;
 
 public class GUIAppState extends BaseAppState implements ScreenController
 {
-
-    private Node localRootNode = new Node("Start Screen RootNode");
-    private Node localGuiNode = new Node("Start Screen GuiNode");
-
     private NiftyJmeDisplay _niftyDisplay;
     private Nifty _niftyScreen;
 
@@ -50,63 +46,57 @@ public class GUIAppState extends BaseAppState implements ScreenController
     public void exitClick()
     {
         Log("EXIT BUTTON CLICKED");
-        //getApplication().stop(); NullPointerException here
     }
 
     /**
-     * Update ammo label
-     * 
+     * Update ammo label in hud screen
+     *
      * @param currentAmmo amount of currently owned ammo
      * @param maxAmmo max amount of ammo
      */
     public void updateAmmo(int currentAmmo, int maxAmmo)
     {
-        Element niftyElement = _niftyScreen.getCurrentScreen().findElementById("text_ammo");
-        niftyElement.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + "/" + maxAmmo);
+        Element ammoLabel = _niftyScreen.getCurrentScreen().findElementById("text_ammo");
+        if (ammoLabel != null)
+        {
+            ammoLabel.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + " / " + maxAmmo);
+        }
     }
 
     /**
-     * Update timer label
+     * Update timer label in hud screen
      *
      * @param timeLeft time left in seconds
      */
     public void updateTimer(long timeLeft)
     {
-        int minutes = (int) (timeLeft / 60);
-        int seconds = (int) (timeLeft - 60 * minutes);
-        Element niftyElement = _niftyScreen.getCurrentScreen().findElementById("text_timer");
-        niftyElement.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
+        Element timerLabel = _niftyScreen.getCurrentScreen().findElementById("text_timer");
+        if (timerLabel != null)
+        {
+            int minutes = (int) (timeLeft / 60);
+            int seconds = (int) (timeLeft - 60 * minutes);
+            timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
+        }
     }
 
     @Override
     protected void cleanup(Application app)
     {
-        //TODO: clean up what you initialized in the initialize method,
-        //e.g. remove all spatials from rootNode
-        ((SimpleApplication) app).getRootNode().detachChild(localRootNode);
-        ((SimpleApplication) app).getGuiNode().detachChild(localGuiNode);
     }
 
     @Override
     protected void onEnable()
     {
-        //Called when the state is fully enabled, ie: is attached and
-        //isEnabled() is true or when the setEnabled() status changes after the
-        //state is attached.
     }
 
     @Override
     protected void onDisable()
     {
-        //Called when the state was previously enabled but is now disabled
-        //either because setEnabled(false) was called or the state is being
-        //cleaned up.
     }
 
     @Override
     public void update(float tpf)
     {
-        //TODO: implement behavior during runtime
     }
 
     @Override
