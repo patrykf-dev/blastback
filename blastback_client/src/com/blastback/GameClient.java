@@ -27,11 +27,6 @@ public class GameClient extends SimpleApplication
         super(new StatsAppState(),
                 new AudioListenerState(),
                 new DebugKeysAppState(),
-                new InputManagerAppState(),
-                new MapAppState(),
-                new PlayerAppState(),
-                new TopDownCameraAppState(),
-                new NetworkAppState(),
                 new GUIAppState());
     }
 

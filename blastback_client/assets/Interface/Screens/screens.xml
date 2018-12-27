@@ -8,7 +8,7 @@
     
     
     <!-- HUD SCREEN -->
-    <screen id="hud" controller="com.blastback.appstates.GUIAppState">
+    <screen id="hud-screen" controller="com.blastback.appstates.GUIAppState">
         <layer id="layer_hud" childLayout="vertical">
             <panel id="panel_top" height="10%" width="100%" align="center" childLayout="horizontal" backgroundColor="#0000">
                 <panel id="panel_sep1" height="100%" width="40%" backgroundColor="#0000"/>
@@ -38,7 +38,7 @@
             </panel>
         </layer>
         
-        <layer id="layer_scoreboard" childLayout="vertical">
+        <layer id="layer_scoreboard" childLayout="vertical" visibleToMouse="false" visible="false">
             <panel id="panel_sep3" height="30%" width="100%" align="center" backgroundColor="#0000"/>
             <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">
                 
@@ -135,11 +135,11 @@
                 <panel id="panel_menu" height="30%" width="100%" align="center" childLayout="vertical">
                     <control id="btn_join" name="button" label="Join" align="center" width="40%" height="33%"
                              visibleToMouse="true">
-                        <interact onClick="joinClick()" />
+                        <interact onClick="joinButtonClicked()" />
                     </control>
                     <control id="btn_exit" name="button" label="Exit" align="center" width="40%" height="33%"
                              visibleToMouse="true">
-                        <interact onClick="exitClick()" />
+                        <interact onClick="exitButtonClicked()" />
                     </control>
                 </panel>
                 
@@ -151,6 +151,10 @@
             <panel id="panel_right" height="100%" width="35%" align="center" childLayout="center">
                 <image filename="Interface/Images/blastback_fighter.png" height="100%" width="100%"/>
             </panel>
+        </layer>
+        
+        <layer id="wait_layer" childLayout="center" backgroundColor="#000000" visibleToMouse="false" visible="false">
+            <text id="text_wait_msg" text="Connecting..." font="Interface/Fonts/BetterArial.fnt" width="100%" height="100%"/>
         </layer>
     </screen>
 </nifty>
