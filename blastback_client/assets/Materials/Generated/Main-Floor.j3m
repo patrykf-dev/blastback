@@ -3,7 +3,9 @@ Material MyMaterial : Common/MatDefs/Misc/Unshaded.j3md {
         BackfaceShadows : true
         PointSize : 1.0
         Color : 0.7997718 0.6562157 0.6268791 1.0
-        ColorMap : Textures/WoodenFloor.jpg
+        ColorMap : Repeat Textures/Floor/Ground_Grass_001_COLOR.jpg
+        ShadowMap0 : Repeat Textures/Floor/Ground_Grass_001_NORM.jpg
+        SeparateTexCoord : false
     }
     AdditionalRenderState {
       PointSprite On
