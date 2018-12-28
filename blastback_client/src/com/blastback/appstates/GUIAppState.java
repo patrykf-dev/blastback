@@ -2,13 +2,8 @@ package com.blastback.appstates;
 
 import com.blastback.GameClient;
 import com.jme3.app.Application;
-import com.jme3.app.DebugKeysAppState;
-import com.jme3.app.SimpleApplication;
-import com.jme3.app.StatsAppState;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.audio.AudioListenerState;
 import com.jme3.niftygui.NiftyJmeDisplay;
-import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -21,13 +16,14 @@ import java.util.logging.Logger;
 
 public class GUIAppState extends BaseAppState implements ScreenController
 {
+
     private Nifty _niftyInstance;
     private List<BaseAppState> _gameStates;
     private GameClient _application;
 
     /**
-     * Parameterless constructor is needed for xml to create the object (it uses
-     * reflection actually). All initialization should be done in the initialize
+     * Parameterless constructor is needed for xml to create its controller
+     * (using reflection). All initialization should be done in the initialize
      * method though.
      */
     public GUIAppState()
@@ -42,6 +38,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
                 app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
         _niftyInstance = niftyDisplay.getNifty();
         _niftyInstance.fromXml("Interface/Screens/screens.xml", "start-screen", this);
+
         app.getGuiViewPort().addProcessor(niftyDisplay);
 
         _gameStates = new ArrayList<>();
@@ -50,6 +47,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
         _gameStates.add(new PlayerAppState());
         _gameStates.add(new TopDownCameraAppState());
         _gameStates.add(new NetworkAppState());
+
     }
 
     /**
@@ -60,15 +58,11 @@ public class GUIAppState extends BaseAppState implements ScreenController
         // This should show the "connecting..." message, but it's shown after the attachGameStates call.
         _niftyInstance.getCurrentScreen().findElementById("wait_layer").setVisible(true);
 
-
         boolean canConnect = true;
         if (canConnect)
         {
             attachGameStates();
             _niftyInstance.gotoScreen("hud-screen");
-            _niftyInstance.gotoScreen("start-screen");
-            _niftyInstance.gotoScreen("hud-screen");
-            _niftyInstance.gotoScreen("start-screen");
 
         } else
         {
@@ -84,22 +78,9 @@ public class GUIAppState extends BaseAppState implements ScreenController
         Log("EXIT BUTTON CLICKED");
     }
 
-    /**
-     * Display or hide the scoreboard layer.
-     *
-     * @param show flag indicating whether to show/hide scoreboard
-     */
-    public void displayScoreboard(boolean show)
-    {
-        Element scoreboardLayer = _niftyInstance.getCurrentScreen().findElementById("layer_scoreboard");
-        if (scoreboardLayer != null)
-        {
-            scoreboardLayer.setVisible(show);
-        }
-    }
 
     /**
-     * Update ammo label in hud-screen.
+     * Update ammo label (only in hud-screen).
      *
      * @param currentAmmo amount of currently owned ammo
      * @param maxAmmo max amount of ammo
@@ -114,7 +95,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
     }
 
     /**
-     * Update timer label in hud-screen.
+     * Update timer label (only in hud-screen).
      *
      * @param timeLeft time left in seconds
      */
@@ -148,16 +129,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
     @Override
     protected void cleanup(Application app)
     {
-    }
-
-    @Override
-    protected void onEnable()
-    {
-    }
-
-    @Override
-    protected void onDisable()
-    {
+        detachGameStates();
     }
 
     @Override
@@ -168,20 +140,33 @@ public class GUIAppState extends BaseAppState implements ScreenController
     @Override
     public void bind(Nifty nifty, Screen screen)
     {
+        // This should be empty, because screen already gets its controller in our initialize method.
     }
 
     @Override
     public void onStartScreen()
     {
+        // Happens every time a screen loads.
     }
 
     @Override
     public void onEndScreen()
     {
+        // Happens every time a screen hides.
     }
 
     private void Log(String msg)
     {
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "\t[LOG] {0}", msg);
+    }
+
+    @Override
+    protected void onEnable()
+    {
+    }
+
+    @Override
+    protected void onDisable()
+    {
     }
 }
