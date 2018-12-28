@@ -1,11 +1,16 @@
-Material MyMaterial : Common/MatDefs/Misc/Unshaded.j3md {
+Material MyMaterial : Common/MatDefs/Light/Lighting.j3md {
     MaterialParameters {
         BackfaceShadows : true
-        PointSize : 1.0
-        Color : 0.7997718 0.6562157 0.6268791 1.0
-        ColorMap : Repeat Textures/Floor/Ground_Grass_001_COLOR.jpg
-        ShadowMap0 : Repeat Textures/Floor/Ground_Grass_001_NORM.jpg
         SeparateTexCoord : false
+        DiffuseMap : Repeat Textures/Floor/Ground_Grass_001_COLOR.jpg
+        NormalMap : Repeat Textures/Floor/Ground_Grass_001_NORM.jpg
+        Specular : 1.0 1.0 1.0 1.0
+        Diffuse : 1.0 1.0 1.0 1.0
+        Shininess : 32.0
+        UseMaterialColors : false
+        VertexLighting : true
+        ShadowMapSize : 0.0
+        ShadowIntensity : 0.0
     }
     AdditionalRenderState {
       PointSprite On
