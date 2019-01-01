@@ -2,8 +2,7 @@ Material MyMaterial : Common/MatDefs/Light/Lighting.j3md {
     MaterialParameters {
         BackfaceShadows : true
         SeparateTexCoord : false
-        DiffuseMap : Repeat Textures/Floor/Ground_Grass_001_COLOR.jpg
-        NormalMap : Repeat Textures/Floor/Ground_Grass_001_NORM.jpg
+        DiffuseMap : Repeat Textures/Floor/ground3.jpg
         Specular : 1.0 1.0 1.0 1.0
         Diffuse : 1.0 1.0 1.0 1.0
         Shininess : 32.0
