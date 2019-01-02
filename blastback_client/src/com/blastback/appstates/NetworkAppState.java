@@ -36,12 +36,7 @@ public class NetworkAppState extends BaseAppState
     private final int _timerTick = 50;
     private final int _port;
     private final String _ip;
-
-    public NetworkAppState()
-    {
-        _ip = "localhost";
-        _port = 7777;
-    }
+    private boolean _connected;
 
     public NetworkAppState(String ip, int port)
     {
@@ -93,10 +88,11 @@ public class NetworkAppState extends BaseAppState
 
             initTimer();
 
-            Log("Server created succesfully");
+            _connected = true;
+            Log("Client connected succesfully");
         } catch (IOException ex)
         {
-            Log(ex.getMessage());
+            Log("EXCEPTION WHILE CONNECTING: " + ex.getMessage());
         }
     }
 
@@ -134,5 +130,11 @@ public class NetworkAppState extends BaseAppState
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
+    }
+    
+
+    public boolean isConnected()
+    {
+        return _connected;
     }
 }

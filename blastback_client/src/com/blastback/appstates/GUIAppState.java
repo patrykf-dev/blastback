@@ -7,6 +7,8 @@ import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
+import de.lessvoid.nifty.input.NiftyInputEvent;
+import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GUIAppState extends BaseAppState implements ScreenController
+public class GUIAppState extends BaseAppState implements ScreenController, KeyInputHandler
 {
 
     private Nifty _niftyInstance;
@@ -46,24 +48,29 @@ public class GUIAppState extends BaseAppState implements ScreenController
         _gameStates.add(new MapAppState());
         _gameStates.add(new PlayerAppState());
         _gameStates.add(new TopDownCameraAppState());
-        _gameStates.add(new NetworkAppState());
+    }
 
+    @Override
+    public boolean keyEvent(NiftyInputEvent inputEvent)
+    {
+        Log(inputEvent.toString());
+        return true;
     }
 
     /**
      * Handle join button onClick (only in hud-screen).
      */
-    public void joinButtonClicked()
+    public void joinButtonClicked() throws InterruptedException
     {
-        // This should show the "connecting..." message, but it's shown after the attachGameStates call.
-        _niftyInstance.getCurrentScreen().findElementById("wait_layer").setVisible(true);
+        Element popupElement = _niftyInstance.createPopup("popup_wait");
+        _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), popupElement.getId(), null);
+        
+        boolean canConnect = attachGameStates();
 
-        boolean canConnect = true;
         if (canConnect)
         {
-            attachGameStates();
+            _niftyInstance.closePopup(popupElement.getId());
             _niftyInstance.gotoScreen("hud-screen");
-
         } else
         {
 
@@ -77,7 +84,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
     {
         Log("EXIT BUTTON CLICKED");
     }
-
 
     /**
      * Update ammo label (only in hud-screen).
@@ -110,12 +116,24 @@ public class GUIAppState extends BaseAppState implements ScreenController
         }
     }
 
-    private void attachGameStates()
+    private boolean attachGameStates()
     {
+        NetworkAppState netState = new NetworkAppState("localhost", 7777);
+        _application.getStateManager().attach(netState);
+        
+        if(!netState.isConnected())
+        {
+            return false;
+        }
+        
+        
         for (BaseAppState state : _gameStates)
         {
             _application.getStateManager().attach(state);
         }
+
+        
+        return true;
     }
 
     private void detachGameStates()
