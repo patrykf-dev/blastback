@@ -1,22 +1,27 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
+import com.blastback.listeners.ClientListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.network.Client;
+import com.jme3.network.Network;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GUIAppState extends BaseAppState implements ScreenController, KeyInputHandler
+public class GUIAppState extends BaseAppState implements ScreenController
 {
 
     private Nifty _niftyInstance;
@@ -50,30 +55,95 @@ public class GUIAppState extends BaseAppState implements ScreenController, KeyIn
         _gameStates.add(new TopDownCameraAppState());
     }
 
-    @Override
-    public boolean keyEvent(NiftyInputEvent inputEvent)
-    {
-        Log(inputEvent.toString());
-        return true;
-    }
-
     /**
      * Handle join button onClick (only in hud-screen).
      */
     public void joinButtonClicked() throws InterruptedException
     {
-        Element popupElement = _niftyInstance.createPopup("popup_wait");
-        _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), popupElement.getId(), null);
-        
-        boolean canConnect = attachGameStates();
+        boolean canConnect = initFakeConnection();
 
         if (canConnect)
         {
-            _niftyInstance.closePopup(popupElement.getId());
+            attachGameStates();
             _niftyInstance.gotoScreen("hud-screen");
         } else
         {
 
+        }
+    }
+
+    private boolean initFakeConnection()
+    {
+        try
+        {
+            Client _clientInstance = Network.connectToServer(getTextIp(), getTextPort());
+            _clientInstance.start();
+            _clientInstance.close();
+        } catch (IOException ex)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void attachGameStates() throws InterruptedException
+    {
+        _gameStates.add(new NetworkAppState(getTextIp(), getTextPort()));
+        for (BaseAppState state : _gameStates)
+        {
+            _application.getStateManager().attach(state);
+        }
+    }
+
+    private void detachGameStates()
+    {
+        for (BaseAppState state : _gameStates)
+        {
+            _application.getStateManager().detach(state);
+        }
+    }
+
+
+    private String getTextName()
+    {
+        TextField inputName = (TextField) _niftyInstance.getCurrentScreen().findNiftyControl("input_name", TextField.class);
+        if (inputName != null)
+        {
+            return inputName.getRealText();
+        } else
+        {
+            return "";
+        }
+    }
+
+    private String getTextIp()
+    {
+        TextField inputIp = (TextField) _niftyInstance.getCurrentScreen().findNiftyControl("input_ip", TextField.class);
+        if (inputIp != null)
+        {
+            return inputIp.getRealText();
+        } else
+        {
+            return "";
+        }
+    }
+
+    private int getTextPort()
+    {
+        TextField inputPort = (TextField) _niftyInstance.getCurrentScreen().findNiftyControl("input_port", TextField.class);
+        if (inputPort != null)
+        {
+            try
+            {
+                int rc = Integer.parseInt(inputPort.getRealText());
+                return rc;
+            } catch (Exception ex)
+            {
+                return - 1;
+            }
+        } else
+        {
+            return -1;
         }
     }
 
@@ -113,34 +183,6 @@ public class GUIAppState extends BaseAppState implements ScreenController, KeyIn
             int minutes = (int) (timeLeft / 60);
             int seconds = (int) (timeLeft - 60 * minutes);
             timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
-        }
-    }
-
-    private boolean attachGameStates()
-    {
-        NetworkAppState netState = new NetworkAppState("localhost", 7777);
-        _application.getStateManager().attach(netState);
-        
-        if(!netState.isConnected())
-        {
-            return false;
-        }
-        
-        
-        for (BaseAppState state : _gameStates)
-        {
-            _application.getStateManager().attach(state);
-        }
-
-        
-        return true;
-    }
-
-    private void detachGameStates()
-    {
-        for (BaseAppState state : _gameStates)
-        {
-            _application.getStateManager().detach(state);
         }
     }
 

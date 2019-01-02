@@ -34,18 +34,12 @@ public class NetworkAppState extends BaseAppState
 
     private List<MessageListener> _messageListeners;
 
-    public NetworkAppState()
-    {
-        _ip = "localhost";
-        _port = 7777;
-        _messageListeners = new ArrayList<>();
-    }
-
     public NetworkAppState(String ip, int port)
     {
         _ip = ip;
         _port = port;
         _messageListeners = new ArrayList<>();
+        _connected = false;
     }
 
     public Client getClientInstance()
@@ -98,11 +92,6 @@ public class NetworkAppState extends BaseAppState
             _clientInstance = Network.connectToServer(_ip, _port);
             this.addListener(new ClientListener());
             _clientInstance.start();
-
-            Message helloMessage = new HelloMessage("TESTING. TESTING.");
-            _clientInstance.send(helloMessage);
-
-            initTimer();
 
             _connected = true;
             Log("Client connected succesfully");
