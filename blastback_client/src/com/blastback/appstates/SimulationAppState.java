@@ -7,6 +7,7 @@ import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.ShootEventArgs;
+import com.blastback.shared.messages.data.WeaponInfo;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -60,7 +61,8 @@ public class SimulationAppState extends BaseAppState
         {
             for(ShootEventArgs e : _pendingBullets)
             {
-                BulletFactoryAppState.createBullet(root, space, e, 20, 20f, true);
+                WeaponInfo wi = e.getWeaponInfo();
+                BulletFactoryAppState.createBullet(root, space, e, (int)wi.getDamage(), wi.getSpeed(), true);
             }
             _pendingBullets.clear();
         }

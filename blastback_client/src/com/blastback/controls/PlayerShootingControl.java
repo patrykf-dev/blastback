@@ -17,14 +17,22 @@ public class PlayerShootingControl extends AbstractControl
     public final BlastbackEvent<BulletControl> onBulletCreated = new BlastbackEvent<>();
     
     private CharacterControl _charControl;
-    
+    private WeaponControl _weaponControl;
     private final Vector3f _barrelOffset;
     
+   
     public PlayerShootingControl(Vector3f barrelOffset)
     {
         _barrelOffset = barrelOffset;
+        _weaponControl = new WeaponControl();
     }
-
+ 
+    public WeaponControl getWeaponControl()
+    {
+        return _weaponControl;
+    }
+    
+    
     @Override
     public void setSpatial(Spatial spatial)
     {
@@ -53,9 +61,17 @@ public class PlayerShootingControl extends AbstractControl
     private void onShoot()
     {
         Vector3f shotPosition = spatial.getLocalTranslation().add(spatial.getLocalRotation().mult(_barrelOffset));
-        ShootEventArgs eventArgs = new ShootEventArgs(shotPosition, spatial.getLocalRotation());
+        ShootEventArgs eventArgs = new ShootEventArgs(shotPosition, spatial.getLocalRotation(),_weaponControl.getCurrentWeapon());
         onShootEvent.notify(eventArgs);
-        BulletControl bullet = BulletFactoryAppState.createBullet(spatial.getParent(), _charControl.getPhysicsSpace(), eventArgs, 20, 20f, false);
+        
+        BulletControl bullet = BulletFactoryAppState.createBullet(
+                spatial.getParent(), 
+                _charControl.getPhysicsSpace(),
+                eventArgs, 
+                (int) _weaponControl.getCurrentWeapon().getDamage(),
+                _weaponControl.getCurrentWeapon().getSpeed(), 
+                false);
+        
         onBulletCreated.notify(bullet);
     }
     
