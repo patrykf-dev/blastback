@@ -5,6 +5,7 @@ import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.appstates.PlayerAppState;
 import com.blastback.appstates.GUIAppState;
+import com.blastback.appstates.SimulationAppState;
 import com.blastback.appstates.TopDownCameraAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
@@ -33,6 +34,7 @@ public class GameClient extends SimpleApplication
     public static void main(String[] args)
     {
         GameClient app = new GameClient();
+        app.setPauseOnLostFocus(false);
         app.start();
     }
 
