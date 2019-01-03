@@ -35,7 +35,14 @@ public class InputManagerAppState extends BaseAppState
     private InputManager _inputManager;
     private Camera _cam;
 
+    /**
+     * Cursor position in OpenGL-like coordinates ((-1,-1) is bottom-left, (1,1) is top-right).
+     */
     public static Vector2f cursorPosition = new Vector2f(0.0f, 0.0f);
+    
+    /**
+     * Direction determined by cursor position (used for raycasting).
+     */
     public static Vector3f cursorDirection = new Vector3f(0.0f, 0.0f, 0.0f);
 
     private final List<InputListener> _listeners;
@@ -85,9 +92,14 @@ public class InputManagerAppState extends BaseAppState
     @Override
     public void update(float tpf)
     {
-        cursorPosition = _inputManager.getCursorPosition().clone();
-        cursorDirection = _cam.getWorldCoordinates(cursorPosition, 0f);
-        cursorDirection.subtractLocal(_cam.getWorldCoordinates(cursorPosition, 1f));
+        Vector2f pos = _inputManager.getCursorPosition().clone();
+        Vector2f display = new Vector2f(_cam.getWidth() / 2.0f, _cam.getHeight() / 2.0f);
+        pos.subtractLocal(display);
+        pos.x /= display.x;
+        pos.y /= display.y;
+        cursorPosition = pos;
+        cursorDirection = _cam.getWorldCoordinates(_inputManager.getCursorPosition(), 0f);
+        cursorDirection.subtractLocal(_cam.getWorldCoordinates(_inputManager.getCursorPosition(), 1f));
         cursorDirection.normalizeLocal();
     }
 

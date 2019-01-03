@@ -106,7 +106,6 @@ public class PlayerInputControl extends AbstractControl
             {
                 if (name.equals("MouseMoved"))
                 {
-                    Vector2f cursor2d = InputManagerAppState.cursorPosition.clone();
                     Vector3f cursor3d = InputManagerAppState.cursorDirection.clone();
                     cursor3d.setY(0.0f);
                     _movementControl.setRotation(cursor3d);

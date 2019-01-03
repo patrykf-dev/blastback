@@ -22,6 +22,7 @@ public class TopDownCameraAppState extends BaseAppState
     private Camera _cam;
     private PlayerAppState _playerAppState;
     private Vector3f _offset = new Vector3f(0f, 20f, 0.1f);
+    private final float _directionMult = 2.0f;
 
     public TopDownCameraAppState()
     {
@@ -56,7 +57,8 @@ public class TopDownCameraAppState extends BaseAppState
     @Override
     public void update(float tpf)
     {
-        _cam.setLocation(_playerAppState.getPlayerPosition().add(_offset));
+        Vector3f cursorPos = new Vector3f(InputManagerAppState.cursorPosition.x, 0.0f, -InputManagerAppState.cursorPosition.y).multLocal(_directionMult);
+        _cam.setLocation(_playerAppState.getPlayerPosition().add(_offset).addLocal(cursorPos));
     }
 
     @Override
