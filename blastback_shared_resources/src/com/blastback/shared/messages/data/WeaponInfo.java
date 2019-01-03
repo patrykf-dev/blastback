@@ -11,13 +11,13 @@ package com.blastback.shared.messages.data;
  */
 public class WeaponInfo
     {
-        private float _damage;
+        private int _damage;
         private float _speed;
         private float _ammoCapacity;
         private float _bulletCooldown; //in ms
         private float _reloadTime; // in miliseconds       
         
-        public float getDamage()
+        public int getDamage()
         {
             return _damage;
         }
@@ -48,16 +48,16 @@ public class WeaponInfo
             _speed = 20;
         }
         
-        public WeaponInfo(float dmg, float speed, float bulletFrequency)
+        public WeaponInfo(int dmg, float speed, float bulletFrequency)
         {
-            _damage =dmg;
+            _damage = dmg;
             _speed = speed;
             _bulletCooldown = bulletFrequency;
         }
         
-        public WeaponInfo(float dmg,float speed,float ammoCap,float reloadTime)
+        public WeaponInfo(int dmg,float speed,float ammoCap,float reloadTime)
         {
-            _damage =dmg;
+            _damage = dmg;
             _speed = speed;
             _ammoCapacity = ammoCap;
             _reloadTime = reloadTime;
