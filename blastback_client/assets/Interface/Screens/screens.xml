@@ -133,20 +133,48 @@
                     </panel>
                 </panel>
                 
-                <panel id="panel_menu" height="30%" width="100%" align="center" childLayout="vertical">
-                    <control id="btn_join" name="button" label="Join" align="center" width="40%" height="33%"
-                             visibleToMouse="true">
-                        <interact onClick="joinButtonClicked()" />
-                    </control>
-                    <control id="btn_exit" name="button" label="Exit" align="center" width="40%" height="33%"
-                             visibleToMouse="true">
-                        <interact onClick="exitButtonClicked()" />
-                    </control>
+                
+                
+            
+                <panel id="panel_buttons" height="30%" width="100%" align="left" childLayout="horizontal">
+                    
+                    
+                    <panel id="panel_sep4" height="100%" width="10%"/>
+                
+                    
+                    
+                    <panel id="panel_buttons_inner" height="100%" width="60%" align="center" childLayout="vertical">
+                        
+                        <panel id="panel_sep6" height="13%" width="100%"/>
+      
+                        <control id="btn_join" name="button" label="Join" align="center" width="100%" height="33%"
+                                 visibleToMouse="true">
+                            <interact onClick="joinButtonClicked()" />
+                        </control>
+                        
+                        <panel id="panel_sep5" height="20%" width="100%"/>
+                        
+                        <control id="btn_exit" name="button" label="Exit" align="center" width="100%" height="33%"
+                                 visibleToMouse="true">
+                            <interact onClick="exitButtonClicked()" />
+                        </control>
+                    </panel>
+                    
+                    
+                    <panel id="panel_message" height="100%" width="30%" align="center" childLayout="center">
+                        <text id="text_message" text="" font="Interface/Fonts/BetterArial.fnt" width="100%" height="33%"/>
+                        <onCustom customKey="fadeIn" name="fade" start="#0" end="#f" />
+                        <onCustom customKey="fadeOut" name="fade" start="#f" end="#0" neverStopRendering="true" />
+                    </panel>
+                    
+                    
                 </panel>
                 
-                
-                <panel id="panel_sep2" height="10%" width="100%" align="center"/>
             </panel>
+            
+                
+                
+            <panel id="panel_sep2" height="10%" width="100%" align="center"/>
             
             
             <panel id="panel_right" height="100%" width="35%" align="center" childLayout="center">

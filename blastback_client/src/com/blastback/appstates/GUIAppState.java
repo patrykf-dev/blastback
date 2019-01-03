@@ -1,7 +1,6 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
-import com.blastback.listeners.ClientListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
@@ -11,8 +10,6 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
-import de.lessvoid.nifty.input.NiftyInputEvent;
-import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.IOException;
@@ -61,17 +58,74 @@ public class GUIAppState extends BaseAppState implements ScreenController
     public void joinButtonClicked() throws InterruptedException
     {
         boolean canConnect = initFakeConnection();
-
         if (canConnect)
         {
             attachGameStates();
             _niftyInstance.gotoScreen("hud-screen");
         } else
         {
-
+            showMessage("Cannot connect!");
         }
     }
 
+    private void showMessage(String msg)
+    {
+        Element txtMessage = _niftyInstance.getCurrentScreen().findElementById("text_message");
+
+        if (txtMessage != null)
+        {
+            txtMessage.getRenderer(TextRenderer.class).setText(msg);
+        }
+    }
+
+    /**
+     * Handle exit button onClick (only in hud-screen).
+     */
+    public void exitButtonClicked()
+    {
+
+        Log("EXIT BUTTON CLICKED, ANIMATE");
+
+    }
+
+    /**
+     * Update ammo label (only in hud-screen).
+     *
+     * @param currentAmmo amount of currently owned ammo
+     * @param maxAmmo max amount of ammo
+     */
+    public void updateAmmo(int currentAmmo, int maxAmmo)
+    {
+        Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
+        if (ammoLabel != null)
+        {
+            ammoLabel.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + " / " + maxAmmo);
+        }
+    }
+
+    /**
+     * Update timer label (only in hud-screen).
+     *
+     * @param timeLeft time left in seconds
+     */
+    public void updateTimer(long timeLeft)
+    {
+        Element timerLabel = _niftyInstance.getCurrentScreen().findElementById("text_timer");
+        if (timerLabel != null)
+        {
+            int minutes = (int) (timeLeft / 60);
+            int seconds = (int) (timeLeft - 60 * minutes);
+            timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
+        }
+    }
+
+    /**
+     * It is a very bad way of verifying user's ip/port combination. I wan´t
+     * able to check that while attaching the state. This is the only workaround
+     * I have found and I am not proud of it.
+     *
+     * @return value indicating whether it is possible to connect to given port
+     */
     private boolean initFakeConnection()
     {
         try
@@ -81,6 +135,8 @@ public class GUIAppState extends BaseAppState implements ScreenController
             _clientInstance.close();
         } catch (IOException ex)
         {
+            Log("initFakeConnection failed");
+            ex.printStackTrace();
             return false;
         }
         return true;
@@ -102,7 +158,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
             _application.getStateManager().detach(state);
         }
     }
-
 
     private String getTextName()
     {
@@ -144,45 +199,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
         } else
         {
             return -1;
-        }
-    }
-
-    /**
-     * Handle exit button onClick (only in hud-screen).
-     */
-    public void exitButtonClicked()
-    {
-        Log("EXIT BUTTON CLICKED");
-    }
-
-    /**
-     * Update ammo label (only in hud-screen).
-     *
-     * @param currentAmmo amount of currently owned ammo
-     * @param maxAmmo max amount of ammo
-     */
-    public void updateAmmo(int currentAmmo, int maxAmmo)
-    {
-        Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
-        if (ammoLabel != null)
-        {
-            ammoLabel.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + " / " + maxAmmo);
-        }
-    }
-
-    /**
-     * Update timer label (only in hud-screen).
-     *
-     * @param timeLeft time left in seconds
-     */
-    public void updateTimer(long timeLeft)
-    {
-        Element timerLabel = _niftyInstance.getCurrentScreen().findElementById("text_timer");
-        if (timerLabel != null)
-        {
-            int minutes = (int) (timeLeft / 60);
-            int seconds = (int) (timeLeft - 60 * minutes);
-            timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
         }
     }
 
