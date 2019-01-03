@@ -83,9 +83,8 @@ public class GUIAppState extends BaseAppState implements ScreenController
      */
     public void exitButtonClicked()
     {
-
-        Log("EXIT BUTTON CLICKED, ANIMATE");
-
+        detachGameStates();
+        _application.stop();
     }
 
     /**
