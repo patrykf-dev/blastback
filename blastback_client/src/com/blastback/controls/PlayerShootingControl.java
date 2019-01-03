@@ -11,10 +11,14 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
+
 public class PlayerShootingControl extends AbstractControl
 {
     public final BlastbackEvent<ShootEventArgs> onShootEvent = new BlastbackEvent<>();
     public final BlastbackEvent<BulletControl> onBulletCreated = new BlastbackEvent<>();
+   
+    private boolean _firing;
+    private float _counter;
     
     private CharacterControl _charControl;
     private WeaponControl _weaponControl;
@@ -43,6 +47,30 @@ public class PlayerShootingControl extends AbstractControl
     @Override
     protected void controlUpdate(float tpf)
     {
+        
+        
+        if(_firing)
+        {
+            
+            
+            if(_counter>_weaponControl.getCurrentWeapon().getBulletCooldown())
+            {
+                onShoot();
+                _counter %= _weaponControl.getCurrentWeapon().getBulletCooldown();
+                
+            }
+            _counter += tpf*1000;
+
+        }
+        if(!_firing)
+        {
+            if(_counter<_weaponControl.getCurrentWeapon().getBulletCooldown())
+            {
+                _counter += tpf*1000;
+            }
+            
+           // _counter = 0;
+        }
     }
 
     @Override
@@ -52,10 +80,14 @@ public class PlayerShootingControl extends AbstractControl
     
     public void shoot(boolean keyPressed)
     {
-        if(keyPressed)
-        {
-            onShoot();
-        }
+        _firing = keyPressed;                
+//        if(keyPressed)
+//        {
+//            
+//           // onShoot();
+//            
+//        }
+        
     }
     
     private void onShoot()

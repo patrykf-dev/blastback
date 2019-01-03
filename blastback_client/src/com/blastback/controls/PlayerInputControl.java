@@ -79,7 +79,7 @@ public class PlayerInputControl extends AbstractControl
                     _movementControl.setDown(keyPressed);
                     
                 }
-                if (name.equals("Shoot") && keyPressed)
+                if (name.equals("Shoot"))
                 {
                     _shootingControl.shoot(keyPressed);
                 }

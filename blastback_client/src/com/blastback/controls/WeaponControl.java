@@ -17,6 +17,7 @@ import java.util.HashMap;
  */
 public class WeaponControl extends AbstractControl
 {
+    
     private WeaponInfo _currentWeapon;
     private HashMap<Integer,WeaponInfo> _weapons;
     
@@ -34,8 +35,7 @@ public class WeaponControl extends AbstractControl
     public void ChangeWeapon(int weaponNumber)
     {
      
-        System.out.println("siema");
-        System.out.println(weaponNumber);
+      
         _currentWeapon = _weapons.get(weaponNumber);
         
     }
@@ -43,15 +43,16 @@ public class WeaponControl extends AbstractControl
     private void InitWeapons()
     {
         _weapons = new HashMap<>();
-        _weapons.put(1, new WeaponInfo(20, 20));
-        _weapons.put(2, new WeaponInfo(100000, 0.1f));
-        _weapons.put(3, new WeaponInfo(10,1000));
+        _weapons.put(1, new WeaponInfo(20, 20, 200));
+        _weapons.put(2, new WeaponInfo(100000, 0.1f,1000));
+        _weapons.put(3, new WeaponInfo(10,100,50));
         
     }
     
     @Override
     protected void controlUpdate(float tpf)
     {
+        
     }
 
     @Override

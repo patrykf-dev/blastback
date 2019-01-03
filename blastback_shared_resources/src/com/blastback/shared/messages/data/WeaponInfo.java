@@ -14,6 +14,7 @@ public class WeaponInfo
         private float _damage;
         private float _speed;
         private float _ammoCapacity;
+        private float _bulletCooldown; //in ms
         private float _reloadTime; // in miliseconds       
         
         public float getDamage()
@@ -36,17 +37,22 @@ public class WeaponInfo
             return _reloadTime;
         }
         
+        public float getBulletCooldown()
+        {
+            return _bulletCooldown;
+        }
+        
         public WeaponInfo()
         {
             _damage = 20;
             _speed = 20;
         }
         
-        public WeaponInfo(float dmg, float speed)
+        public WeaponInfo(float dmg, float speed, float bulletFrequency)
         {
             _damage =dmg;
             _speed = speed;
-            
+            _bulletCooldown = bulletFrequency;
         }
         
         public WeaponInfo(float dmg,float speed,float ammoCap,float reloadTime)
