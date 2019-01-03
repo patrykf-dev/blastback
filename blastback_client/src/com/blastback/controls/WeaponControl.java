@@ -44,8 +44,8 @@ public class WeaponControl extends AbstractControl
     {
         _weapons = new HashMap<>();
         _weapons.put(1, new WeaponInfo(20, 20, 200));
-        _weapons.put(2, new WeaponInfo(100000, 0.1f,1000));
-        _weapons.put(3, new WeaponInfo(10,100,50));
+        _weapons.put(2, new WeaponInfo(100, 0.1f,1000));
+        _weapons.put(3, new WeaponInfo(10, 20, 100));
         
     }
     

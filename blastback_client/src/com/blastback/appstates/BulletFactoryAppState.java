@@ -64,7 +64,7 @@ public class BulletFactoryAppState extends BaseAppState
         space.add(bulletControl);
         space.addCollisionListener(bulletControl);
         bulletControl.setGravity(Vector3f.ZERO);
-        bulletControl.setCcdMotionThreshold(0.2f);
+        bulletControl.setCcdMotionThreshold(0.02f);
         bulletControl.setCcdSweptSphereRadius(0.12f);
         
         return bulletControl;
