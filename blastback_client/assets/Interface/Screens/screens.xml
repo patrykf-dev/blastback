@@ -39,65 +39,8 @@
             </panel>
         </layer>
         
-        <layer id="layer_scoreboard" childLayout="vertical" visibleToMouse="false" visible="false">
-            <panel id="panel_sep3" height="30%" width="100%" align="center" backgroundColor="#0000"/>
-            <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">
-                
-                <panel id="panel_pl1" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                    <text id="text_pl1_name" text="yogowafel" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl1_kills" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl1_deaths" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl2" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                    <text id="text_pl2_name" text="MadDev" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl2_kills" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl2_deaths" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl3" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                    <text id="text_pl3_name" text="Artix1500" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl3_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl3_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl4" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                    <text id="text_pl4_name" text="Elusor" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl4_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl4_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl5" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                    <text id="text_pl5_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl5_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl5_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl6" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                    <text id="text_pl6_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl6_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl6_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl7" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                    <text id="text_pl7_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl7_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl7_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl8" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                    <text id="text_pl8_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl8_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl8_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl9" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                    <text id="text_pl9_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl9_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl9_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                <panel id="panel_pl10" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                    <text id="text_pl10_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                    <text id="text_pl10_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                    <text id="text_pl10_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                </panel>
-                
-            </panel>
-            <panel id="panel_sep4" height="30%" width="100%" align="center" backgroundColor="#0000"/>
-        </layer>
     </screen>
+
     
     
     
@@ -163,28 +106,74 @@
                     
                     <panel id="panel_message" height="100%" width="30%" align="center" childLayout="center">
                         <text id="text_message" text="" font="Interface/Fonts/BetterArial.fnt" width="100%" height="33%"/>
-                        <onCustom customKey="fadeIn" name="fade" start="#0" end="#f" />
-                        <onCustom customKey="fadeOut" name="fade" start="#f" end="#0" neverStopRendering="true" />
                     </panel>
-                    
-                    
                 </panel>
-                
-            </panel>
+            </panel>            
             
-                
-                
-            <panel id="panel_sep2" height="10%" width="100%" align="center"/>
-            
-            
-            <panel id="panel_right" height="100%" width="35%" align="center" childLayout="center">
+            <panel id="panel_right" height="100%" width="35%" childLayout="center">
                 <image filename="Interface/Images/blastback_fighter.png" height="100%" width="100%"/>
             </panel>
+            
         </layer>
-        
     </screen>
         
-    <popup id="popup_wait" childLayout="center" backgroundColor="#000000">
-        <text id="text_wait_msg" text="Connecting..." font="Interface/Fonts/BetterArial.fnt" width="100%" height="100%"/>
+            
+    <popup id="popup_scoreboard" childLayout="vertical" visibleToMouse="false" visible="false">
+        <panel id="panel_sep3" height="30%" width="100%" align="center" backgroundColor="#0000"/>
+        <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">
+                
+            <panel id="panel_pl1" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
+                <text id="text_pl1_name" text="yogowafel" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl1_kills" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl1_deaths" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl2" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
+                <text id="text_pl2_name" text="MadDev" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl2_kills" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl2_deaths" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl3" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
+                <text id="text_pl3_name" text="Artix1500" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl3_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl3_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl4" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
+                <text id="text_pl4_name" text="Elusor" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl4_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl4_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl5" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
+                <text id="text_pl5_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl5_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl5_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl6" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
+                <text id="text_pl6_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl6_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl6_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl7" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
+                <text id="text_pl7_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl7_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl7_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl8" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
+                <text id="text_pl8_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl8_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl8_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl9" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
+                <text id="text_pl9_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl9_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl9_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+            <panel id="panel_pl10" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
+                <text id="text_pl10_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl10_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl10_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+            </panel>
+                
+        </panel>
+        <panel id="panel_sep4" height="30%" width="100%" align="center" backgroundColor="#0000"/>
     </popup>
 </nifty>

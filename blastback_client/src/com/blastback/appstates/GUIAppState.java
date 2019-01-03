@@ -10,6 +10,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
+import de.lessvoid.nifty.render.batch.BatchRenderConfiguration;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.IOException;
@@ -38,10 +39,23 @@ public class GUIAppState extends BaseAppState implements ScreenController
     protected void initialize(Application app)
     {
         _application = (GameClient) app;
+        
+        
+        BatchRenderConfiguration batchConfig = new BatchRenderConfiguration();
+        batchConfig.atlasHeight = 2048;
+        batchConfig.atlasWidth = 2048;
+        batchConfig.fillRemovedImagesInAtlas = false;
+        batchConfig.disposeImagesBetweenScreens = false;
+        batchConfig.useHighQualityTextures = true;
+        
+        
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
-                app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
+                app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort(), batchConfig);
         _niftyInstance = niftyDisplay.getNifty();
         _niftyInstance.fromXml("Interface/Screens/screens.xml", "start-screen", this);
+        
+        
+
 
         app.getGuiViewPort().addProcessor(niftyDisplay);
 
