@@ -139,7 +139,10 @@ public class InputManagerAppState extends BaseAppState
         _inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         _inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         _inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-
+        _inputManager.addMapping("1", new KeyTrigger(KeyInput.KEY_1));
+        _inputManager.addMapping("2", new KeyTrigger(KeyInput.KEY_2));
+        _inputManager.addMapping("3", new KeyTrigger(KeyInput.KEY_3));
+       
         _inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
                 new MouseAxisTrigger(MouseInput.AXIS_X, false),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true),
@@ -159,7 +162,7 @@ public class InputManagerAppState extends BaseAppState
             _inputManager.addListener(listener, "MouseMoved");
         } else if (listener instanceof ActionListener)
         {
-            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot");
+            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot","1","2","3");
         }
     }
 

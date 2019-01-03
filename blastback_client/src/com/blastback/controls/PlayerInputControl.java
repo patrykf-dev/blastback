@@ -77,10 +77,23 @@ public class PlayerInputControl extends AbstractControl
                 if (name.equals("Down"))
                 {
                     _movementControl.setDown(keyPressed);
+                    
                 }
                 if (name.equals("Shoot") && keyPressed)
                 {
                     _shootingControl.shoot(keyPressed);
+                }
+                if (name.equals("1") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(1);
+                }
+                if (name.equals("2") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(2);
+                }
+                if (name.equals("3") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(3);
                 }
 
             }

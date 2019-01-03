@@ -23,7 +23,7 @@ public class WeaponControl extends AbstractControl
     public WeaponControl()
     {
         InitWeapons();
-        _currentWeapon = _weapons.get(2);
+        _currentWeapon = _weapons.get(1);
     }    
 
     public WeaponInfo getCurrentWeapon()
@@ -33,10 +33,11 @@ public class WeaponControl extends AbstractControl
     
     public void ChangeWeapon(int weaponNumber)
     {
-        _currentWeapon = _weapons.get(2);
-        //WeaponInfo tmp = _currentWeapon;
-        //_currentWeapon = _weapons.get(weaponNumber);
-        //if(_currentWeapon == null) _currentWeapon = tmp;
+     
+        System.out.println("siema");
+        System.out.println(weaponNumber);
+        _currentWeapon = _weapons.get(weaponNumber);
+        
     }
     
     private void InitWeapons()
