@@ -26,6 +26,9 @@ import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -163,9 +166,38 @@ public class PlayerAppState extends BaseAppState
     private void respawnPlayer()
     {
         _healthControl.resetHealth();
-
-        _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
+        
+        Random generator = new Random(); 
+        int i = generator.nextInt(4);
+        Vector3f playerPosition = _charControl.getPhysicsLocation();
+        Vector3f temp = new Vector3f(0, 2.2f, 0);
+        
+        switch (i) {
+            case 0:
+                temp = new Vector3f(10f, 2.2f, 20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 1:
+                temp = new Vector3f(8f, 2.2f, -20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 2:
+                temp = new Vector3f(-8f, 2.2f, -20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 3:
+                temp = new Vector3f(-8f, 2.2f, 20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            default:
+                break;
+        }
+        _charControl.setPhysicsLocation(temp);
+       
         _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
     }
-
+    private void Log(String msg)
+    {
+        Logger.getLogger(GameClient.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
+    }
 }
