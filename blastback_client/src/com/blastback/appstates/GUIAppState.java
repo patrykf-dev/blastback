@@ -14,6 +14,8 @@ import de.lessvoid.nifty.render.batch.BatchRenderConfiguration;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +23,7 @@ import java.util.logging.Logger;
 
 public class GUIAppState extends BaseAppState implements ScreenController
 {
+
     private Nifty _niftyInstance;
     Element _scoreboardElement;
     private List<BaseAppState> _gameStates;
@@ -58,15 +61,16 @@ public class GUIAppState extends BaseAppState implements ScreenController
         _gameStates.add(new InputManagerAppState());
         _gameStates.add(new MapAppState());
         _gameStates.add(new PlayerAppState());
+        _gameStates.add(new BulletFactoryAppState());
         _gameStates.add(new TopDownCameraAppState());
     }
 
     /**
      * Handle join button onClick (only in hud-screen).
      */
-    public void joinButtonClicked() throws InterruptedException
+    public void joinButtonClicked()
     {
-        boolean canConnect = initFakeConnection();
+        boolean canConnect = hostAvailabilityCheck();
         if (canConnect)
         {
             attachGameStates();
@@ -145,35 +149,51 @@ public class GUIAppState extends BaseAppState implements ScreenController
     }
 
     /**
-     * It is a very bad way of verifying user's ip/port combination. I wan´t
-     * able to check that while attaching the state. This is the only workaround
-     * I have found and I am not proud of it.
+     * It is a way of verifying user's ip/port combination. I wasn´t able to
+     * check that while attaching the state. This is the only workaround I have
+     * found and I am not proud of it.
      *
      * @return value indicating whether it is possible to connect to given port
      */
-    private boolean initFakeConnection()
+    public boolean hostAvailabilityCheck()
     {
+        boolean available = true;
+        Socket s;
         try
         {
-            Client _clientInstance = Network.connectToServer(getTextIp(), getTextPort());
-            _clientInstance.start();
-            _clientInstance.close();
-        } catch (IOException ex)
+            s = new Socket(getTextIp(), getTextPort());
+            if (s.isConnected())
+            {
+                s.close();
+            }
+        } catch (UnknownHostException e)
         {
-            Log("initFakeConnection failed");
-            ex.printStackTrace();
-            return false;
+            // unknown host 
+            available = false;
+        } catch (IOException e)
+        {
+            // io exception, service probably not running 
+            available = false;
+        } catch (NullPointerException e)
+        {
+            available = false;
+        } finally
+        {
+            s = null;
         }
-        return true;
+
+        return available;
     }
 
-    private void attachGameStates() throws InterruptedException
+    private void attachGameStates()
     {
         _gameStates.add(new NetworkAppState(getTextIp(), getTextPort()));
+        _gameStates.add(new SimulationAppState());
         for (BaseAppState state : _gameStates)
         {
             _application.getStateManager().attach(state);
         }
+
     }
 
     private void detachGameStates()
