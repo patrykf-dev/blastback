@@ -17,6 +17,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -34,7 +35,14 @@ public class InputManagerAppState extends BaseAppState
     private InputManager _inputManager;
     private Camera _cam;
 
+    /**
+     * Cursor position in OpenGL-like coordinates ((-1,-1) is bottom-left, (1,1) is top-right).
+     */
     public static Vector2f cursorPosition = new Vector2f(0.0f, 0.0f);
+    
+    /**
+     * Direction determined by cursor position (used for raycasting).
+     */
     public static Vector3f cursorDirection = new Vector3f(0.0f, 0.0f, 0.0f);
 
     private final List<InputListener> _listeners;
@@ -84,9 +92,14 @@ public class InputManagerAppState extends BaseAppState
     @Override
     public void update(float tpf)
     {
-        cursorPosition = _inputManager.getCursorPosition().clone();
-        cursorDirection = _cam.getWorldCoordinates(cursorPosition, 0f);
-        cursorDirection.subtractLocal(_cam.getWorldCoordinates(cursorPosition, 1f));
+        Vector2f pos = _inputManager.getCursorPosition().clone();
+        Vector2f display = new Vector2f(_cam.getWidth() / 2.0f, _cam.getHeight() / 2.0f);
+        pos.subtractLocal(display);
+        pos.x /= display.x;
+        pos.y /= display.y;
+        cursorPosition = pos;
+        cursorDirection = _cam.getWorldCoordinates(_inputManager.getCursorPosition(), 0f);
+        cursorDirection.subtractLocal(_cam.getWorldCoordinates(_inputManager.getCursorPosition(), 1f));
         cursorDirection.normalizeLocal();
     }
 
@@ -138,11 +151,15 @@ public class InputManagerAppState extends BaseAppState
         _inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         _inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         _inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-
+        _inputManager.addMapping("1", new KeyTrigger(KeyInput.KEY_1));
+        _inputManager.addMapping("2", new KeyTrigger(KeyInput.KEY_2));
+        _inputManager.addMapping("3", new KeyTrigger(KeyInput.KEY_3));
+       
         _inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
                 new MouseAxisTrigger(MouseInput.AXIS_X, false),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+        _inputManager.addMapping("Shoot", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
     }
 
     private void registerListener(RawInputListener listener)
@@ -157,7 +174,7 @@ public class InputManagerAppState extends BaseAppState
             _inputManager.addListener(listener, "MouseMoved");
         } else if (listener instanceof ActionListener)
         {
-            _inputManager.addListener(listener, "Right", "Left", "Up", "Down");
+            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot","1","2","3");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.blastback;
 
+import com.blastback.appstates.BulletFactoryAppState;
 import com.blastback.appstates.InputManagerAppState;
 import com.blastback.appstates.MapAppState;
 import com.blastback.appstates.NetworkAppState;

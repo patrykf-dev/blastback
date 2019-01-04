@@ -32,7 +32,7 @@ public class NetworkAppState extends BaseAppState
     private final String _ip;
     private boolean _connected;
 
-    private List<MessageListener> _messageListeners;
+    private final List<MessageListener> _messageListeners;
 
     public NetworkAppState(String ip, int port)
     {

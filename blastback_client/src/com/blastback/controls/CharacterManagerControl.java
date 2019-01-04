@@ -10,7 +10,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
@@ -29,6 +28,7 @@ public class CharacterManagerControl extends AbstractControl
 {
     private int _id;
     private RigidBodyControl _rbControl;
+    private CharacterHealthControl _healthControl;
     
     //TODO: INTERPOLATION DATA
     private final Vector3f _targetPosition = new Vector3f();
@@ -50,6 +50,7 @@ public class CharacterManagerControl extends AbstractControl
     {
         super.setSpatial(spatial);
         _rbControl = spatial.getControl(RigidBodyControl.class);
+        _healthControl = spatial.getControl(CharacterHealthControl.class);
     }
 
     @Override
@@ -159,6 +160,7 @@ public class CharacterManagerControl extends AbstractControl
 
         // Add controls to spatials
         character.addControl(rbControl);
+        character.addControl(new CharacterHealthControl());
 
         CharacterManagerControl manager = new CharacterManagerControl();
         character.addControl(manager);

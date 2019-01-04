@@ -6,9 +6,16 @@
 package com.blastback.appstates;
 
 import com.blastback.GameClient;
+import com.blastback.controls.CharacterHealthControl;
 import com.blastback.controls.PlayerInputControl;
 import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
+import com.blastback.controls.PlayerShootingControl;
+import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.PlayerHitMessage;
+import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.observer.BlastbackEventArgs;
+import com.blastback.shared.observer.BlastbackEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
@@ -16,7 +23,12 @@ import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
+import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +44,11 @@ public class PlayerAppState extends BaseAppState
     private Spatial _player;
     private PlayerInputControl _inputControl;
     private CharacterControl _charControl;
+    private CharacterHealthControl _healthControl;
     private PlayerNetworkPresenceControl _networkPresenceControl;
+    
+    private ClientListener _listener;
+    private BlastbackEventListener<BlastbackEventArgs> _deathListener;
 
     @Override
     protected void initialize(Application app)
@@ -42,6 +58,7 @@ public class PlayerAppState extends BaseAppState
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _networkAppState = _app.getStateManager().getState(NetworkAppState.class);
 
+        initListeners();
         initPlayer();
     }
 
@@ -62,6 +79,8 @@ public class PlayerAppState extends BaseAppState
         {
             _networkPresenceControl.setEnabled(true);
         }
+        
+        _networkAppState.addListener(_listener);
     }
 
     @Override
@@ -78,6 +97,8 @@ public class PlayerAppState extends BaseAppState
         {
             _networkPresenceControl.setEnabled(false);
         }
+        
+        _networkAppState.removeListener(_listener);
     }
 
     @Override
@@ -92,22 +113,91 @@ public class PlayerAppState extends BaseAppState
 
         CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
         _charControl = new CharacterControl(shape, 0.1f);
-        _charControl.setGravity(new Vector3f(0f, -1f, 0f));
+        _charControl.setGravity(new Vector3f(0f, -10f, 0f));
 
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
+        _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
+        _healthControl = new CharacterHealthControl();
+        _player.addControl(_healthControl);
+        _healthControl.onDeathEvent.addListener(_deathListener);
         
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);
+        _networkPresenceControl.setEnabled(true);
         
         _inputControl = new PlayerInputControl();
         _player.addControl(_inputControl);
+    }
+    
+    private void initListeners()
+    {
+        _listener = new ClientListener()
+        {
+            @Override
+            public void messageReceived(Client source, Message message)
+            {
+                if(message instanceof PlayerHitMessage)
+                {
+                    PlayerHitMessage msg = (PlayerHitMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    _healthControl.takeDamage(data.getDamage());
+                }
+            }
+            
+        };
+        
+        _deathListener = new BlastbackEventListener<BlastbackEventArgs>()
+        {
+            @Override
+            public void invoke(BlastbackEventArgs e)
+            {
+                respawnPlayer();
+            }
+        };
     }
 
     public Vector3f getPlayerPosition()
     {
         return _charControl.getPhysicsLocation().clone();
     }
-
+    
+    private void respawnPlayer()
+    {
+        _healthControl.resetHealth();
+        
+        Random generator = new Random(); 
+        int i = generator.nextInt(4);
+        Vector3f playerPosition = _charControl.getPhysicsLocation();
+        Vector3f temp = new Vector3f(0, 2.2f, 0);
+        
+        switch (i) {
+            case 0:
+                temp = new Vector3f(10f, 2.2f, 20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 1:
+                temp = new Vector3f(8f, 2.2f, -20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 2:
+                temp = new Vector3f(-8f, 2.2f, -20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            case 3:
+                temp = new Vector3f(-8f, 2.2f, 20f);
+                if(temp.distance(playerPosition) > 4f)
+                    break; 
+            default:
+                break;
+        }
+        _charControl.setPhysicsLocation(temp);
+       
+        _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
+    }
+    private void Log(String msg)
+    {
+        Logger.getLogger(GameClient.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
+    }
 }

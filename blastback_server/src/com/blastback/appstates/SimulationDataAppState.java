@@ -7,9 +7,12 @@ package com.blastback.appstates;
 
 import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
+import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
+import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
+import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.blastback.shared.messages.data.SimulationData;
@@ -18,6 +21,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
+import com.jme3.network.Filters;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.Server;
@@ -137,6 +141,8 @@ public class SimulationDataAppState extends BaseAppState{
             @Override
             public void messageReceived(HostedConnection source, Message message) 
             {
+                Server server = _ServerNetworkAppState.getServer();
+                
                 if(message instanceof PlayerMovedMessage)
                 {
                     PlayerStateInfo playerUpdate = simData.find(source.getId());
@@ -157,6 +163,20 @@ public class SimulationDataAppState extends BaseAppState{
                     }
                     
                     //System.out.println("Server received '" + coordinates.getCoordinates() + "' from client #" + source.getId());
+                }
+                else if (message instanceof PlayerShotMessage)
+                {
+                    server.broadcast(Filters.notEqualTo(source), message);
+                }
+                else if (message instanceof PlayerHitMessage)
+                {
+                    PlayerHitMessage msg = (PlayerHitMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    HostedConnection conn = server.getConnection(data.getTargetId());
+                    if(conn != null)
+                    {
+                        conn.send(message);
+                    }
                 }
             }
             

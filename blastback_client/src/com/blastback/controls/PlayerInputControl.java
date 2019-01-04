@@ -25,6 +25,7 @@ public class PlayerInputControl extends AbstractControl
     private ActionListener _keyboardListener;
     private AnalogListener _mouseListener;
     private PlayerMovementControl _movementControl;
+    private PlayerShootingControl _shootingControl;
 
     public PlayerInputControl()
     {
@@ -38,6 +39,7 @@ public class PlayerInputControl extends AbstractControl
         if (spatial != null)
         {
             _movementControl = spatial.getControl(PlayerMovementControl.class);
+            _shootingControl = spatial.getControl(PlayerShootingControl.class);
         }
     }
 
@@ -66,7 +68,6 @@ public class PlayerInputControl extends AbstractControl
                 }
                 if (name.equals("Right"))
                 {
-
                     _movementControl.setRight(keyPressed);
                 }
                 if (name.equals("Up"))
@@ -76,6 +77,23 @@ public class PlayerInputControl extends AbstractControl
                 if (name.equals("Down"))
                 {
                     _movementControl.setDown(keyPressed);
+                    
+                }
+                if (name.equals("Shoot"))
+                {
+                    _shootingControl.shoot(keyPressed);
+                }
+                if (name.equals("1") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(1);
+                }
+                if (name.equals("2") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(2);
+                }
+                if (name.equals("3") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().ChangeWeapon(3);
                 }
 
             }
@@ -88,7 +106,6 @@ public class PlayerInputControl extends AbstractControl
             {
                 if (name.equals("MouseMoved"))
                 {
-                    Vector2f cursor2d = InputManagerAppState.cursorPosition.clone();
                     Vector3f cursor3d = InputManagerAppState.cursorDirection.clone();
                     cursor3d.setY(0.0f);
                     _movementControl.setRotation(cursor3d);

@@ -1,9 +1,10 @@
-Material MyMaterial : Common/MatDefs/Misc/Unshaded.j3md {
+Material MyMaterial : Common/MatDefs/Light/Lighting.j3md {
     MaterialParameters {
         BackfaceShadows : true
-        PointSize : 1.0
-        Color : 1.0 1.0 1.0 1.0
-        ColorMap : Repeat Textures/texture_brick.png
+        DiffuseMap : Textures/texture_brick.png
+        Specular : 1.0 1.0 1.0 1.0
+        Diffuse : 1.0 1.0 1.0 1.0
+        Ambient : 1.0 1.0 1.0 1.0
     }
     AdditionalRenderState {
       PointSprite On
