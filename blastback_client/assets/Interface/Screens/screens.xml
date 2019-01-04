@@ -118,7 +118,7 @@
     </screen>
         
             
-    <popup id="popup_scoreboard" childLayout="vertical" visibleToMouse="false" visible="false">
+    <popup id="popup_scoreboard" childLayout="vertical" visibleToMouse="false">
         <panel id="panel_sep3" height="30%" width="100%" align="center" backgroundColor="#0000"/>
         <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">
                 

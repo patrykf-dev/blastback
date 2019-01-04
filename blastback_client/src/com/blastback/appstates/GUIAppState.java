@@ -23,6 +23,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
 {
 
     private Nifty _niftyInstance;
+    Element _scoreboardElement;
     private List<BaseAppState> _gameStates;
     private GameClient _application;
 
@@ -39,23 +40,18 @@ public class GUIAppState extends BaseAppState implements ScreenController
     protected void initialize(Application app)
     {
         _application = (GameClient) app;
-        
-        
+
         BatchRenderConfiguration batchConfig = new BatchRenderConfiguration();
         batchConfig.atlasHeight = 2048;
         batchConfig.atlasWidth = 2048;
         batchConfig.fillRemovedImagesInAtlas = false;
         batchConfig.disposeImagesBetweenScreens = false;
         batchConfig.useHighQualityTextures = true;
-        
-        
+
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
                 app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort(), batchConfig);
         _niftyInstance = niftyDisplay.getNifty();
         _niftyInstance.fromXml("Interface/Screens/screens.xml", "start-screen", this);
-        
-        
-
 
         app.getGuiViewPort().addProcessor(niftyDisplay);
 
@@ -79,6 +75,23 @@ public class GUIAppState extends BaseAppState implements ScreenController
         } else
         {
             showMessage("Cannot connect!");
+        }
+    }
+
+    public void displayScoreboard(boolean value)
+    {
+        if (_scoreboardElement == null)
+        {
+            _scoreboardElement = _niftyInstance.createPopup("popup_scoreboard");
+        }
+
+        if (value)
+        {
+            _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _scoreboardElement.getId(), null);
+        } else
+        {
+            _niftyInstance.closePopup(_scoreboardElement.getId());
+
         }
     }
 
