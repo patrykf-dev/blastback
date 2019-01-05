@@ -34,6 +34,7 @@ public class CharacterManagerControl extends AbstractControl
     private final Vector3f _targetPosition = new Vector3f();
     private final Quaternion _targetRotation = new Quaternion();
     private static float _lerpFactor = 0.05f;
+    private static float _snapThreshold = 5f;
     
     public CharacterManagerControl(int id)
     {
@@ -56,7 +57,15 @@ public class CharacterManagerControl extends AbstractControl
     @Override
     protected void controlUpdate(float tpf)
     {
-        Vector3f nextPos = FastMath.interpolateLinear(_lerpFactor, spatial.getLocalTranslation(), _targetPosition);
+        Vector3f nextPos;
+        if(spatial.getLocalTranslation().subtract(_targetPosition).length() < _snapThreshold)
+        {
+            nextPos = FastMath.interpolateLinear(_lerpFactor, spatial.getLocalTranslation(), _targetPosition);
+        }
+        else
+        {
+            nextPos = _targetPosition;
+        }
         Quaternion nextRot = new Quaternion().slerp(spatial.getLocalRotation(), _targetRotation, _lerpFactor);
         setPosition(nextPos);
         setRotation(nextRot);
