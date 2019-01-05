@@ -53,7 +53,7 @@ public class PlayerShootingControl extends AbstractControl
         {
             
             
-            if(_counter>_weaponControl.getCurrentWeapon().getBulletCooldown())
+            if(_counter>_weaponControl.getCurrentWeapon().getBulletCooldown()&&_weaponControl.getCurrentWeapon().Shoot(true))
             {
                 onShoot();
                 _counter %= _weaponControl.getCurrentWeapon().getBulletCooldown();
@@ -64,6 +64,7 @@ public class PlayerShootingControl extends AbstractControl
         }
         if(!_firing)
         {
+            _weaponControl.getCurrentWeapon().Shoot(false);
             if(_counter<_weaponControl.getCurrentWeapon().getBulletCooldown())
             {
                 _counter += tpf*1000;

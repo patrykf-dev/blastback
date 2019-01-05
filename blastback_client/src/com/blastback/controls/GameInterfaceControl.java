@@ -14,6 +14,7 @@ public class GameInterfaceControl extends AbstractControl
     private Nifty _niftyInstance;
     Element _scoreboardElement;
 
+    
     public GameInterfaceControl( Nifty niftyInstance)
     {
         this._niftyInstance = niftyInstance;
@@ -46,6 +47,8 @@ public class GameInterfaceControl extends AbstractControl
      */
     public void updateAmmo(int currentAmmo, int maxAmmo)
     {
+        //Access Current weapon via Shooting Control
+        
         Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
         if (ammoLabel != null)
         {

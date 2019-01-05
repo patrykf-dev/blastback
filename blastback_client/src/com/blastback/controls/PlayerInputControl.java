@@ -1,6 +1,7 @@
 package com.blastback.controls;
 
 import com.blastback.appstates.InputManagerAppState;
+import com.blastback.shared.messages.data.WeaponInfo;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.Vector3f;
@@ -39,6 +40,9 @@ public class PlayerInputControl extends AbstractControl
     protected void controlUpdate(float tpf)
     {
 
+        WeaponInfo wi = _shootingControl.getWeaponControl().getCurrentWeapon();
+        _gameInterfaceControl.updateAmmo(wi.getCurrentAmmo(), wi.getAmmoCapacity());
+        
     }
 
     @Override
@@ -90,6 +94,10 @@ public class PlayerInputControl extends AbstractControl
                 if (name.equals("3") && keyPressed)
                 {
                     _shootingControl.getWeaponControl().ChangeWeapon(3);
+                }
+                if (name.equals("R") && keyPressed)
+                {
+                    _shootingControl.getWeaponControl().getCurrentWeapon().Reload();
                 }
 
             }
