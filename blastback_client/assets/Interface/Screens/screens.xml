@@ -26,8 +26,8 @@
                    backgroundColor="#0000">
                 
                 <panel id="panel_weapon_type" height="100%" width="20%" backgroundColor="#0000" childLayout="horizontal">
-                    <image filename="Interface/Images/shotgun_thumb.png" width="65%" height="100%"/>
-                    <text id="text_weapon_type" text="Shotgun" font="Interface/Fonts/BetterArial.fnt" width="35%" height="100%"/>
+                    <image id="image_weapon" filename="Interface/Images/pistol_thumb.png" width="65%" height="100%" filter="true"/>
+                    <text id="text_weapon_type" text="Pistol" font="Interface/Fonts/BetterArial.fnt" width="35%" height="100%"/>
                 </panel>
                 
                 <panel id="panel_bottom_sep" height="50%" width="60%" backgroundColor="#0000"/>
@@ -36,7 +36,7 @@
                     <panel id="panel_sep3" width="50%" height="100%"/>
                     <text id="text_ammo" width="20%" height="100%" text="10 / 10" font="Interface/Fonts/BetterArial.fnt" />
                     <panel id="panel_sep4" width="10%" height="100%"/>
-                    <image filename="Interface/Images/ammo_thumb.png" width="20%" height="100%"/>
+                    <image filename="Interface/Images/ammo_thumb.png" width="20%" height="100%" filter="true"/>
                 </panel>
             </panel>
         </layer>
