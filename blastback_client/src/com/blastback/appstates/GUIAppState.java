@@ -25,7 +25,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
 {
 
     private Nifty _niftyInstance;
-    Element _scoreboardElement;
     private List<BaseAppState> _gameStates;
     private GameClient _application;
 
@@ -81,22 +80,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
         }
     }
 
-    public void displayScoreboard(boolean value)
-    {
-        if (_scoreboardElement == null)
-        {
-            _scoreboardElement = _niftyInstance.createPopup("popup_scoreboard");
-        }
-
-        if (value)
-        {
-            _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _scoreboardElement.getId(), null);
-        } else
-        {
-            _niftyInstance.closePopup(_scoreboardElement.getId());
-
-        }
-    }
+    
 
     private void showMessage(String msg)
     {
@@ -117,36 +101,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
         _application.stop();
     }
 
-    /**
-     * Update ammo label (only in hud-screen).
-     *
-     * @param currentAmmo amount of currently owned ammo
-     * @param maxAmmo max amount of ammo
-     */
-    public void updateAmmo(int currentAmmo, int maxAmmo)
-    {
-        Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
-        if (ammoLabel != null)
-        {
-            ammoLabel.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + " / " + maxAmmo);
-        }
-    }
-
-    /**
-     * Update timer label (only in hud-screen).
-     *
-     * @param timeLeft time left in seconds
-     */
-    public void updateTimer(long timeLeft)
-    {
-        Element timerLabel = _niftyInstance.getCurrentScreen().findElementById("text_timer");
-        if (timerLabel != null)
-        {
-            int minutes = (int) (timeLeft / 60);
-            int seconds = (int) (timeLeft - 60 * minutes);
-            timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
-        }
-    }
 
     /**
      * It is a way of verifying user's ip/port combination. I wasn´t able to
@@ -290,4 +244,11 @@ public class GUIAppState extends BaseAppState implements ScreenController
     protected void onDisable()
     {
     }
+
+    public Nifty getNifty()
+    {
+        return _niftyInstance;
+    }
+    
+    
 }

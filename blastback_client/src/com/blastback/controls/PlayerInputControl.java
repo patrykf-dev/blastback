@@ -72,7 +72,7 @@ public class PlayerInputControl extends AbstractControl
                 }
                  if (name.equals("Tab"))
                 {
-                    _gameInterfaceControl.getGui().displayScoreboard(keyPressed);
+                    _gameInterfaceControl.displayScoreboard(keyPressed);
                 }
                 
                 if (name.equals("Shoot"))

@@ -121,7 +121,7 @@ public class PlayerAppState extends BaseAppState
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
-        _player.addControl(new GameInterfaceControl(_guiAppState));
+        _player.addControl(new GameInterfaceControl(_guiAppState.getNifty()));
         _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
         _healthControl = new CharacterHealthControl();
         _player.addControl(_healthControl);
