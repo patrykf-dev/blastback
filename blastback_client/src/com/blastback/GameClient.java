@@ -1,13 +1,6 @@
 package com.blastback;
 
-import com.blastback.appstates.BulletFactoryAppState;
 import com.blastback.appstates.GUIAppState;
-import com.blastback.appstates.InputManagerAppState;
-import com.blastback.appstates.MapAppState;
-import com.blastback.appstates.NetworkAppState;
-import com.blastback.appstates.PlayerAppState;
-import com.blastback.appstates.SimulationAppState;
-import com.blastback.appstates.TopDownCameraAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
@@ -15,12 +8,7 @@ import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.RenderManager;
 
-/**
- * This is the Main Class of your Game. You should only do initialization here.
- * Move your Logic into AppStates or Controls
- *
- * @author normenhansen
- */
+
 public class GameClient extends SimpleApplication
 {
 
@@ -44,6 +32,9 @@ public class GameClient extends SimpleApplication
     {
         //BulletAppState gives UnsatisfiedLinkError when attached in constructor
         stateManager.attach(new BulletAppState());
+
+        setDisplayFps(false);
+        setDisplayStatView(false);
     }
 
     @Override
