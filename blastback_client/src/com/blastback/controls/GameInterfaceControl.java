@@ -52,7 +52,8 @@ public class GameInterfaceControl extends AbstractControl
         Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
         if (ammoLabel != null)
         {
-            ammoLabel.getRenderer(TextRenderer.class).setText("AMMO " + currentAmmo + " / " + maxAmmo);
+            String ammoCount = currentAmmo + " / " + maxAmmo; 
+            ammoLabel.getRenderer(TextRenderer.class).setText(ammoCount);
         }
     }
 
