@@ -1,31 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.blastback.controls;
 
 import com.blastback.appstates.InputManagerAppState;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
-/**
- *
- * @author Eryk
- */
 public class PlayerInputControl extends AbstractControl
 {
-
     private ActionListener _keyboardListener;
     private AnalogListener _mouseListener;
     private PlayerMovementControl _movementControl;
     private PlayerShootingControl _shootingControl;
+    private GameInterfaceControl _gameInterfaceControl;
+
 
     public PlayerInputControl()
     {
@@ -40,6 +31,7 @@ public class PlayerInputControl extends AbstractControl
         {
             _movementControl = spatial.getControl(PlayerMovementControl.class);
             _shootingControl = spatial.getControl(PlayerShootingControl.class);
+            _gameInterfaceControl = spatial.getControl(GameInterfaceControl.class);
         }
     }
 
@@ -77,8 +69,12 @@ public class PlayerInputControl extends AbstractControl
                 if (name.equals("Down"))
                 {
                     _movementControl.setDown(keyPressed);
-                    
                 }
+                 if (name.equals("Tab"))
+                {
+                    _gameInterfaceControl.getGui().displayScoreboard(keyPressed);
+                }
+                
                 if (name.equals("Shoot"))
                 {
                     _shootingControl.shoot(keyPressed);

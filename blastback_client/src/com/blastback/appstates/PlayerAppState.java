@@ -7,6 +7,7 @@ package com.blastback.appstates;
 
 import com.blastback.GameClient;
 import com.blastback.controls.CharacterHealthControl;
+import com.blastback.controls.GameInterfaceControl;
 import com.blastback.controls.PlayerInputControl;
 import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
@@ -40,6 +41,7 @@ public class PlayerAppState extends BaseAppState
     private InputManagerAppState _inputAppState;
     private BulletAppState _bulletAppState;
     private NetworkAppState _networkAppState;
+    private GUIAppState _guiAppState;
 
     private Spatial _player;
     private PlayerInputControl _inputControl;
@@ -57,7 +59,8 @@ public class PlayerAppState extends BaseAppState
         _inputAppState = _app.getStateManager().getState(InputManagerAppState.class);
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _networkAppState = _app.getStateManager().getState(NetworkAppState.class);
-
+        _guiAppState = _app.getStateManager().getState(GUIAppState.class);
+        
         initListeners();
         initPlayer();
     }
@@ -118,6 +121,7 @@ public class PlayerAppState extends BaseAppState
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
+        _player.addControl(new GameInterfaceControl(_guiAppState));
         _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
         _healthControl = new CharacterHealthControl();
         _player.addControl(_healthControl);
