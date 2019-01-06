@@ -69,7 +69,7 @@ public class WeaponInfo
         }
 
         //if eligible to shoot
-        if(_burstCounter>0)
+        if(_reloading == null && _burstCounter > 0)
         {
             
             if(_inMagazine>0)
