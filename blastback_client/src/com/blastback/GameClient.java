@@ -1,5 +1,6 @@
 package com.blastback;
 
+import com.blastback.appstates.BackgroundAudioAppState;
 import com.blastback.appstates.GUIAppState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
@@ -17,7 +18,8 @@ public class GameClient extends SimpleApplication
         super(new StatsAppState(),
                 new AudioListenerState(),
                 new DebugKeysAppState(),
-                new GUIAppState());
+                new GUIAppState(),
+                new BackgroundAudioAppState());
     }
 
     public static void main(String[] args)
