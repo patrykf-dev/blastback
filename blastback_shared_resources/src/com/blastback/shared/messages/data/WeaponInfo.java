@@ -29,6 +29,8 @@ public class WeaponInfo
     
     private Timer _reloading;
     
+    private String _sound;
+    
     public int getDamage()
     {
         return _damage;
@@ -57,6 +59,11 @@ public class WeaponInfo
     public float getBulletCooldown()
     {
         return _bulletCooldown;
+    }
+    
+    public String getSound()
+    {
+        return _sound;
     }
 
     public boolean Shoot(boolean keyPressed)
@@ -125,7 +132,7 @@ public class WeaponInfo
         _bulletCooldown = bulletFrequency;
     }
 
-    public WeaponInfo(int dmg, float speed, float bulletFrequency, int ammoCap, float reloadTime, int burst)
+    public WeaponInfo(int dmg, float speed, float bulletFrequency, int ammoCap, float reloadTime, int burst, String sound)
     {
         _damage = dmg;
         _speed = speed;
@@ -135,6 +142,7 @@ public class WeaponInfo
         _reloadTime = reloadTime;
         _burst = burst;
         _burstCounter = burst;
+        _sound = sound;
     }
 
 }

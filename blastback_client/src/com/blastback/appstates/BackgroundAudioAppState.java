@@ -53,7 +53,7 @@ public class BackgroundAudioAppState extends BaseAppState
     Sound = new AudioNode(_app.getAssetManager(), "Sound/Grzenio.wav", DataType.Stream);
     Sound.setLooping(true);
     Sound.setPositional(false);
-    Sound.setVolume(3);
+    Sound.setVolume(1);
   }
     
 }

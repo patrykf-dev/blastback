@@ -11,6 +11,7 @@ import com.blastback.shared.messages.data.ShootEventArgs;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.GhostControl;
@@ -25,8 +26,10 @@ import com.jme3.scene.Spatial;
  */
 public class BulletFactoryAppState extends BaseAppState
 {
-    private GameClient _app;
+    private static GameClient _app;
     private static AssetManager _assetManager;
+    private static AudioNode Sound;
+
     
 
     @Override
@@ -44,11 +47,13 @@ public class BulletFactoryAppState extends BaseAppState
     @Override
     protected void onEnable()
     {
+         
     }
 
     @Override
     protected void onDisable()
     {
+        
     }
     
     public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, boolean dummy)
@@ -68,7 +73,19 @@ public class BulletFactoryAppState extends BaseAppState
         bulletControl.setCcdMotionThreshold(0.02f);
         bulletControl.setCcdSweptSphereRadius(0.12f);
         
+        ShootSound(eventArgs.getWeaponInfo().getSound());
+        
         return bulletControl;
     }
+    
+    private static void ShootSound(String sound) {
+        Sound = new AudioNode(_assetManager, sound , AudioData.DataType.Stream);
+        Sound.setPositional(false);
+        Sound.setVolume(5);
+        _app.getRootNode().attachChild(Sound);
+        Sound.play();
+        _app.getRootNode().detachChild(Sound);
+    }
+       
     
 }
