@@ -8,6 +8,8 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
+import de.lessvoid.nifty.tools.SizeValue;
+import de.lessvoid.nifty.tools.SizeValueType;
 
 public class GameInterfaceControl extends AbstractControl
 {
@@ -45,13 +47,34 @@ public class GameInterfaceControl extends AbstractControl
      */
     public void updateAmmo(int currentAmmo, int maxAmmo)
     {
-        //Access Current weapon via Shooting Control
-
         Element ammoLabel = _niftyInstance.getCurrentScreen().findElementById("text_ammo");
         if (ammoLabel != null)
         {
             String ammoCount = currentAmmo + " / " + maxAmmo;
             ammoLabel.getRenderer(TextRenderer.class).setText(ammoCount);
+        }
+    }
+
+    /**
+     * Update hp label and red/green panels (only in hud-screen).
+     *
+     * @param currentHp hp in <0,1>
+     */
+    public void updateHealthBar(float currentHp)
+    {
+        Element hpLabel = _niftyInstance.getCurrentScreen().findElementById("text_hp_percentage");
+        Element greenPanel = _niftyInstance.getCurrentScreen().findElementById("panel_health_green");
+        Element containerPanel = _niftyInstance.getCurrentScreen().findElementById("panel_health_bar");
+
+        if (hpLabel != null && greenPanel != null && containerPanel != null)
+        {
+            int containerWidth = containerPanel.getWidth();
+            int greenWidth = (int) (containerWidth * currentHp);            
+            int hpValue = (int) (currentHp * 100);
+            String hpCaption = hpValue + "%";
+            
+            hpLabel.getRenderer(TextRenderer.class).setText(hpCaption);
+            greenPanel.setWidth(greenWidth);
         }
     }
 
@@ -104,7 +127,6 @@ public class GameInterfaceControl extends AbstractControl
                 break;
         }
 
-        
         NiftyImage image = _niftyInstance.getRenderEngine().createImage(_niftyInstance.getCurrentScreen(), imagePath, true);
         weaponImage.getRenderer(ImageRenderer.class).setImage(image);
         weaponLabel.getRenderer(TextRenderer.class).setText(weaponCaption);

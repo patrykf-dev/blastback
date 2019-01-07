@@ -48,6 +48,7 @@ public class PlayerAppState extends BaseAppState
     private CharacterControl _charControl;
     private CharacterHealthControl _healthControl;
     private PlayerNetworkPresenceControl _networkPresenceControl;
+    private GameInterfaceControl _gameInterfaceControl;
     
     private ClientListener _listener;
     private BlastbackEventListener<BlastbackEventArgs> _deathListener;
@@ -121,7 +122,8 @@ public class PlayerAppState extends BaseAppState
         // Add controls to spatials
         _player.addControl(_charControl);
         _player.addControl(new PlayerMovementControl());
-        _player.addControl(new GameInterfaceControl(_guiAppState.getNifty()));
+        _gameInterfaceControl = new GameInterfaceControl(_guiAppState.getNifty());
+        _player.addControl(_gameInterfaceControl);
         _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
         _healthControl = new CharacterHealthControl();
         _player.addControl(_healthControl);
@@ -147,6 +149,7 @@ public class PlayerAppState extends BaseAppState
                     PlayerHitMessage msg = (PlayerHitMessage)message;
                     HitEventArgs data = msg.deserialize();
                     _healthControl.takeDamage(data.getDamage());
+                    _gameInterfaceControl.updateHealthBar(_healthControl.getCurrentHealth());
                 }
             }
             

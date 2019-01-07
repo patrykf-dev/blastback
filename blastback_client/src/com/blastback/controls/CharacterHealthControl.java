@@ -78,4 +78,14 @@ public class CharacterHealthControl extends AbstractControl
     {
         onDeathEvent.notify(BlastbackEventArgs.VOID);
     }
+    
+    /**
+     * Get current health in <0, 1>
+     * @return current health (fraction)
+     */
+    public float getCurrentHealth()
+    {
+        float rc = (float)_currentHealth / (float)_maxHealth;
+        return rc;
+    }
 }
