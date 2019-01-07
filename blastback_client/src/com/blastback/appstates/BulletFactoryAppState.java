@@ -12,6 +12,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
+import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.GhostControl;
@@ -79,11 +80,12 @@ public class BulletFactoryAppState extends BaseAppState
     }
     
     private static void ShootSound(String sound) {
-        Sound = new AudioNode(_assetManager, sound , AudioData.DataType.Stream);
-        Sound.setPositional(false);
+        Sound = new AudioNode(_assetManager, sound , DataType.Buffer);
+        Sound.setPositional(true);
+        Sound.setDirectional(false);
         Sound.setVolume(5);
         _app.getRootNode().attachChild(Sound);
-        Sound.play();
+        Sound.playInstance();
         _app.getRootNode().detachChild(Sound);
     }
        
