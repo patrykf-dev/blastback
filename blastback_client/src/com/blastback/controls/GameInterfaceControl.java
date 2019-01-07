@@ -4,12 +4,11 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
-import de.lessvoid.nifty.tools.SizeValue;
-import de.lessvoid.nifty.tools.SizeValueType;
 
 public class GameInterfaceControl extends AbstractControl
 {
@@ -35,7 +34,29 @@ public class GameInterfaceControl extends AbstractControl
         } else
         {
             _niftyInstance.closePopup(_scoreboardElement.getId());
+        }
+    }
 
+    /**
+     * Add text notifying user, that there was a kill (only in hud-screen).
+     * 
+     * @param killer nick of player who killed
+     * @param killed nick of player who was killed
+     * @param killTime time of kill (in seconds)
+     */
+    public void displayKillEvent(String killer, String killed, int killTime)
+    {
+        ListBox listBox = _niftyInstance.getCurrentScreen().findNiftyControl("listbox_kill_messages", ListBox.class);
+        if (listBox != null)
+        {
+            int maxItems = listBox.getDisplayItemCount();
+            if (listBox.getItems().size() == maxItems)
+            {
+                listBox.removeItemByIndex(4);
+            }
+
+            String killMessage = "[" + formatSeconds(killTime) + "] " + killed + " was slain by " + killer;
+            listBox.insertItem(killMessage, 0);
         }
     }
 
@@ -69,10 +90,10 @@ public class GameInterfaceControl extends AbstractControl
         if (hpLabel != null && greenPanel != null && containerPanel != null)
         {
             int containerWidth = containerPanel.getWidth();
-            int greenWidth = (int) (containerWidth * currentHp);            
+            int greenWidth = (int) (containerWidth * currentHp);
             int hpValue = (int) (currentHp * 100);
             String hpCaption = hpValue + "%";
-            
+
             hpLabel.getRenderer(TextRenderer.class).setText(hpCaption);
             greenPanel.setWidth(greenWidth);
         }
@@ -83,14 +104,12 @@ public class GameInterfaceControl extends AbstractControl
      *
      * @param timeLeft time left in seconds
      */
-    public void updateTimer(long timeLeft)
+    public void updateTimer(int timeLeft)
     {
         Element timerLabel = _niftyInstance.getCurrentScreen().findElementById("text_timer");
         if (timerLabel != null)
         {
-            int minutes = (int) (timeLeft / 60);
-            int seconds = (int) (timeLeft - 60 * minutes);
-            timerLabel.getRenderer(TextRenderer.class).setText("TIMER " + minutes + ":" + seconds);
+            timerLabel.getRenderer(TextRenderer.class).setText(formatSeconds(timeLeft));
         }
     }
 
@@ -130,6 +149,13 @@ public class GameInterfaceControl extends AbstractControl
         NiftyImage image = _niftyInstance.getRenderEngine().createImage(_niftyInstance.getCurrentScreen(), imagePath, true);
         weaponImage.getRenderer(ImageRenderer.class).setImage(image);
         weaponLabel.getRenderer(TextRenderer.class).setText(weaponCaption);
+    }
+
+    private String formatSeconds(int secondsValue)
+    {
+        int minutes = secondsValue / 60;
+        int seconds = secondsValue % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     @Override
