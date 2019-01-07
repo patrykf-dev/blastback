@@ -51,7 +51,7 @@ public class PlayerAppState extends BaseAppState
     private GameInterfaceControl _gameInterfaceControl;
     
     private ClientListener _listener;
-    private BlastbackEventListener<BlastbackEventArgs> _deathListener;
+    private BlastbackEventListener<HitEventArgs> _deathListener;
 
     @Override
     protected void initialize(Application app)
@@ -148,17 +148,17 @@ public class PlayerAppState extends BaseAppState
                 {
                     PlayerHitMessage msg = (PlayerHitMessage)message;
                     HitEventArgs data = msg.deserialize();
-                    _healthControl.takeDamage(data.getDamage());
+                    _healthControl.takeDamage(data);
                     _gameInterfaceControl.updateHealthBar(_healthControl.getCurrentHealth());
                 }
             }
             
         };
         
-        _deathListener = new BlastbackEventListener<BlastbackEventArgs>()
+        _deathListener = new BlastbackEventListener<HitEventArgs>()
         {
             @Override
-            public void invoke(BlastbackEventArgs e)
+            public void invoke(HitEventArgs e)
             {
                 respawnPlayer();
             }

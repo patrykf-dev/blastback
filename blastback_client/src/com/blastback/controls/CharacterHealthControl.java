@@ -1,5 +1,6 @@
 package com.blastback.controls;
 
+import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.observer.BlastbackEvent;
 import com.blastback.shared.observer.BlastbackEventArgs;
 import com.jme3.renderer.RenderManager;
@@ -8,7 +9,7 @@ import com.jme3.scene.control.AbstractControl;
 
 public class CharacterHealthControl extends AbstractControl
 {
-    public BlastbackEvent<BlastbackEventArgs> onDeathEvent = new BlastbackEvent<>();
+    public BlastbackEvent<HitEventArgs> onDeathEvent = new BlastbackEvent<>();
     private final int _maxHealth;
     private int _currentHealth;
     
@@ -46,21 +47,21 @@ public class CharacterHealthControl extends AbstractControl
         if(_currentHealth<=0)
         {
             _currentHealth = 0;
-            onDeath();
+            onDeathSimulated();
         }
     }
     
     /**
      * Method to be used on local player (as a response to PlayerHit message)
-     * @param amount 
+     * @param args
      */
-    public void takeDamage(int amount)
+    public void takeDamage(HitEventArgs args)
     {
-        _currentHealth -= amount;
+        _currentHealth -= args.getDamage();
         if(_currentHealth<=0)
         {
             _currentHealth = 0;
-            onDeath();
+            onDeath(args);
         }
     }
     
@@ -74,10 +75,16 @@ public class CharacterHealthControl extends AbstractControl
         _currentHealth = _maxHealth;
     }
     
-    private void onDeath()
+    private void onDeath(HitEventArgs args)
     {
-        onDeathEvent.notify(BlastbackEventArgs.VOID);
+        onDeathEvent.notify(args);
     }
+    
+    private void onDeathSimulated()
+    {
+        
+    }
+    
     
     /**
      * Get current health in <0, 1>

@@ -7,6 +7,7 @@ package com.blastback.appstates;
 
 import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
+import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
@@ -172,11 +173,19 @@ public class SimulationDataAppState extends BaseAppState{
                 {
                     PlayerHitMessage msg = (PlayerHitMessage)message;
                     HitEventArgs data = msg.deserialize();
+                    data.setShooterId(source.getId());
+                    msg = new PlayerHitMessage(data);
                     HostedConnection conn = server.getConnection(data.getTargetId());
                     if(conn != null)
                     {
-                        conn.send(message);
+                        conn.send(msg);
                     }
+                }
+                else if (message instanceof PlayerDeathMessage)
+                {
+                    PlayerDeathMessage msg = (PlayerDeathMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    Log("Player " + data.getShooterId() + " killed player " + data.getTargetId() + "!");
                 }
             }
             

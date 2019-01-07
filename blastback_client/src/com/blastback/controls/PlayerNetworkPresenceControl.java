@@ -2,6 +2,7 @@ package com.blastback.controls;
 
 import com.blastback.appstates.NetworkAppState;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
@@ -28,6 +29,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     private final NetworkAppState _network;
     private CharacterControl _charControl;
     private PlayerShootingControl _shootingControl;
+    private CharacterHealthControl _healthControl;
     
     private Timer _messageTimer;
     private final int _timerTick = 50;
@@ -35,6 +37,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
     private BlastbackEventListener<ShootEventArgs> _shotListener;
     private BlastbackEventListener<HitEventArgs> _hitListener;
     private BlastbackEventListener<BulletControl> _bulletListener;
+    private BlastbackEventListener<HitEventArgs> _deathListener;
     
     public PlayerNetworkPresenceControl(NetworkAppState networkAppState)
     {
@@ -54,6 +57,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             }
             _shootingControl.onShootEvent.addListener(_shotListener);
             _shootingControl.onBulletCreated.addListener(_bulletListener);
+            _healthControl.onDeathEvent.addListener(_deathListener);
         }
         else
         {
@@ -63,6 +67,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             }
             _shootingControl.onShootEvent.removeListener(_shotListener);
             _shootingControl.onBulletCreated.removeListener(_bulletListener);
+            _healthControl.onDeathEvent.removeListener(_deathListener);
         }
     }
 
@@ -72,6 +77,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         super.setSpatial(spatial);
         _charControl = spatial.getControl(CharacterControl.class);
         _shootingControl = spatial.getControl(PlayerShootingControl.class);
+        _healthControl = spatial.getControl(CharacterHealthControl.class);
         initTimer();
     }
     
@@ -128,6 +134,15 @@ public class PlayerNetworkPresenceControl extends AbstractControl
                 e.onPlayerHitEvent.addListener(_hitListener);
             }
         };
+        
+        _deathListener = new BlastbackEventListener<HitEventArgs>()
+        {
+            @Override
+            public void invoke(HitEventArgs e)
+            {
+                sendDeathMessage(e);
+            }
+        };
     }
 
     private void sendPlayerInfo()
@@ -161,6 +176,16 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         if (client != null && client.isConnected())
         {
             Message m = new PlayerHitMessage(e);
+            client.send(m);
+        }
+    }
+    
+    private void sendDeathMessage(HitEventArgs e)
+    {
+        Client client = _network.getClientInstance();
+        if (client != null && client.isConnected())
+        {
+            Message m = new PlayerDeathMessage(e);
             client.send(m);
         }
     }

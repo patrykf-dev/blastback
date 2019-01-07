@@ -4,6 +4,7 @@ import com.blastback.shared.observer.BlastbackEventArgs;
 
 public class HitEventArgs extends BlastbackEventArgs
 {
+    private int _shooterId = -1;
     private final int _targetId;
     private final int _damage;
 
@@ -21,6 +22,16 @@ public class HitEventArgs extends BlastbackEventArgs
     public int getDamage()
     {
         return _damage;
+    }
+
+    public int getShooterId()
+    {
+        return _shooterId;
+    }
+
+    public void setShooterId(int _shooterId)
+    {
+        this._shooterId = _shooterId;
     }
     
     
