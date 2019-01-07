@@ -58,6 +58,7 @@ public class MapAppState extends BaseAppState
     {
         _map = _app.getAssetManager().loadModel("Scenes/Main.j3o");
         CollisionShape col = CollisionShapeFactory.createMeshShape(_map);
+        //CollisionShape shape = new BoxCollisionShape(new Vector3f(0.5f, 1f, 0.5f));
         _mapRigidBody = new RigidBodyControl(col, 0.0f);
         _map.addControl(_mapRigidBody);
     }

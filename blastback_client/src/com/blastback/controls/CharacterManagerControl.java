@@ -163,7 +163,7 @@ public class CharacterManagerControl extends AbstractControl
     {
         Spatial character = assetManager.loadModel("Models/Player.j3o");
 
-        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
+        CollisionShape shape = new CapsuleCollisionShape(0.5f, 5f, 1);
         RigidBodyControl rbControl = new RigidBodyControl(shape, 1.0f);
         rbControl.setKinematic(true);
 

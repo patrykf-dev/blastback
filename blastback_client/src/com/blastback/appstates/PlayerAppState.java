@@ -115,7 +115,7 @@ public class PlayerAppState extends BaseAppState
     {
         _player = _app.getAssetManager().loadModel("Models/Player.j3o");
 
-        CollisionShape shape = new CapsuleCollisionShape(0.5f, 1f, 1);
+        CollisionShape shape = new CapsuleCollisionShape(0.5f, 5f, 1);
         _charControl = new CharacterControl(shape, 0.1f);
         _charControl.setGravity(new Vector3f(0f, -10f, 0f));
 
@@ -124,7 +124,7 @@ public class PlayerAppState extends BaseAppState
         _player.addControl(new PlayerMovementControl());
         _gameInterfaceControl = new GameInterfaceControl(_guiAppState.getNifty());
         _player.addControl(_gameInterfaceControl);
-        _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0f, -1.5f))); //to adjust
+        _player.addControl(new PlayerShootingControl(new Vector3f(0f,0.0f, -1.85f))); //to adjust
         _healthControl = new CharacterHealthControl();
         _player.addControl(_healthControl);
         _healthControl.onDeathEvent.addListener(_deathListener);

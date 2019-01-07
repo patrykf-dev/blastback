@@ -31,7 +31,9 @@ public class GameClient extends SimpleApplication
     public void simpleInitApp()
     {
         //BulletAppState gives UnsatisfiedLinkError when attached in constructor
-        stateManager.attach(new BulletAppState());
+        BulletAppState appstate = new BulletAppState();
+        stateManager.attach(appstate);
+        appstate.setDebugEnabled(true);
 
         setDisplayFps(false);
         setDisplayStatView(false);
