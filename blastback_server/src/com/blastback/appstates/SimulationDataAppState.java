@@ -186,6 +186,7 @@ public class SimulationDataAppState extends BaseAppState{
                     PlayerDeathMessage msg = (PlayerDeathMessage)message;
                     HitEventArgs data = msg.deserialize();
                     Log("Player " + data.getShooterId() + " killed player " + data.getTargetId() + "!");
+                    server.broadcast(message);
                 }
             }
             

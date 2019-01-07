@@ -9,12 +9,15 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.render.NiftyImage;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GameInterfaceControl extends AbstractControl
 {
-
     private Nifty _niftyInstance;
-    Element _scoreboardElement;
+    private Element _scoreboardElement;
+    
+    private DateTimeFormatter _formatter = DateTimeFormatter.ofPattern("HH:mm");
 
     public GameInterfaceControl(Nifty niftyInstance)
     {
@@ -42,9 +45,8 @@ public class GameInterfaceControl extends AbstractControl
      * 
      * @param killer nick of player who killed
      * @param killed nick of player who was killed
-     * @param killTime time of kill (in seconds)
      */
-    public void displayKillEvent(String killer, String killed, int killTime)
+    public void displayKillEvent(String killer, String killed)
     {
         ListBox listBox = _niftyInstance.getCurrentScreen().findNiftyControl("listbox_kill_messages", ListBox.class);
         if (listBox != null)
@@ -55,7 +57,7 @@ public class GameInterfaceControl extends AbstractControl
                 listBox.removeItemByIndex(4);
             }
 
-            String killMessage = "[" + formatSeconds(killTime) + "] " + killed + " was slain by " + killer;
+            String killMessage = "[" + LocalDateTime.now().format(_formatter) + "] " + killed + " was slain by " + killer;
             listBox.insertItem(killMessage, 0);
         }
     }

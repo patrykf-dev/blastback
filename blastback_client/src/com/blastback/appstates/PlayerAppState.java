@@ -13,6 +13,7 @@ import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
 import com.blastback.controls.PlayerShootingControl;
 import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.observer.BlastbackEventArgs;
@@ -27,6 +28,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +54,8 @@ public class PlayerAppState extends BaseAppState
     
     private ClientListener _listener;
     private BlastbackEventListener<HitEventArgs> _deathListener;
+    
+    private final ArrayList<HitEventArgs> _deathEventsQueue = new ArrayList<>();
 
     @Override
     protected void initialize(Application app)
@@ -106,6 +110,23 @@ public class PlayerAppState extends BaseAppState
     }
 
     @Override
+    public void update(float tpf)
+    {
+        synchronized(_deathEventsQueue)
+        {
+            while(_deathEventsQueue.isEmpty() == false)
+            {
+                String killer = Integer.toString(_deathEventsQueue.get(0).getShooterId());
+                String killed = Integer.toString(_deathEventsQueue.get(0).getTargetId());
+                _gameInterfaceControl.displayKillEvent(killer, killed);
+                _deathEventsQueue.remove(0);
+            }
+        }
+    }
+    
+    
+
+    @Override
     protected void cleanup(Application app)
     {
 
@@ -150,6 +171,15 @@ public class PlayerAppState extends BaseAppState
                     HitEventArgs data = msg.deserialize();
                     _healthControl.takeDamage(data);
                     _gameInterfaceControl.updateHealthBar(_healthControl.getCurrentHealth());
+                }
+                else if(message instanceof PlayerDeathMessage)
+                {
+                    PlayerDeathMessage msg = (PlayerDeathMessage)message;
+                    HitEventArgs data = msg.deserialize();
+                    synchronized(_deathEventsQueue)
+                    {
+                        _deathEventsQueue.add(data);
+                    }
                 }
             }
             

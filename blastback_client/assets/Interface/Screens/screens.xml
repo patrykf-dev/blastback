@@ -27,7 +27,7 @@
                 <panel id="panel_sep2" height="100%" width="10%"/>
                 <panel id="panel_kill_messages" height="100%" width="30%" childLayout="vertical">
                     <panel id="panel_sep3" height="10%" width="100%"/>
-                    <control id="listbox_kill_messages" name="listBox" height="90%" width="98%" vertical="optional" horizontal="optional"
+                    <control id="listbox_kill_messages" name="listBox" height="90%" width="98%" vertical="off" horizontal="off"
                              displayItems="5" selection="Disabled" />
                 </panel>
 
