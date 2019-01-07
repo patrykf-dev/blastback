@@ -50,7 +50,7 @@ public class BackgroundAudioAppState extends BaseAppState
     private void initAudio() 
     {
     /* nature sound - keeps playing in a loop. */
-    Sound = new AudioNode(_app.getAssetManager(), "Sound/Grzenio.wav", DataType.Stream);
+    Sound = new AudioNode(_app.getAssetManager(), "Sound/Background.wav", DataType.Stream);
     Sound.setLooping(true);
     Sound.setPositional(false);
     Sound.setVolume(1);
