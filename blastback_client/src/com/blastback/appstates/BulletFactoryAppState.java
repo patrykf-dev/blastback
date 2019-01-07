@@ -11,6 +11,7 @@ import com.blastback.shared.messages.data.ShootEventArgs;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -50,10 +51,10 @@ public class BulletFactoryAppState extends BaseAppState
     {
     }
     
-    public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, int damage, float speed, boolean dummy)
+    public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, boolean dummy)
     {
         Spatial bullet = _assetManager.loadModel("Models/Bullet.j3o");
-        BulletControl bulletControl = new BulletControl(damage, speed, 0.1f, dummy);
+        BulletControl bulletControl = new BulletControl(eventArgs.getWeaponInfo().getDamage(), eventArgs.getWeaponInfo().getSpeed(), 0.1f, dummy);
         bullet.addControl(bulletControl);
         bulletControl.setPhysicsLocation(eventArgs.getShotPosition());
         bulletControl.setPhysicsRotation(eventArgs.getShotRotation());

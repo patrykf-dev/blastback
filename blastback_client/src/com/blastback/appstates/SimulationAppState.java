@@ -62,7 +62,7 @@ public class SimulationAppState extends BaseAppState
             for(ShootEventArgs e : _pendingBullets)
             {
                 WeaponInfo wi = e.getWeaponInfo();
-                BulletFactoryAppState.createBullet(root, space, e, (int)wi.getDamage(), wi.getSpeed(), true);
+                BulletFactoryAppState.createBullet(root, space, e, true);
             }
             _pendingBullets.clear();
         }

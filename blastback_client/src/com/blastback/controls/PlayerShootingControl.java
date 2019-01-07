@@ -101,8 +101,6 @@ public class PlayerShootingControl extends AbstractControl
                 spatial.getParent(), 
                 _charControl.getPhysicsSpace(),
                 eventArgs, 
-                (int) _weaponControl.getCurrentWeapon().getDamage(),
-                _weaponControl.getCurrentWeapon().getSpeed(), 
                 false);
         
         onBulletCreated.notify(bullet);
