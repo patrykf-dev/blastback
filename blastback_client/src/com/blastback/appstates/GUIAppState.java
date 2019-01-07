@@ -3,8 +3,6 @@ package com.blastback.appstates;
 import com.blastback.GameClient;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.network.Client;
-import com.jme3.network.Network;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.TextField;
@@ -53,7 +51,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
                 app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort(), batchConfig);
         _niftyInstance = niftyDisplay.getNifty();
         _niftyInstance.fromXml("Interface/Screens/screens.xml", "start-screen", this);
-
         app.getGuiViewPort().addProcessor(niftyDisplay);
 
         _gameStates = new ArrayList<>();
@@ -73,14 +70,15 @@ public class GUIAppState extends BaseAppState implements ScreenController
         if (canConnect)
         {
             attachGameStates();
+            // When clients connects, we don't want nifty to eat any input events
+            _niftyInstance.setIgnoreKeyboardEvents(true);
+            _niftyInstance.setIgnoreMouseEvents(true);
             _niftyInstance.gotoScreen("hud-screen");
         } else
         {
             showMessage("Cannot connect!");
         }
     }
-
-    
 
     private void showMessage(String msg)
     {
@@ -100,7 +98,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
         detachGameStates();
         _application.stop();
     }
-
 
     /**
      * It is a way of verifying user's ip/port combination. I wasn´t able to
@@ -249,6 +246,5 @@ public class GUIAppState extends BaseAppState implements ScreenController
     {
         return _niftyInstance;
     }
-    
-    
+
 }
