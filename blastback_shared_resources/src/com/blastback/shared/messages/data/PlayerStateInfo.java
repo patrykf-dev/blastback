@@ -5,6 +5,7 @@
  */
 package com.blastback.shared.messages.data;
 
+import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.networking.data.PlayerState;
 
 /**
@@ -12,28 +13,26 @@ import com.blastback.shared.networking.data.PlayerState;
  * @author Marcin
  */
 public class PlayerStateInfo {
-
-    private final int _cId; // client ID
-    private String _username;
+//
+//    private final int _cId; // client ID
+//    private String _username;
+//    
+    private IdentityData _identityData;
     private final PlayerState _ps; // corresponding playerstate
 
-    public PlayerStateInfo(int Id, PlayerState ps, String username) {
-        _cId = Id;
+    public PlayerStateInfo(PlayerState ps, IdentityData identityData) {
+        
+        _identityData = identityData;
         _ps = ps;
-        _username = username;
+        
     }
 
-    public int getClientId() {
-        return _cId;
+    public IdentityData getIdentityData() {
+        return _identityData;
     }
 
     public PlayerState getPlayerState() {
         return _ps;
-    }
-
-    public String getUsername()
-    {
-        return _username;
     }
 
 }

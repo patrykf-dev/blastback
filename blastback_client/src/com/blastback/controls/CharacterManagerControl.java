@@ -6,6 +6,7 @@
 package com.blastback.controls;
 
 import com.blastback.shared.messages.data.PlayerStateInfo;
+import com.blastback.shared.networking.data.IdentityData;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -26,8 +27,8 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class CharacterManagerControl extends AbstractControl
 {
-    private int _id;
-    private String _username;
+    
+    private IdentityData _characterData;
     private RigidBodyControl _rbControl;
     private CharacterHealthControl _healthControl;
     
@@ -37,14 +38,14 @@ public class CharacterManagerControl extends AbstractControl
     private static float _lerpFactor = 0.05f;
     private static float _snapThreshold = 5f;
     
-    public CharacterManagerControl(int id, String username)
+    public CharacterManagerControl(IdentityData characterData)
     {
-        _id = id;
+        _characterData = characterData;
     }
     
     public CharacterManagerControl()
     {
-        _id = -1;
+        _characterData = new IdentityData(-1,"Unknown");
     }
 
     @Override
@@ -57,7 +58,7 @@ public class CharacterManagerControl extends AbstractControl
 
     public void setUsername(String username)
     {
-        _username = username;
+        _characterData.setUsername(username);
     }
     
     @Override
@@ -85,12 +86,12 @@ public class CharacterManagerControl extends AbstractControl
     
     public int getId()
     {
-        return _id;
+        return _characterData.getId();
     }
     
     public String getUsername()
     {
-        return _username;
+        return _characterData.getUsername();
     }
     
     /**
@@ -99,7 +100,7 @@ public class CharacterManagerControl extends AbstractControl
      */
     public void setFromState(PlayerStateInfo state)
     {
-        _id = state.getClientId();
+        _characterData.setId(state.getIdentityData().getId());
         setTargetPosition(state.getPlayerState().getLocalTranslation());
         setPosition(_targetPosition);
         setTargetRotation(state.getPlayerState().getLocalRotation());

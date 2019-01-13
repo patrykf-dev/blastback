@@ -31,7 +31,7 @@ public class SimulationData {
     
     public PlayerStateInfo find(int id){
         for(PlayerStateInfo p : data){
-            if(p.getClientId() == id)
+            if(p.getIdentityData().getId() == id)
                 return p;
         }
         return null;

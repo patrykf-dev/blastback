@@ -8,19 +8,13 @@ import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.ShootEventArgs;
 import com.blastback.shared.messages.data.WeaponInfo;
-import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
-import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.CharacterControl;
-import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -195,7 +189,7 @@ public class SimulationAppState extends BaseAppState
         int localId = _network.getClientInstance().getId();
         for (int i = 0; i < playerStates.size(); i++)
         {
-            if (playerStates.get(i).getClientId() == localId)
+            if (playerStates.get(i).getIdentityData().getId() == localId)
             {
                 playerStates.remove(i);
                 break;
@@ -215,9 +209,9 @@ public class SimulationAppState extends BaseAppState
         {
             for (CharacterManagerControl character : _characters)
             {
-                if (character.getId() == state.getClientId())
+                if (character.getId() == state.getIdentityData().getId())
                 {
-                    character.setUsername(state.getUsername());
+                    character.setUsername(state.getIdentityData().getUsername());
                     character.setTargetPosition(state.getPlayerState().getLocalTranslation());
                     character.setTargetRotation(state.getPlayerState().getLocalRotation());
                     processed++;

@@ -17,6 +17,7 @@ import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.blastback.shared.messages.data.SimulationData;
+import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -108,7 +109,7 @@ public class SimulationDataAppState extends BaseAppState{
         while (it.hasNext()) 
         {
             PlayerStateInfo psi  = it.next();
-            HostedConnection connection = server.getConnection(psi.getClientId());
+            HostedConnection connection = server.getConnection(psi.getIdentityData().getId());
             if(connection == null)
             {
              it.remove();
@@ -158,7 +159,8 @@ public class SimulationDataAppState extends BaseAppState{
                     {
                         PlayerState temp = new PlayerState(100,coordinates.geTranslationVector(),coordinates.getRotationVector());
                        //mozna przerzucic username do hellomessage i wtedy trzeba po porstu zrobic dodawanie player state w innym miejscu
-                        playerUpdate = new PlayerStateInfo(source.getId(),temp,coordinates.getUsername());
+                       IdentityData userData = new IdentityData(source.getId(), coordinates.getUsername());
+                       playerUpdate = new PlayerStateInfo(temp,userData);
                         simData.addPlayer(playerUpdate);
                     }
                     
