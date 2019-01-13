@@ -1,22 +1,24 @@
 package com.blastback.shared.messages.data;
 
+import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.observer.BlastbackEventArgs;
 
 public class HitEventArgs extends BlastbackEventArgs
 {
-    private int _shooterId = -1;
-    private final int _targetId;
+    private IdentityData _shooterData;
+    private final IdentityData _targetData;
     private final int _damage;
 
-    public HitEventArgs(int _targetId, int _damage)
+    public HitEventArgs(IdentityData targetData, int _damage)
     {
-        this._targetId = _targetId;
+        _shooterData = new IdentityData("Unknown");
+        this._targetData = targetData;
         this._damage = _damage;
     }
 
-    public int getTargetId()
+    public IdentityData getTargetData()
     {
-        return _targetId;
+        return _targetData;
     }
 
     public int getDamage()
@@ -24,14 +26,14 @@ public class HitEventArgs extends BlastbackEventArgs
         return _damage;
     }
 
-    public int getShooterId()
+    public IdentityData getShooterData()
     {
-        return _shooterId;
+        return _shooterData;
     }
 
-    public void setShooterId(int _shooterId)
+    public void setShooterData(IdentityData shooterData)
     {
-        this._shooterId = _shooterId;
+        this._shooterData = shooterData;
     }
     
 }

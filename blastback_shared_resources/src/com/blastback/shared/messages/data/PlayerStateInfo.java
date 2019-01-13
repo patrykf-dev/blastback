@@ -14,11 +14,13 @@ import com.blastback.shared.networking.data.PlayerState;
 public class PlayerStateInfo {
 
     private final int _cId; // client ID
+    private String _username;
     private final PlayerState _ps; // corresponding playerstate
 
-    public PlayerStateInfo(int Id, PlayerState ps) {
+    public PlayerStateInfo(int Id, PlayerState ps, String username) {
         _cId = Id;
         _ps = ps;
+        _username = username;
     }
 
     public int getClientId() {
@@ -27,6 +29,11 @@ public class PlayerStateInfo {
 
     public PlayerState getPlayerState() {
         return _ps;
+    }
+
+    public String getUsername()
+    {
+        return _username;
     }
 
 }

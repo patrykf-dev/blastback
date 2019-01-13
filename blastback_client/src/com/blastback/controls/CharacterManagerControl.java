@@ -27,6 +27,7 @@ import com.jme3.scene.control.AbstractControl;
 public class CharacterManagerControl extends AbstractControl
 {
     private int _id;
+    private String _username;
     private RigidBodyControl _rbControl;
     private CharacterHealthControl _healthControl;
     
@@ -36,7 +37,7 @@ public class CharacterManagerControl extends AbstractControl
     private static float _lerpFactor = 0.05f;
     private static float _snapThreshold = 5f;
     
-    public CharacterManagerControl(int id)
+    public CharacterManagerControl(int id, String username)
     {
         _id = id;
     }
@@ -54,6 +55,11 @@ public class CharacterManagerControl extends AbstractControl
         _healthControl = spatial.getControl(CharacterHealthControl.class);
     }
 
+    public void setUsername(String username)
+    {
+        _username = username;
+    }
+    
     @Override
     protected void controlUpdate(float tpf)
     {
@@ -80,6 +86,11 @@ public class CharacterManagerControl extends AbstractControl
     public int getId()
     {
         return _id;
+    }
+    
+    public String getUsername()
+    {
+        return _username;
     }
     
     /**

@@ -13,6 +13,7 @@ import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
+import com.blastback.shared.networking.data.IdentityData;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
@@ -31,21 +32,25 @@ public class NetworkAppState extends BaseAppState
     private Client _clientInstance;
     private final int _port;
     private final String _ip;
-
+    private final String _username;
     private final List<MessageListener> _messageListeners;
-
+    private List<IdentityData> _users;
     public NetworkAppState()
     {
         _ip = "localhost";
         _port = 7777;
         _messageListeners = new ArrayList<>();
+        _users = new ArrayList<>();                
+        _username= "Clyde";
     }
 
-    public NetworkAppState(String ip, int port)
+    public NetworkAppState(String ip, int port,String username)
     {
         _ip = ip;
         _port = port;
         _messageListeners = new ArrayList<>();
+        _users = new ArrayList<>();
+        _username = username;
     }
 
     public Client getClientInstance()
@@ -53,6 +58,16 @@ public class NetworkAppState extends BaseAppState
         return _clientInstance;
     }
 
+    public String getUsername()
+    {
+        return _username;
+    }
+    
+    public List<IdentityData> getUsers()
+    {
+        return _users;
+    }
+            
     @Override
     protected void initialize(Application app)
     {

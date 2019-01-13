@@ -16,6 +16,7 @@ import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.observer.BlastbackEventArgs;
 import com.blastback.shared.observer.BlastbackEventListener;
 import com.jme3.app.Application;
@@ -29,6 +30,7 @@ import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,8 +118,9 @@ public class PlayerAppState extends BaseAppState
         {
             while(_deathEventsQueue.isEmpty() == false)
             {
-                String killer = Integer.toString(_deathEventsQueue.get(0).getShooterId());
-                String killed = Integer.toString(_deathEventsQueue.get(0).getTargetId());
+                String killer = _deathEventsQueue.get(0).getShooterData().getUsername();
+                String killed = _deathEventsQueue.get(0).getTargetData().getUsername();
+                
                 _gameInterfaceControl.displayKillEvent(killer, killed);
                 _deathEventsQueue.remove(0);
             }

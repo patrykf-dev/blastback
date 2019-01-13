@@ -89,7 +89,7 @@ public class WeaponInfo
             {
                 _burstCounter--;
                 _inMagazine--;
-                if(_inMagazine == 0) Reload();
+                
                 return true;
             }
             else

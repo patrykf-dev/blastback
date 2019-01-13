@@ -138,7 +138,7 @@ public class GUIAppState extends BaseAppState implements ScreenController
 
     private void attachGameStates()
     {
-        _gameStates.add(new NetworkAppState(getTextIp(), getTextPort()));
+        _gameStates.add(new NetworkAppState(getTextIp(), getTextPort(), getTextName()));
         _gameStates.add(new SimulationAppState());
         for (BaseAppState state : _gameStates)
         {

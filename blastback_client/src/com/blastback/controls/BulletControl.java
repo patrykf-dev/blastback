@@ -6,6 +6,7 @@
 package com.blastback.controls;
 
 import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.observer.BlastbackEvent;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
@@ -74,7 +75,8 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
                 CharacterManagerControl characterControl = target.getControl(CharacterManagerControl.class);
                 if(characterControl != null)
                 {
-                    HitEventArgs eventArgs = new HitEventArgs(characterControl.getId(), _damage);
+                    IdentityData targetData = new IdentityData(characterControl.getId(),characterControl.getUsername());
+                    HitEventArgs eventArgs = new HitEventArgs(targetData, _damage);
                     onPlayerHitEvent.notify(eventArgs);
                 }
             }

@@ -157,7 +157,8 @@ public class SimulationDataAppState extends BaseAppState{
                     else
                     {
                         PlayerState temp = new PlayerState(100,coordinates.geTranslationVector(),coordinates.getRotationVector());
-                        playerUpdate = new PlayerStateInfo(source.getId(),temp);
+                       //mozna przerzucic username do hellomessage i wtedy trzeba po porstu zrobic dodawanie player state w innym miejscu
+                        playerUpdate = new PlayerStateInfo(source.getId(),temp,coordinates.getUsername());
                         simData.addPlayer(playerUpdate);
                     }
                     
@@ -171,9 +172,9 @@ public class SimulationDataAppState extends BaseAppState{
                 {
                     PlayerHitMessage msg = (PlayerHitMessage)message;
                     HitEventArgs data = msg.deserialize();
-                    data.setShooterId(source.getId());
+                    data.getShooterData().setId(source.getId());
                     msg = new PlayerHitMessage(data);
-                    HostedConnection conn = server.getConnection(data.getTargetId());
+                    HostedConnection conn = server.getConnection(data.getTargetData().getId());
                     if(conn != null)
                     {
                         conn.send(msg);
@@ -183,7 +184,7 @@ public class SimulationDataAppState extends BaseAppState{
                 {
                     PlayerDeathMessage msg = (PlayerDeathMessage)message;
                     HitEventArgs data = msg.deserialize();
-                    Log("Player " + data.getShooterId() + " killed player " + data.getTargetId() + "!");
+                    Log("Player " + data.getShooterData().getUsername() + " killed player " + data.getTargetData().getUsername() + "!");
                     server.broadcast(message);
                 }
             }

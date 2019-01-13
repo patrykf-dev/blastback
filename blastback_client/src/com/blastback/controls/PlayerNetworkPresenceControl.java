@@ -153,7 +153,7 @@ public class PlayerNetworkPresenceControl extends AbstractControl
             Vector3f location = _charControl.getPhysicsLocation();
             Vector3f viewDirection = _charControl.getViewDirection();
 
-            ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection);
+            ClientCoordinates DataForJson = new ClientCoordinates(location, viewDirection,_network.getUsername());
             Message m = new PlayerMovedMessage(DataForJson);
 
             client.send(m);
@@ -175,7 +175,9 @@ public class PlayerNetworkPresenceControl extends AbstractControl
         Client client = _network.getClientInstance();
         if (client != null && client.isConnected())
         {
+            e.getShooterData().setUsername(_network.getUsername()); 
             Message m = new PlayerHitMessage(e);
+            
             client.send(m);
         }
     }
