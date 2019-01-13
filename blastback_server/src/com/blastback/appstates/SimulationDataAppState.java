@@ -20,8 +20,6 @@ import com.blastback.shared.messages.data.SimulationData;
 import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.math.Vector3f;
-import com.jme3.network.Client;
 import com.jme3.network.Filters;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;

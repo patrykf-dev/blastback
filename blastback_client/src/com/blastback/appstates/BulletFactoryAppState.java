@@ -59,7 +59,7 @@ public class BulletFactoryAppState extends BaseAppState
     
     public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, boolean dummy)
     {
-        Spatial bullet = _assetManager.loadModel("Models/Bullet.j3o");
+        Spatial bullet = _assetManager.loadModel(eventArgs.getWeaponInfo().getModel());
         BulletControl bulletControl = new BulletControl(eventArgs.getWeaponInfo().getDamage(), eventArgs.getWeaponInfo().getSpeed(), 0.1f, dummy);
         bullet.addControl(bulletControl);
         bulletControl.setPhysicsLocation(eventArgs.getShotPosition());

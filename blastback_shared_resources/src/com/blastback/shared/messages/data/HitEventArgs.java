@@ -34,5 +34,4 @@ public class HitEventArgs extends BlastbackEventArgs
         this._shooterId = _shooterId;
     }
     
-    
 }
