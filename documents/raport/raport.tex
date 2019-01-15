@@ -33,6 +33,15 @@
 
 \stepcounter{chapter}
 \chapter*{Grafika i dźwięk}
+	Grafika składa się z modeli które zostały stworzone w programie Blender.
+	Modele utworzone w tym programie zostały zaimportowane do projektu.
+	Następnie modele zostały odpowiednio podczepione pod scenę, w celu ich renderowania.
+	Model postaci jest ładowany przy dołączeniu do gry, a następnie jest przemieszczany po mapie przy pomocy pozycji obiektu w przestrzeni.
+	Fizyka całego rozwiązania opiera się na fizyce silnika jmonkeyengine3.
+	Każdy obiekt posiada informacje o ich kształcie kolizyjnym, który jest wykorzystywany do detekcji kolizji.
+	W przypadku wykrycia kolizji wykonywane są odpowiednie akcje.
+	Muzyka która gra w tle jest realizowana przy pomocy silnika jmonkeyengine3 który odtwarza wybrany utwór w pętli na całej mapie dla każdego klienta indywidualnie.
+	Dźwięk strzału broni wywołujemy przy pomocy eventów, które umożliwiają na odtworzenie odpowiedniego dźwięku dla wybranej broni przy pomocy argumentów przesyłanych razem z eventem.
 
 
 
