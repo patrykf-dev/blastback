@@ -7,7 +7,7 @@ package com.blastback.listeners;
 
 import com.blastback.shared.messages.HelloMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
-import com.blastback.shared.messages.PlayerStateInfosMessage;
+import com.blastback.shared.messages.SimulationDataMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -34,9 +34,9 @@ public class ClientListener implements MessageListener<Client>
             PlayerShotMessage PSMessage  = (PlayerShotMessage) message;
         }
         
-        if(message instanceof PlayerStateInfosMessage)
+        if(message instanceof SimulationDataMessage)
         {
-            PlayerStateInfosMessage PSIMessage  = (PlayerStateInfosMessage) message;
+            SimulationDataMessage PSIMessage  = (SimulationDataMessage) message;
            
         }
         

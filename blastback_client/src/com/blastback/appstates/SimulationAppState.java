@@ -5,7 +5,7 @@ import com.blastback.controls.CharacterManagerControl;
 import com.blastback.controls.GameInterfaceControl;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.PlayerShotMessage;
-import com.blastback.shared.messages.PlayerStateInfosMessage;
+import com.blastback.shared.messages.SimulationDataMessage;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.ShootEventArgs;
 import com.blastback.shared.messages.data.WeaponInfo;
@@ -115,9 +115,9 @@ public class SimulationAppState extends BaseAppState
             {
                 Node root = _app.getRootNode();
                 PhysicsSpace space = _bulletAppState.getPhysicsSpace();
-                if (message instanceof PlayerStateInfosMessage)
+                if (message instanceof SimulationDataMessage)
                 {
-                    PlayerStateInfosMessage msg = (PlayerStateInfosMessage) message;
+                    SimulationDataMessage msg = (SimulationDataMessage) message;
                     PlayerStateInfo[] arr = msg.deserialize().getArray();
                     List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
                     synchronized(_pendingInfos)
