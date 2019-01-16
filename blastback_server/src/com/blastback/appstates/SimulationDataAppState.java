@@ -11,12 +11,12 @@ import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
-import com.blastback.shared.messages.PlayerStateInfosMessage;
+import com.blastback.shared.messages.SimulationDataMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
 import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.MatchSettings;
 import com.blastback.shared.messages.data.PlayerStateInfo;
-import com.blastback.shared.messages.data.PlayerStateInfoContainer;
+import com.blastback.shared.messages.data.SimulationDataContainer;
 import com.blastback.shared.messages.data.SimulationData;
 import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.networking.data.PlayerState;
@@ -140,7 +140,7 @@ public class SimulationDataAppState extends BaseAppState{
             arr[i] = (PlayerStateInfo)_simData.getdata().get(i);
         }
         
-        PlayerStateInfosMessage message = new PlayerStateInfosMessage(new PlayerStateInfoContainer(arr));
+        SimulationDataMessage message = new SimulationDataMessage(new SimulationDataContainer(arr, _gameMatchAppState.getRemainingTime()));
         server.broadcast(message);
     }
     

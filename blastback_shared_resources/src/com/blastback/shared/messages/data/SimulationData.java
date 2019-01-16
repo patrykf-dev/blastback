@@ -12,39 +12,46 @@ import java.util.List;
  *
  * @author arturhaczek
  */
-public class SimulationData {
-    List<PlayerStateInfo> data;
-    
-    public SimulationData(){
-        data = new ArrayList<>();
+public class SimulationData
+{
+
+    private List<PlayerStateInfo> _data;
+
+    public SimulationData()
+    {
+        _data = new ArrayList<>();
     }
-    
+
     public void addPlayer(PlayerStateInfo p)
     {
-        data.add(p);
+        _data.add(p);
     }
-    
+
     public void removePlayer(PlayerStateInfo p)
     {
-        data.remove(p);
+        _data.remove(p);
     }
-    
-    public PlayerStateInfo find(int id){
-        for(PlayerStateInfo p : data){
-            if(p.getIdentityData().getId() == id)
+
+    public PlayerStateInfo find(int id)
+    {
+        for (PlayerStateInfo p : _data)
+        {
+            if (p.getIdentityData().getId() == id)
+            {
                 return p;
+            }
         }
         return null;
     }
-    
+
     public List<PlayerStateInfo> getdata()
     {
-        return data;
+        return _data;
     }
-    
+
     public void resetStats()
     {
-        data.forEach((info) ->
+        _data.forEach((info) ->
         {
             info.getMatchStats().resetStats();
         });

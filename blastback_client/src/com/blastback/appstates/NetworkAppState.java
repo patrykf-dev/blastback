@@ -14,7 +14,7 @@ import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
-import com.blastback.shared.messages.PlayerStateInfosMessage;
+import com.blastback.shared.messages.SimulationDataMessage;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
@@ -160,7 +160,7 @@ public class NetworkAppState extends BaseAppState
         Serializer.registerClass(BaseBlastbackMessage.class);
         Serializer.registerClass(PlayerMovedMessage.class);
         Serializer.registerClass(PlayerShotMessage.class);
-        Serializer.registerClass(PlayerStateInfosMessage.class);
+        Serializer.registerClass(SimulationDataMessage.class);
         Serializer.registerClass(PlayerHitMessage.class);
         Serializer.registerClass(PlayerDeathMessage.class);
         Serializer.registerClass(MatchStartedMessage.class);

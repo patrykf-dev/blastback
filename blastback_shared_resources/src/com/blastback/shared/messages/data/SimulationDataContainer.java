@@ -9,13 +9,20 @@ package com.blastback.shared.messages.data;
  *
  * @author Marcin
  */
-public class PlayerStateInfoContainer
+public class SimulationDataContainer
 {
     private final PlayerStateInfo[] _array;
+    private final float _remainingTime;
+
+    public float getRemainingTime()
+    {
+        return _remainingTime;
+    }
     
-    public PlayerStateInfoContainer(PlayerStateInfo[] array)
+    public SimulationDataContainer(PlayerStateInfo[] array, float remainingTime)
     {
         _array= array;
+        _remainingTime = remainingTime;
     }
 
     public PlayerStateInfo[] getArray()
