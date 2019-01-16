@@ -141,7 +141,16 @@
         </layer>
     </screen>
         
+       
+    <popup id="popup_connection_lost" childLayout="vertical" visibleToMouse="false" backgroundColor="#000E">
+        <panel id="panel_sep10" height="40%" width="100%"/>
+        <text id="text_connection_lost_message1" text="Connection lost." font="Interface/Fonts/BetterArial.fnt" width="100%" height="10%"/>
+        <text id="text_connection_lost_message2" text="Attempting to reconnect..." font="Interface/Fonts/BetterArial.fnt" width="100%" height="10%"/>
+        <panel id="panel_sep11" height="40%" width="100%"/>
+    </popup>
             
+                 
+                           
     <popup id="popup_scoreboard" childLayout="vertical" visibleToMouse="false">
         <panel id="panel_sep3" height="30%" width="100%" align="center" backgroundColor="#0000"/>
         <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">

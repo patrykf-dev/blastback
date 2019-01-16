@@ -16,33 +16,50 @@ import java.util.List;
 
 public class GameInterfaceControl extends AbstractControl
 {
-    
+
     private Nifty _niftyInstance;
-    private Element _scoreboardElement;
-    
+    private Element _scoreboardPopup;
+    private Element _connectionLostPopup;
+
     private DateTimeFormatter _formatter = DateTimeFormatter.ofPattern("HH:mm");
-    
+
     public GameInterfaceControl(Nifty niftyInstance)
     {
         this._niftyInstance = niftyInstance;
     }
-    
+
     public void displayScoreboard(boolean value)
     {
-        if (_scoreboardElement == null)
+        if (_scoreboardPopup == null)
         {
-            _scoreboardElement = _niftyInstance.createPopup("popup_scoreboard");
+            _scoreboardPopup = _niftyInstance.createPopup("popup_scoreboard");
         }
-        
+
         if (value)
         {
-            _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _scoreboardElement.getId(), null);
+            _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _scoreboardPopup.getId(), null);
         } else
         {
-            _niftyInstance.closePopup(_scoreboardElement.getId());
+            _niftyInstance.closePopup(_scoreboardPopup.getId());
         }
     }
-    
+
+    public void displayConnectionLostNotification(boolean value)
+    {
+        if (_scoreboardPopup == null)
+        {
+            _connectionLostPopup = _niftyInstance.createPopup("popup_connection_lost");
+        }
+
+        if (value)
+        {
+            _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _connectionLostPopup.getId(), null);
+        } else
+        {
+            _niftyInstance.closePopup(_connectionLostPopup.getId());
+        }
+    }
+
     public void updateScoreboard(List<PlayerStateInfo> playerStates)
     {
         int scoreboardCapacity = 10;
@@ -52,7 +69,7 @@ public class GameInterfaceControl extends AbstractControl
             String name = "";
             String kills = "";
             String deaths = "";
-            
+
             if (i <= playersToDisplay)
             {
                 PlayerStateInfo info = playerStates.get(i - 1);
@@ -60,11 +77,11 @@ public class GameInterfaceControl extends AbstractControl
                 kills = Integer.toString(info.getMatchStats().getScore() / 100);
                 deaths = Integer.toString(info.getMatchStats().getDeaths());
             }
-            
+
             Element nameLabel = _niftyInstance.getCurrentScreen().findElementById("text_pl" + i + "_name");
             Element killsLabel = _niftyInstance.getCurrentScreen().findElementById("text_pl" + i + "_kills");
             Element deathsLabel = _niftyInstance.getCurrentScreen().findElementById("text_pl" + i + "_deaths");
-            
+
             if (nameLabel != null && killsLabel != null && deathsLabel != null)
             {
                 nameLabel.getRenderer(TextRenderer.class).setText(name);
@@ -90,7 +107,7 @@ public class GameInterfaceControl extends AbstractControl
             {
                 listBox.removeItemByIndex(4);
             }
-            
+
             String killMessage = "[" + LocalDateTime.now().format(_formatter) + "] " + killed + " was slain by " + killer;
             listBox.insertItem(killMessage, 0);
         }
@@ -122,14 +139,14 @@ public class GameInterfaceControl extends AbstractControl
         Element hpLabel = _niftyInstance.getCurrentScreen().findElementById("text_hp_percentage");
         Element greenPanel = _niftyInstance.getCurrentScreen().findElementById("panel_health_green");
         Element containerPanel = _niftyInstance.getCurrentScreen().findElementById("panel_health_bar");
-        
+
         if (hpLabel != null && greenPanel != null && containerPanel != null)
         {
             int containerWidth = containerPanel.getWidth();
             int greenWidth = (int) (containerWidth * currentHp);
             int hpValue = (int) (currentHp * 100);
             String hpCaption = hpValue + "%";
-            
+
             hpLabel.getRenderer(TextRenderer.class).setText(hpCaption);
             greenPanel.setWidth(greenWidth);
         }
@@ -158,12 +175,12 @@ public class GameInterfaceControl extends AbstractControl
     {
         Element weaponLabel = _niftyInstance.getCurrentScreen().findElementById("text_weapon_type");
         Element weaponImage = _niftyInstance.getCurrentScreen().findElementById("image_weapon");
-        
+
         if (weaponImage == null || weaponLabel == null)
         {
             return;
         }
-        
+
         String weaponCaption = "";
         String imagePath = "Interface/Images/";
         switch (weapon)
@@ -181,27 +198,27 @@ public class GameInterfaceControl extends AbstractControl
                 imagePath += "uzi_thumb.png";
                 break;
         }
-        
+
         NiftyImage image = _niftyInstance.getRenderEngine().createImage(_niftyInstance.getCurrentScreen(), imagePath, true);
         weaponImage.getRenderer(ImageRenderer.class).setImage(image);
         weaponLabel.getRenderer(TextRenderer.class).setText(weaponCaption);
     }
-    
+
     private String formatSeconds(int secondsValue)
     {
         int minutes = secondsValue / 60;
         int seconds = secondsValue % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
-    
+
     @Override
     protected void controlUpdate(float tpf)
     {
     }
-    
+
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp)
     {
     }
-    
+
 }
