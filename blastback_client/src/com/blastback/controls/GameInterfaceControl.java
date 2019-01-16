@@ -190,8 +190,8 @@ public class GameInterfaceControl extends AbstractControl
                 imagePath += "pistol_thumb.png";
                 break;
             case 2:
-                weaponCaption = "Shotgun";
-                imagePath += "shotgun_thumb.png";
+                weaponCaption = "RPG";
+                imagePath += "rpg_thumb.png";
                 break;
             case 3:
                 weaponCaption = "Uzi";
