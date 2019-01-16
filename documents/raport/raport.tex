@@ -11,6 +11,8 @@
 \usepackage{amsmath}
 \usepackage{wrapfig}
 \usepackage[shortlabels]{enumitem}
+\definecolor{codegray}{gray}{0.9}
+\newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
 
 
 
@@ -39,10 +41,15 @@
 \stepcounter{chapter}
 \chapter*{Interfejs użytkownika}
 \section{NiftyGUI}
-\section{Układ elementów na ekranie}
-\section{Stylowanie kontrolek}
-\section{Stylowanie kontrolek}
+Interfejs graficzny użytkownika jest renderowany przy użyciu \code{NiftyGUI}. Jest to oprogramowanie typu open source, dostępne pod linkiem https://github.com/nifty-gui/nifty-gui. Wykorzystuje bibliotekę \code{OpenGL} do wyświetlania użytkownikowi poszczególnych kontrolek.
 
+\section{Układ elementów na ekranie}
+\code{NiftyGUI} jest oprogramowaniem, które narzuca format pliku xml do projektowania układu elementów. Alternatywnie można robić to też przy użyciu kodu javowego. Uznaliśmy jednak, że xml będzie bardziej przejrzystym rozwiązazniem, to też wszystkie definicje układów znajdują się w \code{assets/Interface/Screens/screens.xml}.
+
+\section{Stylowanie kontrolek}
+Aby odpowiednio wystylować wygląd kontrolek pod nasze potrzeby, należało przeciążać ich domyślne style. Nasze definicje styli zostały również zapisane w pliku xml i znajdują się w \code{assets/Interface/Styles/styles.xml}.
+
+\section{Czcionki} 
 
 
 \stepcounter{chapter}
