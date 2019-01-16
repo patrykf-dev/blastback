@@ -9,6 +9,8 @@ import com.blastback.GameServer;
 import com.blastback.listeners.ServerListener;
 import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.MatchEndedMessage;
+import com.blastback.shared.messages.MatchStartedMessage;
 import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
@@ -128,6 +130,8 @@ public class ServerNetworkAppState extends BaseAppState
         Serializer.registerClass(PlayerShotMessage.class);
         Serializer.registerClass(PlayerStateInfosMessage.class);
         Serializer.registerClass(PlayerDeathMessage.class);
+        Serializer.registerClass(MatchStartedMessage.class);
+        Serializer.registerClass(MatchEndedMessage.class);
     }
 
     private void initConnection()

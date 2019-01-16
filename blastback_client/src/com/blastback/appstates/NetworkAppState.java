@@ -8,6 +8,8 @@ package com.blastback.appstates;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
+import com.blastback.shared.messages.MatchEndedMessage;
+import com.blastback.shared.messages.MatchStartedMessage;
 import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.PlayerMovedMessage;
@@ -161,5 +163,7 @@ public class NetworkAppState extends BaseAppState
         Serializer.registerClass(PlayerStateInfosMessage.class);
         Serializer.registerClass(PlayerHitMessage.class);
         Serializer.registerClass(PlayerDeathMessage.class);
+        Serializer.registerClass(MatchStartedMessage.class);
+        Serializer.registerClass(MatchEndedMessage.class);
     }
 }

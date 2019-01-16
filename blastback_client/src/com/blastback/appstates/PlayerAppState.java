@@ -13,6 +13,7 @@ import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
 import com.blastback.controls.PlayerShootingControl;
 import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.MatchEndedMessage;
 import com.blastback.shared.messages.MatchStartedMessage;
 import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
@@ -189,6 +190,10 @@ public class PlayerAppState extends BaseAppState
                     MatchSettings settings = msg.deserialize();
                     //set timer
                     respawnPlayer();
+                }
+                else if(message instanceof MatchEndedMessage)
+                {
+                    //show gameresults
                 }
             }
             

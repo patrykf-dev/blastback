@@ -14,11 +14,13 @@ import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
 import com.blastback.shared.messages.data.ClientCoordinates;
 import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.messages.data.MatchSettings;
 import com.blastback.shared.messages.data.PlayerStateInfo;
 import com.blastback.shared.messages.data.PlayerStateInfoContainer;
 import com.blastback.shared.messages.data.SimulationData;
 import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.networking.data.PlayerState;
+import com.blastback.shared.observer.BlastbackEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Filters;
@@ -39,6 +41,7 @@ public class SimulationDataAppState extends BaseAppState{
 
     private GameServer _app;
     private ServerNetworkAppState _ServerNetworkAppState;
+    private GameMatchAppState _gameMatchAppState;
     
     private final SimulationData _simData;
     private ServerListener _listener;
@@ -46,9 +49,11 @@ public class SimulationDataAppState extends BaseAppState{
     private Timer _messageTimer;
     private final int _timerTick = 50;
     
+    private BlastbackEventListener<MatchSettings> _roundStartedListener;
+    
     
     public SimulationDataAppState(){
-        initListener();
+        initListeners();
         _simData = new SimulationData();
     }
     
@@ -56,6 +61,7 @@ public class SimulationDataAppState extends BaseAppState{
     protected void initialize(Application app) {
        _app = (GameServer) app;
        _ServerNetworkAppState = _app.getStateManager().getState(ServerNetworkAppState.class);
+       _gameMatchAppState = _app.getStateManager().getState(GameMatchAppState.class);
     }
 
     @Override
@@ -66,6 +72,7 @@ public class SimulationDataAppState extends BaseAppState{
     @Override
     protected void onEnable() {
         _ServerNetworkAppState.addListener(_listener);
+        _gameMatchAppState.onRoundStarted.addListener(_roundStartedListener);
         if(_messageTimer == null)
         {
             initTimer();
@@ -79,6 +86,7 @@ public class SimulationDataAppState extends BaseAppState{
     @Override
     protected void onDisable() {
         _ServerNetworkAppState.removeListener(_listener);
+        _gameMatchAppState.onRoundStarted.removeListener(_roundStartedListener);
         if(_messageTimer != null)
         {
             _messageTimer.cancel();
@@ -136,8 +144,17 @@ public class SimulationDataAppState extends BaseAppState{
         server.broadcast(message);
     }
     
-    private void initListener()
+    private void initListeners()
     {
+        _roundStartedListener = new BlastbackEventListener<MatchSettings>()
+        {
+            @Override
+            public void invoke(MatchSettings e)
+            {
+                _simData.resetStats();
+            }
+        };
+        
         _listener = new ServerListener()
         {
             @Override

@@ -16,7 +16,7 @@ public class SimulationData {
     List<PlayerStateInfo> data;
     
     public SimulationData(){
-        data = new ArrayList<PlayerStateInfo>();
+        data = new ArrayList<>();
     }
     
     public void addPlayer(PlayerStateInfo p)
@@ -40,6 +40,14 @@ public class SimulationData {
     public List<PlayerStateInfo> getdata()
     {
         return data;
+    }
+    
+    public void resetStats()
+    {
+        data.forEach((info) ->
+        {
+            info.getMatchStats().resetStats();
+        });
     }
 
 }
