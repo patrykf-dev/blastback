@@ -66,17 +66,24 @@ public class GUIAppState extends BaseAppState implements ScreenController
      */
     public void joinButtonClicked()
     {
-        boolean canConnect = hostAvailabilityCheck();
-        if (canConnect)
+        boolean fieldsFilled = verifyStartScreenInput();
+        if (fieldsFilled)
         {
-            attachGameStates();
-            // When clients connects, we don't want nifty to eat any input events
-            _niftyInstance.setIgnoreKeyboardEvents(true);
-            _niftyInstance.setIgnoreMouseEvents(true);
-            _niftyInstance.gotoScreen("hud-screen");
+            boolean hostAvailable = hostAvailabilityCheck();
+            if (hostAvailable)
+            {
+                attachGameStates();
+                // When clients connects, we don't want nifty to eat any input events
+                _niftyInstance.setIgnoreKeyboardEvents(true);
+                _niftyInstance.setIgnoreMouseEvents(true);
+                _niftyInstance.gotoScreen("hud-screen");
+            } else
+            {
+                showMessage("Cannot connect to host!");
+            }
         } else
         {
-            showMessage("Cannot connect!");
+            showMessage("Incorrect input!");
         }
     }
 
@@ -134,6 +141,12 @@ public class GUIAppState extends BaseAppState implements ScreenController
         }
 
         return available;
+    }
+    
+
+    private boolean verifyStartScreenInput()
+    {
+        return (!getTextIp().equals("") && !getTextName().equals("") && getTextPort() != -1);
     }
 
     private void attachGameStates()
@@ -246,5 +259,4 @@ public class GUIAppState extends BaseAppState implements ScreenController
     {
         return _niftyInstance;
     }
-
 }

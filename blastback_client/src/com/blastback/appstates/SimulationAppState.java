@@ -2,6 +2,7 @@ package com.blastback.appstates;
 
 import com.blastback.GameClient;
 import com.blastback.controls.CharacterManagerControl;
+import com.blastback.controls.GameInterfaceControl;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.PlayerStateInfosMessage;
@@ -24,6 +25,7 @@ public class SimulationAppState extends BaseAppState
     private GameClient _app;
     private BulletAppState _bulletAppState;
     private NetworkAppState _network;
+    private GameInterfaceControl _gameInterfaceControl;
     
     private final ArrayList<CharacterManagerControl> _characters;
     
@@ -70,6 +72,7 @@ public class SimulationAppState extends BaseAppState
         _app = (GameClient)app;
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _network = _app.getStateManager().getState(NetworkAppState.class);
+        _gameInterfaceControl = _app.getStateManager().getState(PlayerAppState.class).getGameInterfaceControl();
     }
 
     @Override
@@ -146,6 +149,8 @@ public class SimulationAppState extends BaseAppState
      */
     public void updateSimulation(List<PlayerStateInfo> playerStates)
     {    
+        _gameInterfaceControl.updateScoreboard(playerStates);
+        
         removeLocalPlayerState(playerStates);
         
         if (playerStates.size() != _characters.size())

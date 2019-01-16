@@ -94,11 +94,11 @@
                     
                     <panel id="panel_menu_right" width="50%" height="100%" childLayout="vertical">
                         <panel id="panel_container_name" width="100%" height="33%" childLayout="center">
-                            <control id="input_name" name="textfield" width="100%" height="50%" text="yogowafel"/>
+                            <control id="input_name" name="textfield" width="100%" height="50%"/>
                         </panel>
 
                         <panel id="panel_container_ip" width="100%" height="33%" childLayout="center">
-                            <control id="input_ip" name="textfield" width="100%" height="50%" text="89.69.193.56"/>
+                            <control id="input_ip" name="textfield" width="100%" height="50%" text="localhost"/>
                         </panel>
                         
                         <panel id="panel_container_port" width="100%" height="33%" childLayout="center">
@@ -111,16 +111,9 @@
                 
             
                 <panel id="panel_buttons" height="30%" width="100%" align="left" childLayout="horizontal">
-                    
-                    
                     <panel id="panel_sep4" height="100%" width="10%"/>
-                
-                    
-                    
                     <panel id="panel_buttons_inner" height="100%" width="60%" align="center" childLayout="vertical">
-                        
                         <panel id="panel_sep6" height="13%" width="100%"/>
-      
                         <control id="btn_join" name="button" label="Join" align="center" width="100%" height="33%"
                                  visibleToMouse="true">
                             <interact onClick="joinButtonClicked()" />
@@ -154,24 +147,24 @@
         <panel id="panel_scoreboard" height="40%" width="60%" align="center" backgroundColor="#0000" childLayout="vertical">
                 
             <panel id="panel_pl1" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                <text id="text_pl1_name" text="yogowafel" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                <text id="text_pl1_kills" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                <text id="text_pl1_deaths" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl1_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl1_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl1_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
             </panel>
             <panel id="panel_pl2" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                <text id="text_pl2_name" text="MadDev" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                <text id="text_pl2_kills" text="0" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                <text id="text_pl2_deaths" text="20" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl2_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl2_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl2_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
             </panel>
             <panel id="panel_pl3" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
-                <text id="text_pl3_name" text="Artix1500" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                <text id="text_pl3_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                <text id="text_pl3_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl3_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl3_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl3_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
             </panel>
             <panel id="panel_pl4" height="10%" width="100%" align="center" backgroundColor="#9999" childLayout="horizontal">
-                <text id="text_pl4_name" text="Elusor" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
-                <text id="text_pl4_kills" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
-                <text id="text_pl4_deaths" text="10" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl4_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>
+                <text id="text_pl4_kills" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
+                <text id="text_pl4_deaths" font="Interface/Fonts/BetterArial.fnt" width="20%" height="100%"/>
             </panel>
             <panel id="panel_pl5" height="10%" width="100%" align="center" backgroundColor="#7777" childLayout="horizontal">
                 <text id="text_pl5_name" font="Interface/Fonts/BetterArial.fnt" width="60%" height="100%"/>

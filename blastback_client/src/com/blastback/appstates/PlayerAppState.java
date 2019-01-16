@@ -18,8 +18,6 @@ import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.data.HitEventArgs;
 import com.blastback.shared.messages.data.MatchSettings;
-import com.blastback.shared.networking.data.IdentityData;
-import com.blastback.shared.observer.BlastbackEventArgs;
 import com.blastback.shared.observer.BlastbackEventListener;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -32,7 +30,6 @@ import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.scene.Spatial;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,4 +246,10 @@ public class PlayerAppState extends BaseAppState
     {
         Logger.getLogger(GameClient.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
     }
+
+    public GameInterfaceControl getGameInterfaceControl()
+    {
+        return _gameInterfaceControl;
+    }
+    
 }
