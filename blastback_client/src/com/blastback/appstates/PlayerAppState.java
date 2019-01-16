@@ -13,9 +13,11 @@ import com.blastback.controls.PlayerMovementControl;
 import com.blastback.controls.PlayerNetworkPresenceControl;
 import com.blastback.controls.PlayerShootingControl;
 import com.blastback.listeners.ClientListener;
+import com.blastback.shared.messages.MatchStartedMessage;
 import com.blastback.shared.messages.PlayerDeathMessage;
 import com.blastback.shared.messages.PlayerHitMessage;
 import com.blastback.shared.messages.data.HitEventArgs;
+import com.blastback.shared.messages.data.MatchSettings;
 import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.observer.BlastbackEventArgs;
 import com.blastback.shared.observer.BlastbackEventListener;
@@ -183,6 +185,13 @@ public class PlayerAppState extends BaseAppState
                     {
                         _deathEventsQueue.add(data);
                     }
+                }
+                else if(message instanceof MatchStartedMessage)
+                {
+                    MatchStartedMessage msg = (MatchStartedMessage)message;
+                    MatchSettings settings = msg.deserialize();
+                    //set timer
+                    respawnPlayer();
                 }
             }
             

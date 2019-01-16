@@ -5,6 +5,7 @@
  */
 package com.blastback.shared.messages.data;
 
+import com.blastback.shared.networking.data.MatchStats;
 import com.blastback.shared.networking.data.IdentityData;
 import com.blastback.shared.networking.data.PlayerState;
 

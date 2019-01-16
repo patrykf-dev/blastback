@@ -6,8 +6,8 @@
 package com.blastback.appstates;
 
 import com.blastback.GameServer;
+import com.blastback.shared.messages.data.MatchSettings;
 import com.blastback.shared.observer.BlastbackEvent;
-import com.blastback.shared.observer.BlastbackEventArgs;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 
@@ -17,15 +17,25 @@ import com.jme3.app.state.BaseAppState;
  */
 public class GameMatchAppState extends BaseAppState
 {
-    public final BlastbackEvent<BlastbackEventArgs> onRoundEnded = new BlastbackEvent<>();
+    public final BlastbackEvent<MatchSettings> onRoundStarted = new BlastbackEvent<>();
+    public final BlastbackEvent<MatchSettings> onRoundEnded = new BlastbackEvent<>();
     
     private GameServer _app;
     
+    private final float _gameLength;
     private float _remainingTime;
+    private final float _startDelay = 5.0f;
+    private float _timeToNextRound;
     
+    /**
+     * AppState that governs match cycle.
+     * @param roundLength in seconds must be greater than 0
+     */
     public GameMatchAppState(int roundLength)
     {
-        _remainingTime = roundLength;
+        _gameLength = roundLength;
+        _remainingTime = 0;
+        _timeToNextRound = _startDelay;
     }
 
     @Override
@@ -37,14 +47,27 @@ public class GameMatchAppState extends BaseAppState
     @Override
     public void update(float tpf)
     {
-        _remainingTime -= tpf;
-        if(_remainingTime < 0);
+        if(_remainingTime > 0)
         {
-            onRoundEnded.notify(BlastbackEventArgs.VOID);
+            _remainingTime -= tpf;
+            if(_remainingTime <= 0);
+            {
+                _remainingTime = 0;
+                onRoundEnded.notify(new MatchSettings(_gameLength));
+                _timeToNextRound = _startDelay;
+            }
         }
+        else
+        {
+            _timeToNextRound -= tpf;
+            if(_timeToNextRound <= 0)
+            {
+                onRoundStarted.notify(new MatchSettings(_gameLength));
+                _remainingTime = _gameLength;
+            }
+        }
+        
     }
-    
-    
 
     @Override
     protected void cleanup(Application app)
@@ -61,5 +84,9 @@ public class GameMatchAppState extends BaseAppState
     {
     }
     
+    public float getGameLength()
+    {
+        return _gameLength;
+    }
     
 }

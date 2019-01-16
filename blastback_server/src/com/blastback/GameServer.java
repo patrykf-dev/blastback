@@ -1,5 +1,6 @@
 package com.blastback;
 
+import com.blastback.appstates.GameMatchAppState;
 import com.blastback.appstates.ServerNetworkAppState;
 import com.blastback.appstates.SimulationDataAppState;
 import com.jme3.app.SimpleApplication;
@@ -10,7 +11,8 @@ public class GameServer extends SimpleApplication
 
     public GameServer()
     {
-        super(new ServerNetworkAppState(),
+        super(new GameMatchAppState(180),
+              new ServerNetworkAppState(),
               new SimulationDataAppState());
     }
 
