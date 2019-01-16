@@ -12,27 +12,38 @@ import com.blastback.shared.networking.data.PlayerState;
  *
  * @author Marcin
  */
-public class PlayerStateInfo {
+public class PlayerStateInfo
+{
 //
 //    private final int _cId; // client ID
 //    private String _username;
 //    
+
     private IdentityData _identityData;
+    private final MatchStats _stats;
     private final PlayerState _ps; // corresponding playerstate
 
-    public PlayerStateInfo(PlayerState ps, IdentityData identityData) {
-        
+    public PlayerStateInfo(PlayerState ps, IdentityData identityData)
+    {
+
         _identityData = identityData;
         _ps = ps;
-        
+        _stats = new MatchStats();
     }
 
-    public IdentityData getIdentityData() {
+    public IdentityData getIdentityData()
+    {
         return _identityData;
     }
 
-    public PlayerState getPlayerState() {
+    public PlayerState getPlayerState()
+    {
         return _ps;
+    }
+
+    public MatchStats getMatchStats()
+    {
+        return _stats;
     }
 
 }

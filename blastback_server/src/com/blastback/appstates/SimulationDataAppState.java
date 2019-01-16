@@ -38,10 +38,9 @@ import java.util.logging.Logger;
 public class SimulationDataAppState extends BaseAppState{
 
     private GameServer _app;
-    private SimulationDataAppState _SimulationDataAppState;
     private ServerNetworkAppState _ServerNetworkAppState;
     
-    private SimulationData simData;
+    private final SimulationData _simData;
     private ServerListener _listener;
     
     private Timer _messageTimer;
@@ -50,13 +49,12 @@ public class SimulationDataAppState extends BaseAppState{
     
     public SimulationDataAppState(){
         initListener();
-        simData = new SimulationData();
+        _simData = new SimulationData();
     }
     
     @Override
     protected void initialize(Application app) {
        _app = (GameServer) app;
-       _SimulationDataAppState = _app.getStateManager().getState(SimulationDataAppState.class);
        _ServerNetworkAppState = _app.getStateManager().getState(ServerNetworkAppState.class);
     }
 
@@ -80,7 +78,11 @@ public class SimulationDataAppState extends BaseAppState{
 
     @Override
     protected void onDisable() {
-        _messageTimer.cancel();
+        _ServerNetworkAppState.removeListener(_listener);
+        if(_messageTimer != null)
+        {
+            _messageTimer.cancel();
+        }
     }
     
     private void initTimer()
@@ -103,7 +105,7 @@ public class SimulationDataAppState extends BaseAppState{
     
         Server server = _ServerNetworkAppState.getServer();
         
-        Iterator<PlayerStateInfo> it = simData.getdata().iterator();
+        Iterator<PlayerStateInfo> it = _simData.getdata().iterator();
         
 
         while (it.hasNext()) 
@@ -123,11 +125,11 @@ public class SimulationDataAppState extends BaseAppState{
     private void sendSimulationData()
     {
         Server server = _ServerNetworkAppState.getServer();
-        PlayerStateInfo[] arr = new PlayerStateInfo[simData.getdata().size()];
+        PlayerStateInfo[] arr = new PlayerStateInfo[_simData.getdata().size()];
         
-        for(int i = 0; i < simData.getdata().size(); i++)
+        for(int i = 0; i < _simData.getdata().size(); i++)
         {
-            arr[i] = (PlayerStateInfo)simData.getdata().get(i);
+            arr[i] = (PlayerStateInfo)_simData.getdata().get(i);
         }
         
         PlayerStateInfosMessage message = new PlayerStateInfosMessage(new PlayerStateInfoContainer(arr));
@@ -145,7 +147,7 @@ public class SimulationDataAppState extends BaseAppState{
                 
                 if(message instanceof PlayerMovedMessage)
                 {
-                    PlayerStateInfo playerUpdate = simData.find(source.getId());
+                    PlayerStateInfo playerUpdate = _simData.find(source.getId());
                     
                     PlayerMovedMessage PMovedMessage = (PlayerMovedMessage) message;
                     ClientCoordinates coordinates = PMovedMessage.deserialize();
@@ -161,7 +163,7 @@ public class SimulationDataAppState extends BaseAppState{
                        //mozna przerzucic username do hellomessage i wtedy trzeba po porstu zrobic dodawanie player state w innym miejscu
                        IdentityData userData = new IdentityData(source.getId(), coordinates.getUsername());
                        playerUpdate = new PlayerStateInfo(temp,userData);
-                        simData.addPlayer(playerUpdate);
+                        _simData.addPlayer(playerUpdate);
                     }
                     
                     //System.out.println("Server received '" + coordinates.getCoordinates() + "' from client #" + source.getId());
@@ -186,6 +188,8 @@ public class SimulationDataAppState extends BaseAppState{
                 {
                     PlayerDeathMessage msg = (PlayerDeathMessage)message;
                     HitEventArgs data = msg.deserialize();
+                    _simData.find(data.getShooterData().getId()).getMatchStats().addScore(100);
+                    _simData.find(data.getTargetData().getId()).getMatchStats().addDeath();
                     Log("Player " + data.getShooterData().getUsername() + " killed player " + data.getTargetData().getUsername() + "!");
                     server.broadcast(message);
                 }
