@@ -57,7 +57,7 @@ public class GameInterfaceControl extends AbstractControl
             {
                 PlayerStateInfo info = playerStates.get(i - 1);
                 name = info.getIdentityData().getUsername();
-                kills = Integer.toString(info.getMatchStats().getScore() / 100);
+                kills = Integer.toString(info.getMatchStats().getScore());
                 deaths = Integer.toString(info.getMatchStats().getDeaths());
             }
             

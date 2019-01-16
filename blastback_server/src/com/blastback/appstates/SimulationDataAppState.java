@@ -188,7 +188,7 @@ public class SimulationDataAppState extends BaseAppState{
                 {
                     PlayerDeathMessage msg = (PlayerDeathMessage)message;
                     HitEventArgs data = msg.deserialize();
-                    _simData.find(data.getShooterData().getId()).getMatchStats().addScore(100);
+                    _simData.find(data.getShooterData().getId()).getMatchStats().addScore(1);
                     _simData.find(data.getTargetData().getId()).getMatchStats().addDeath();
                     Log("Player " + data.getShooterData().getUsername() + " killed player " + data.getTargetData().getUsername() + "!");
                     server.broadcast(message);
