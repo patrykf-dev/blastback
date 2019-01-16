@@ -5,6 +5,8 @@
  */
 package com.blastback.appstates;
 
+import com.blastback.GameClient;
+import com.blastback.controls.GameInterfaceControl;
 import com.blastback.listeners.ClientListener;
 import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
@@ -18,6 +20,7 @@ import com.blastback.shared.messages.SimulationDataMessage;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.network.Client;
+import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.jme3.network.Network;
 import com.jme3.network.serializing.Serializer;
@@ -29,6 +32,9 @@ import java.util.logging.Logger;
 
 public class NetworkAppState extends BaseAppState
 {
+    private GameClient _app;
+    private PlayerAppState _playerAppState;
+    private GameInterfaceControl _interfaceControl;
 
     private Client _clientInstance;
     private final int _port;
@@ -36,19 +42,29 @@ public class NetworkAppState extends BaseAppState
     private final String _username;
     private final List<MessageListener> _messageListeners;
     
+    private ClientListener _connectionListener;
+    private final float _timeThreshold = 5f;
+    private boolean _isDisconnected = false;
+    
+    private final MutableFloat _timeSinceLastMessage = new MutableFloat(0f);
+    
     public NetworkAppState()
     {
+        initListener();
         _ip = "localhost";
         _port = 7777;
         _messageListeners = new ArrayList<>();
+        _messageListeners.add(_connectionListener);
         _username= "Clyde";
     }
 
     public NetworkAppState(String ip, int port, String username)
     {
+        initListener();
         _ip = ip;
         _port = port;
         _messageListeners = new ArrayList<>();
+        _messageListeners.add(_connectionListener);
         _username = username;
     }
 
@@ -66,6 +82,9 @@ public class NetworkAppState extends BaseAppState
     protected void initialize(Application app)
     {
         registerMessages();
+        _app = (GameClient)app;
+        _playerAppState = _app.getStateManager().getState(PlayerAppState.class);
+        _interfaceControl = _playerAppState.getGameInterfaceControl();
     }
 
     @Override
@@ -88,7 +107,10 @@ public class NetworkAppState extends BaseAppState
         }
         if (_clientInstance != null)
         {
-            _clientInstance.close();
+            if(_clientInstance.isConnected())
+            {
+                _clientInstance.close();
+            }
         }
         
     }
@@ -154,6 +176,44 @@ public class NetworkAppState extends BaseAppState
         }
     }
 
+    @Override
+    public void update(float tpf)
+    {
+        if(_isDisconnected == false)
+        {
+            synchronized(_timeSinceLastMessage)
+            {
+                float val = _timeSinceLastMessage.getValue();
+                if(val > _timeThreshold)
+                {
+                    _interfaceControl.displayConnectionLostNotification(true);
+                    _isDisconnected = true;
+                }
+                else
+                {
+                    _timeSinceLastMessage.setValue(val + tpf);
+                }
+            }
+        }
+    }
+    
+    
+    
+    private void initListener()
+    {
+        _connectionListener = new ClientListener()
+        {
+            @Override
+            public void messageReceived(Client source, Message message)
+            {
+                synchronized(_timeSinceLastMessage)
+                {
+                    _timeSinceLastMessage.setValue(0f);
+                }
+            }  
+        };
+    }
+
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
@@ -165,5 +225,25 @@ public class NetworkAppState extends BaseAppState
         Serializer.registerClass(PlayerDeathMessage.class);
         Serializer.registerClass(MatchStartedMessage.class);
         Serializer.registerClass(MatchEndedMessage.class);
+    }
+    
+    private class MutableFloat
+    {
+        private float _value;
+        
+        public MutableFloat(float value)
+        {
+            _value = value;
+        }
+        
+        public float getValue()
+        {
+            return _value;
+        }
+
+        public void setValue(float _value)
+        {
+            this._value = _value;
+        }
     }
 }
