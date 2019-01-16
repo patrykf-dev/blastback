@@ -1,7 +1,5 @@
 \documentclass[]{report}
 \usepackage{etoolbox}
-\makeatletter
-\makeatother
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
@@ -10,11 +8,19 @@
 \usepackage{blindtext}
 \usepackage{amsmath}
 \usepackage{wrapfig}
-\usepackage[shortlabels]{enumitem}
 \definecolor{codegray}{gray}{0.9}
 \newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
-
-
+\usepackage{graphicx}
+\usepackage{hyperref}
+\newcommand{\link}[1]{{\color{blue}\href{#1}{#1}}}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={red!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+\graphicspath {{graphics/}}
 
 \begin{document}
 \newgeometry{tmargin=1.3cm, bmargin=1.3cm, lmargin=2cm, rmargin=2cm}
@@ -41,15 +47,18 @@
 \stepcounter{chapter}
 \chapter*{Interfejs użytkownika}
 \section{NiftyGUI}
-Interfejs graficzny użytkownika jest renderowany przy użyciu \code{NiftyGUI}. Jest to oprogramowanie typu open source, dostępne pod linkiem https://github.com/nifty-gui/nifty-gui. Wykorzystuje bibliotekę \code{OpenGL} do wyświetlania użytkownikowi poszczególnych kontrolek.
+Interfejs graficzny w naszej aplikacji jest renderowany przy użyciu \code{NiftyGUI}. Jest to oprogramowanie typu open source, dostępne pod linkiem \link{https://github.com/nifty-gui/nifty-gui}. Wykorzystuje bibliotekę graficzną \code{OpenGL}. Rozwijając aplikację w \code{jMonkeyEngine} mieliśmy do wyboru jeszcze 3 inne rozwiązania: \code{Swing}, \code{Lemur}, \code{tonegodGUI} oraz powszechnie stosowany. Niestety dobrze nam znane pierwsze rozwiązanie nie jest dobrze zintegrowane z silnikiem, a drugie okazało się być nierozwijane już od 3 lat: \link{https://github.com/meltzow/tonegodgui}.Wybraliśmy \code{NiftyGUI} zamiast \code{Lemur}, ponieważ możliwość definiowanią układu kontrolek oraz ich styli w xml wydawała nam się najlepszym rozwiązaniem.
+
 
 \section{Układ elementów na ekranie}
-\code{NiftyGUI} jest oprogramowaniem, które narzuca format pliku xml do projektowania układu elementów. Alternatywnie można robić to też przy użyciu kodu javowego. Uznaliśmy jednak, że xml będzie bardziej przejrzystym rozwiązazniem, to też wszystkie definicje układów znajdują się w \code{assets/Interface/Screens/screens.xml}.
+\code{NiftyGUI} jest oprogramowaniem, w którym do projektowania układu elementów można wykorzystać język znaczników xml. Alternatywnie można robić to też przy użyciu kodu javowego. Uznaliśmy jednak, że xml będzie bardziej przejrzystym rozwiązazniem. Definicje układów wszystkich ekranów wyświetlanych użytkownikowi znajdują się w \code{assets/Interface/Screens/screens.xml}.
 
 \section{Stylowanie kontrolek}
-Aby odpowiednio wystylować wygląd kontrolek pod nasze potrzeby, należało przeciążać ich domyślne style. Nasze definicje styli zostały również zapisane w pliku xml i znajdują się w \code{assets/Interface/Styles/styles.xml}.
-
-\section{Czcionki} 
+Aby odpowiednio wystylować wygląd kontrolek pod nasze potrzeby, należało przeciążać ich domyślne style. Nasze definicje styli zostały również zapisane w pliku xml i znajdują się w \code{assets/Interface/Styles/styles.xml}. Powyżej - wygląd głownego menu gry z przeciążonymi definicjami stylów, poniżej - ich domyślne odpowiedniki.
+\begin{gather*}
+	\includegraphics*[scale=0.32]{gui_styled} \\
+	\includegraphics*[scale=0.32]{gui_not_styled} 
+\end{gather*}
 
 
 \stepcounter{chapter}
