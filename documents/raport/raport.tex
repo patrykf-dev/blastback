@@ -33,15 +33,25 @@
 
 \stepcounter{chapter}
 \chapter*{Grafika i dźwięk}
+\section{Grafika}
 	Grafika składa się z modeli które zostały stworzone w programie Blender.
 	Modele utworzone w tym programie zostały zaimportowane do projektu.
 	Następnie modele zostały odpowiednio podczepione pod scenę, w celu ich renderowania.
-	Model postaci jest ładowany przy dołączeniu do gry, a następnie jest przemieszczany po mapie przy pomocy pozycji obiektu w przestrzeni.
+	Postacie są ładowane przy dołączeniu do gry, a następnie są przemieszczane po mapie przy pomocy pozycji obiektu w przestrzeni.
+	Każda postać przesyła swoją aktualną pozycję do serwera.
+	Serwer wysyła wszystkim klientom pozycje graczy, na tej podstawie gracze są rozmieszczeni na mapie.
 	Fizyka całego rozwiązania opiera się na fizyce silnika jmonkeyengine3.
-	Każdy obiekt posiada informacje o ich kształcie kolizyjnym, który jest wykorzystywany do detekcji kolizji.
+	Każdy obiekt posiada informacje o swoim kształcie kolizyjnym, który jest wykorzystywany do detekcji kolizji.
 	W przypadku wykrycia kolizji wykonywane są odpowiednie akcje.
-	Muzyka która gra w tle jest realizowana przy pomocy silnika jmonkeyengine3 który odtwarza wybrany utwór w pętli na całej mapie dla każdego klienta indywidualnie.
+
+\section{Dźwięk}
+	Odtwarzanie muzyki w tle realizowane przy pomocy silnika jmonkeyengine3 który odtwarza wybrany utwór w pętli na całej mapie dla każdego klienta indywidualnie.
+	BackgroundAudioAppState odpowiada za wywołanie tej funkcjonalności.
+
 	Dźwięk strzału broni wywołujemy przy pomocy eventów, które umożliwiają na odtworzenie odpowiedniego dźwięku dla wybranej broni przy pomocy argumentów przesyłanych razem z eventem.
+	Wywołanie następuje w momencie stworzenia pocisku.
+	Do wykorzystania dźwięku pozycyjnego dla broni należało wykorzystać pliki dzwiękowe mono z rozszerzeniem wav.
+	Do przekonwertowania dźwięku użyliśmy programu Audacity.
 
 
 
