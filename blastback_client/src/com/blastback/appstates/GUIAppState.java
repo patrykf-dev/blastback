@@ -145,7 +145,9 @@ public class GUIAppState extends BaseAppState implements ScreenController
 
     private boolean verifyStartScreenInput()
     {
-        return (!getTextIp().equals("") && !getTextName().equals("") && getTextPort() != -1);
+        int maxNameLength = 6;
+        return (!getTextIp().equals("") && getTextName().length() > 0 && 
+                getTextName().length() <= maxNameLength && getTextPort() != -1);
     }
 
     private void attachGameStates()
