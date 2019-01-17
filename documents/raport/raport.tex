@@ -33,9 +33,41 @@
 \stepcounter{chapter}
 \chapter*{Aspekt sieciowy}
 \section{Przyjęte założenia}
+Aspekt sieciowy zrealizowaliśmy z pomocą sieciowego API \code{SpiderMonkey}, które jest dostarczone przez nasz silnik. Zapewnia ono podstawowe metody do łączenia się poprzez TCP/UDP, szablony wiadomości i podstawową klasę reagujących na nie Listenerów. Stan gry symulowany jest po stronie klienckiej, a serwer odpowiedzialny jest za wzajemną komunikację aplikacji klienckich poprzez nasłuchiwanie wiadomości i przekazywanie ich do reszty graczy.
+
 \section{Symulacja po stronie klienta}
+Po bliższym zapoznaniu się z technologią \code{jMonkeyEngine} oraz dostępnymi bibliotekami, doszliśmy do wniosku, że implementacja symulacji po stronie serwera oraz odpowiedniej interpretacji danych przez klienta pochłonęłaby zbyt wiele czasu, a bez odpowiednich mechanizmów predykcji i rekompensacji pingu, gracz czułby zbyt duże opóźnienia co w znaczny sposób wpłynęłoby na odczucia z rozgrywki. To skłoniło nas do implementacji symulacji po stronie klienta. Przyjęliśmy także założenia: opóźnienia sieci będą pomijalne oraz gracz nie będzie próbował oszukiwać.
+
+
+\begin{itemize}
+	\item \textbf{Gracz lokalny} \\
+	Aplikacja kliencka wyróżnia obiekt lokalnego gracza i może bezpośrednio wpływać tylko na ten obiekt, głównie w wyniku działania użytkownika (sterowanie za pomocą klawiatury i myszki), a także algorytmów silnika fizycznego (\code{jBullet}) dostępnego w \code{jMonkeyEngine}. Gdy nawiązane jest połączenie z serwerem, klient wysyła z określoną częstotliwością informacje dotyczące obecnej pozycji oraz rotacji obiektu lokalnego gracza. W wyniku zdarzeń takich jak wystrzelenie pocisku, trafienie, śmierć lokalnego gracza, bezzwłocznie wysyłane są wiadomości informujące o tych zdarzeniach.
+	\item \textbf{Symulacja - poruszanie} \\
+	Aby gracz widział innych klientów podłączonych do danego serwera, wszystkie inne postaci są symulowane na podstawie wiadomości otrzymanych z serwera. Serwer zbiera aktualizacje stanów obecnie podłączonych graczy, tworzy z nich listę a następnie rozsyła ją do wszystkich klientów. Ze względu na to, że wiadomości dotyczące zmian pozycji gracza wysyłane są z częstotliwością znacznie mniejszą niż odświeżanie ekranu, pozycje symulowanych obiektów są interpolowane aby zapewnić ich płynny ruch.
+	\item \textbf{Symulacja - pociski} \\
+	Aby symulować pociski wystrzelone przez innych klientów, każdy klient wysyła wiadomość informującą o swoich wystrzale, a następnie ta wiadomość jest broadcastowana przez serwer do pozostałych klientów. W przypadku odebrania takiej wiadomości, aplikacja klienta tworzy obiekt symulowanego pocisku na podstawie informacji zawartych w wiadomości.
+	\item \textbf{Symulacja - trafienia} \\
+	Aby uniknąć duplikowania się wiadomości o trafieniach, jedynie pociski lokalne (wystrzelone przez lokalnego gracza) po skolidowaniu z symulowaną postacią wysyłają wiadomości do serwera. Symulowane pociski w wypadku kolizji jedynie znikają, nie wysyłając żadnych informacji.
+	\item \textbf{Konsekwencje rozwiązania} \\
+	Zaimplementowany przez nas sposób komunikacji jest skuteczny przy przyjętych przez nas założeniach, ale niestety bardzo szybko uwidaczniają się problemy, gdy któreś z tych założeń nie jest spełnione. W przypadku wystarczająco dużych opóźnień sieciowych, widoczne stają się różnice w symulacjach poszczególnych klientów, co powoduje problemy takie jak “trafienia znikąd” - gracz widzi utratę punktów życia, mimo tego że żaden pocisk go nie trafił. Nie ma też jakiegokolwiek mechanizmu broniącego przed oszustwami, w wyniku czego (np. przy pomocy \code{CheatEngine}) gracz może wpływać na aplikację tak aby uzyskać przewagę nad innymi użytkownikami.
+\end{itemize}
+
+\clearpage
+
 \section{Rodzaje wiadomości}
+W projekcie zaprojektowaliśmy własną klasę wiadomości \code{BaseBlastbackMessage} bazującą na dostarczonym szablonie, a następnie zaimpementowaliśmy 7 dziedziczących klas, odpowiedzialnych za przesyłanie konkretnych danych. Zarówno serwer jak i aplikacja kliencka dysponują Listenerami, które rozpoznają rodzaj przychodzącej wiadomości i w odpowiedni sposób ją obsługują. 
+Każda z wiadomości posiada odpowiadającą jej klasę z danymi, które serializowane są w momencie utworzenia wiadomości i deserializowane przy obsługiwaniu po dotarciu do serwera lub innego klienta. 
+Zaimplementowanie wielu różnych rodzajów wiadomości dało nam możliwość sprawnego komunikowania o zdarzeniu danego typu, które wywołują wysłanie odpowiedniego komunikatu, tym samym zmniejszając ilość niezbędnych danych w \code{PlayerStateInfosMessage}, które rozsyłane są nieustannie by zapewnić informacje o symulacji innym klientów.
+
+\begin{align*}
+ \includegraphics[scale=0.7]{messages}
+\end{align*}
+
+
 \section{Serializacja}
+W trakcie realizacji projektu uznaliśmy że prawidłowy przesył danych jest niezbędny do prawidłowego działania programu, stąd nasza decyzja na serializację danych przesyłanych poprzez wiadomości do formatu json z pomocą biblioteki \code{gson}.
+Problemy biblioteki \code{gson}, takich jak serializacja klas generycznych, spowodowały, że zdecydowaliśmy się na implementację klas przechowujących dane, które następnie będą wysłane.
+Json zapewnił danym elastyczności niezbędnej w stale rozwijającej się aplikacji, pozwalając dowolnie kształtować klasy przetrzymujące dane wiadomości, bez konieczności tworzenia na szybko własnych, zawodnych mechanizmów deserializacji. 
 
 
 
