@@ -70,20 +70,6 @@ Problemy biblioteki \code{gson}, takich jak serializacja klas generycznych, spow
 Json zapewnił danym elastyczności niezbędnej w stale rozwijającej się aplikacji, pozwalając dowolnie kształtować klasy przetrzymujące dane wiadomości, bez konieczności tworzenia na szybko własnych, zawodnych mechanizmów deserializacji. 
 
 
-
-\stepcounter{chapter}
-\chapter*{Grafika i dźwięk}
-Grafika składa się z modeli które zostały stworzone w programie \code{Blender}.
-Modele utworzone w tym programie zostały zaimportowane do projektu.
-Następnie modele zostały odpowiednio podczepione pod scenę, w celu ich renderowania.
-Model postaci jest ładowany przy dołączeniu do gry, a następnie jest przemieszczany po mapie przy pomocy pozycji obiektu w przestrzeni.
-Fizyka całego rozwiązania opiera się na fizyce silnika \code{jMonkeyEngine}.
-Każdy obiekt posiada informacje o ich kształcie kolizyjnym, który jest wykorzystywany do detekcji kolizji.
-W przypadku wykrycia kolizji wykonywane są odpowiednie akcje.
-Muzyka która gra w tle jest realizowana przy pomocy silnika \code{jMonkeyEngine} który odtwarza wybrany utwór w pętli na całej mapie dla każdego klienta indywidualnie.
-Dźwięk strzału broni wywołujemy przy pomocy eventów, które umożliwiają na odtworzenie odpowiedniego dźwięku dla wybranej broni przy pomocy argumentów przesyłanych razem z eventem.
-
-
 \stepcounter{chapter}
 \chapter*{Interfejs użytkownika}
 \section{NiftyGUI}
@@ -96,17 +82,22 @@ Interfejs graficzny w naszej aplikacji jest renderowany przy użyciu \code{Nifty
 \section{Stylowanie kontrolek}
 Aby odpowiednio wystylować wygląd kontrolek pod nasze potrzeby, należało przeciążać ich domyślne style. Nasze definicje styli zostały również zapisane w pliku xml i znajdują się w \code{assets/Interface/Styles/styles.xml}. Powyżej - wygląd głownego menu gry z przeciążonymi definicjami stylów, poniżej - ich domyślne odpowiedniki.
 \begin{gather*}
-	\includegraphics*[scale=0.32]{gui_styled} \\
-	\includegraphics*[scale=0.32]{gui_not_styled} 
+\includegraphics*[scale=0.32]{gui_styled} \\
+\includegraphics*[scale=0.32]{gui_not_styled} 
 \end{gather*}
 
 
 \stepcounter{chapter}
-\chapter*{Podsumowanie}
-\section{Propozycje rozwoju}
-\section{Wnioski po pracy z silnikiem}
-
-
+\chapter*{Grafika i dźwięk}
+Grafika składa się z modeli które zostały stworzone w programie \code{Blender}.
+Modele utworzone w tym programie zostały zaimportowane do projektu.
+Następnie modele zostały odpowiednio podczepione pod scenę, w celu ich renderowania.
+Model postaci jest ładowany przy dołączeniu do gry, a następnie jest przemieszczany po mapie przy pomocy pozycji obiektu w przestrzeni.
+Fizyka całego rozwiązania opiera się na fizyce silnika \code{jMonkeyEngine}.
+Każdy obiekt posiada informacje o ich kształcie kolizyjnym, który jest wykorzystywany do detekcji kolizji.
+W przypadku wykrycia kolizji wykonywane są odpowiednie akcje.
+Muzyka która gra w tle jest realizowana przy pomocy silnika \code{jMonkeyEngine} który odtwarza wybrany utwór w pętli na całej mapie dla każdego klienta indywidualnie.
+Dźwięk strzału broni wywołujemy przy pomocy eventów, które umożliwiają na odtworzenie odpowiedniego dźwięku dla wybranej broni przy pomocy argumentów przesyłanych razem z eventem.
 
 
 \end{document}
