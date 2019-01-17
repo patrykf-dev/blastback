@@ -24,7 +24,7 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
     
     public BaseBlastbackMessage()
     {
-        super(false);
+        super(true);
         _gsonInstance = new Gson();
         
     }
@@ -39,6 +39,7 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
         _gsonInstance = new Gson();
     }
 
+    
     /**
      * Deserialize message to receive object it contains.
      * @return

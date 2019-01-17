@@ -22,7 +22,9 @@ public class SimulationDataMessage extends BaseBlastbackMessage<SimulationDataCo
     
     public SimulationDataMessage(SimulationDataContainer param)
     {
+        
         super(param);
+        this.setReliable(false);
         _content = _gsonInstance.toJson(param);
     }
 
