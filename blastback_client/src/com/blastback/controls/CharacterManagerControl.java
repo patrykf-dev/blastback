@@ -27,49 +27,44 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class CharacterManagerControl extends AbstractControl
 {
-    
-    private IdentityData _characterData;
-    private RigidBodyControl _rbControl;
-    private CharacterHealthControl _healthControl;
-    
+
+    private final IdentityData _characterData;
+
     //TODO: INTERPOLATION DATA
     private final Vector3f _targetPosition = new Vector3f();
     private final Quaternion _targetRotation = new Quaternion();
     private static float _lerpFactor = 0.05f;
     private static float _snapThreshold = 5f;
-    
+
     public CharacterManagerControl(IdentityData characterData)
     {
         _characterData = characterData;
     }
-    
+
     public CharacterManagerControl()
     {
-        _characterData = new IdentityData(-1,"Unknown");
+        _characterData = new IdentityData(-1, "Unknown");
     }
 
     @Override
     public void setSpatial(Spatial spatial)
     {
         super.setSpatial(spatial);
-        _rbControl = spatial.getControl(RigidBodyControl.class);
-        _healthControl = spatial.getControl(CharacterHealthControl.class);
     }
 
     public void setUsername(String username)
     {
         _characterData.setUsername(username);
     }
-    
+
     @Override
     protected void controlUpdate(float tpf)
     {
         Vector3f nextPos;
-        if(spatial.getLocalTranslation().subtract(_targetPosition).length() < _snapThreshold)
+        if (spatial.getLocalTranslation().subtract(_targetPosition).length() < _snapThreshold)
         {
             nextPos = FastMath.interpolateLinear(_lerpFactor, spatial.getLocalTranslation(), _targetPosition);
-        }
-        else
+        } else
         {
             nextPos = _targetPosition;
         }
@@ -81,22 +76,23 @@ public class CharacterManagerControl extends AbstractControl
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp)
     {
-        
+
     }
-    
+
     public int getId()
     {
         return _characterData.getId();
     }
-    
+
     public String getUsername()
     {
         return _characterData.getUsername();
     }
-    
+
     /**
      * Overrides current character state with given PlayerStateInfo.
-     * @param state 
+     *
+     * @param state
      */
     public void setFromState(PlayerStateInfo state)
     {
@@ -106,27 +102,32 @@ public class CharacterManagerControl extends AbstractControl
         setTargetRotation(state.getPlayerState().getLocalRotation());
         setRotation(_targetRotation);
     }
-    
+
     /**
-     * Method sets new position to which affected character should move making the character move smoothly towards desired position.
-     * @param position 
+     * Method sets new position to which affected character should move making
+     * the character move smoothly towards desired position.
+     *
+     * @param position
      */
     public void setTargetPosition(Vector3f position)
     {
         _targetPosition.set(position);
     }
-    
+
     /**
-     * Method sets new rotation for the affected character, making it interpolate its local rotation towards the desired rotation smoothly.
-     * @param rotation 
+     * Method sets new rotation for the affected character, making it
+     * interpolate its local rotation towards the desired rotation smoothly.
+     *
+     * @param rotation
      */
     public void setTargetRotation(Vector3f rotation)
     {
         _targetRotation.lookAt(rotation, Vector3f.UNIT_Y);
     }
-    
+
     /**
      * Enables character by attaching it to given scene node and physics space.
+     *
      * @param root Scene node that character needs to be attached to.
      * @param space Physics space that character needs to be added to.
      */
@@ -135,9 +136,11 @@ public class CharacterManagerControl extends AbstractControl
         root.attachChild(spatial);
         space.add(spatial);
     }
-    
+
     /**
-     * Disables character by detaching it from given scene node and physics space.
+     * Disables character by detaching it from given scene node and physics
+     * space.
+     *
      * @param root Scene node to which character is currently attached.
      * @param space Physics space to which character is currently added.
      */
@@ -146,10 +149,11 @@ public class CharacterManagerControl extends AbstractControl
         root.detachChild(spatial);
         space.remove(spatial);
     }
-    
+
     /**
      * "Snaps" character to desired position.
-     * @param position 
+     *
+     * @param position
      */
     private void setPosition(Vector3f position)
     {
@@ -158,16 +162,18 @@ public class CharacterManagerControl extends AbstractControl
 
     /**
      * "Snaps" character to desired rotation.
-     * @param rotation 
+     *
+     * @param rotation
      */
     private void setRotation(Quaternion rotation)
     {
         spatial.setLocalRotation(rotation);
-    }    
-    
+    }
+
     /**
      * Creates a spatial with necessary controls and returns its
      * CharacterManagerControl.
+     *
      * @param assetManager reference to SimpleApplication's assetManager.
      * @return CharacterManagerControl associated with created character.
      */

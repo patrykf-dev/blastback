@@ -20,7 +20,7 @@ public class PlayerStateInfo
 //    private String _username;
 //    
 
-    private IdentityData _identityData;
+    private final IdentityData _identityData;
     private final MatchStats _stats;
     private final PlayerState _ps; // corresponding playerstate
 

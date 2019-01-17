@@ -11,8 +11,9 @@ package com.blastback.shared.messages.data;
  */
 public class MatchSettings
 {
+
     private final float _gameLength;
-    
+
     public MatchSettings(float gameLength)
     {
         _gameLength = gameLength;

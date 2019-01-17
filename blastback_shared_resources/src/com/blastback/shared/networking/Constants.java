@@ -1,8 +1,8 @@
 package com.blastback.shared.networking;
 
-
 public class Constants
 {
+
     public static final int MAX_ROOMS_COUNT = 10;
     public static final int MAX_CLIENTS_COUNT = 200;
     public static final int MAX_CLIENTS_PER_ROOM_COUNT = 10;

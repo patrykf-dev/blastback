@@ -12,8 +12,8 @@ public class GameServer extends SimpleApplication
     public GameServer()
     {
         super(new ServerNetworkAppState(),
-              new GameMatchAppState(60),
-              new SimulationDataAppState());
+                new GameMatchAppState(60),
+                new SimulationDataAppState());
     }
 
     public static void main(String[] args)
@@ -31,7 +31,7 @@ public class GameServer extends SimpleApplication
     public void simpleUpdate(float tpf)
     {
         // reacting to messages...
-        
+
     }
 
     @Override

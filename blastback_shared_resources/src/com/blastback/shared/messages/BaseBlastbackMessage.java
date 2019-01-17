@@ -14,23 +14,26 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public abstract class BaseBlastbackMessage<T> extends AbstractMessage
 {
+
     protected String _content;
     protected Gson _gsonInstance;
-    
+
     public String getContent()
     {
         return _content;
     }
-    
+
     public BaseBlastbackMessage()
     {
         super(true);
         _gsonInstance = new Gson();
-        
+
     }
 
     /**
-     * Contructor here is also responsible for SERIALIZING received param, which is to be implemented in inheriting classes.
+     * Contructor here is also responsible for SERIALIZING received param, which
+     * is to be implemented in inheriting classes.
+     *
      * @param param
      */
     public BaseBlastbackMessage(T param)
@@ -39,9 +42,9 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
         _gsonInstance = new Gson();
     }
 
-    
     /**
      * Deserialize message to receive object it contains.
+     *
      * @return
      */
     public abstract T deserialize();

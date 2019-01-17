@@ -5,6 +5,7 @@ import com.blastback.shared.observer.BlastbackEventArgs;
 
 public class HitEventArgs extends BlastbackEventArgs
 {
+
     private IdentityData _shooterData;
     private final IdentityData _targetData;
     private final int _damage;
@@ -35,5 +36,5 @@ public class HitEventArgs extends BlastbackEventArgs
     {
         this._shooterData = shooterData;
     }
-    
+
 }

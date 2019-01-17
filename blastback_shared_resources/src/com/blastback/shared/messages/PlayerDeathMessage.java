@@ -15,6 +15,7 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class PlayerDeathMessage extends BaseBlastbackMessage<HitEventArgs>
 {
+
     public PlayerDeathMessage()
     {
         super();
@@ -25,11 +26,11 @@ public class PlayerDeathMessage extends BaseBlastbackMessage<HitEventArgs>
         super(param);
         _content = _gsonInstance.toJson(param);
     }
-    
+
     @Override
     public HitEventArgs deserialize()
     {
         return _gsonInstance.fromJson(_content, HitEventArgs.class);
     }
-    
+
 }

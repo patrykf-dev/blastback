@@ -10,23 +10,24 @@ import com.jme3.network.serializing.Serializable;
 
 /**
  * This type of message is supposed to be sent by CLIENT.
+ *
  * @author Marcin
  */
 @Serializable
 public class PlayerHitMessage extends BaseBlastbackMessage<HitEventArgs>
 {
-    
+
     public PlayerHitMessage()
     {
         super();
     }
-    
+
     public PlayerHitMessage(HitEventArgs param)
     {
         super(param);
-         _content = _gsonInstance.toJson(param);
+        _content = _gsonInstance.toJson(param);
     }
-   
+
     @Override
     public HitEventArgs deserialize()
     {

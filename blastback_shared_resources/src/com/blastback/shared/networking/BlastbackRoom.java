@@ -28,7 +28,7 @@ public class BlastbackRoom
     {
         return _name;
     }
-    
+
     public int getId()
     {
         return _id;

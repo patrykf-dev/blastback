@@ -11,12 +11,9 @@ import com.blastback.shared.messages.data.ShootEventArgs;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.control.GhostControl;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -27,16 +24,15 @@ import com.jme3.scene.Spatial;
  */
 public class BulletFactoryAppState extends BaseAppState
 {
+
     private static GameClient _app;
     private static AssetManager _assetManager;
     private static AudioNode Sound;
 
-    
-
     @Override
     protected void initialize(Application app)
     {
-        _app = (GameClient)app;
+        _app = (GameClient) app;
         _assetManager = _app.getAssetManager();
     }
 
@@ -48,15 +44,15 @@ public class BulletFactoryAppState extends BaseAppState
     @Override
     protected void onEnable()
     {
-         
+
     }
 
     @Override
     protected void onDisable()
     {
-        
+
     }
-    
+
     public static BulletControl createBullet(Node root, PhysicsSpace space, ShootEventArgs eventArgs, boolean dummy)
     {
         Spatial bullet = _assetManager.loadModel(eventArgs.getWeaponInfo().getModel());
@@ -66,21 +62,22 @@ public class BulletFactoryAppState extends BaseAppState
         bulletControl.setPhysicsRotation(eventArgs.getShotRotation());
         bullet.setLocalTranslation(eventArgs.getShotPosition());
         bullet.setLocalRotation(eventArgs.getShotRotation());
-        
+
         root.attachChild(bullet);
         space.add(bulletControl);
         space.addCollisionListener(bulletControl);
         bulletControl.setGravity(Vector3f.ZERO);
         bulletControl.setCcdMotionThreshold(0.02f);
         bulletControl.setCcdSweptSphereRadius(0.12f);
-        
+
         ShootSound(eventArgs.getWeaponInfo().getSound());
-        
+
         return bulletControl;
     }
-    
-    private static void ShootSound(String sound) {
-        Sound = new AudioNode(_assetManager, sound , DataType.Buffer);
+
+    private static void ShootSound(String sound)
+    {
+        Sound = new AudioNode(_assetManager, sound, DataType.Buffer);
         Sound.setPositional(true);
         Sound.setDirectional(false);
         Sound.setVolume(5);
@@ -88,6 +85,5 @@ public class BulletFactoryAppState extends BaseAppState
         Sound.playInstance();
         _app.getRootNode().detachChild(Sound);
     }
-       
-    
+
 }

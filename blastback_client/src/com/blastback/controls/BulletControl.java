@@ -73,9 +73,9 @@ public class BulletControl extends RigidBodyControl implements PhysicsCollisionL
             if (_isDummy == false)
             {
                 CharacterManagerControl characterControl = target.getControl(CharacterManagerControl.class);
-                if(characterControl != null)
+                if (characterControl != null)
                 {
-                    IdentityData targetData = new IdentityData(characterControl.getId(),characterControl.getUsername());
+                    IdentityData targetData = new IdentityData(characterControl.getId(), characterControl.getUsername());
                     HitEventArgs eventArgs = new HitEventArgs(targetData, _damage);
                     onPlayerHitEvent.notify(eventArgs);
                 }

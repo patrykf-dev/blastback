@@ -11,6 +11,7 @@ package com.blastback.shared.messages.data;
  */
 public class SimulationDataContainer
 {
+
     private final PlayerStateInfo[] _array;
     private final float _remainingTime;
 
@@ -18,10 +19,10 @@ public class SimulationDataContainer
     {
         return _remainingTime;
     }
-    
+
     public SimulationDataContainer(PlayerStateInfo[] array, float remainingTime)
     {
-        _array= array;
+        _array = array;
         _remainingTime = remainingTime;
     }
 
@@ -29,6 +30,5 @@ public class SimulationDataContainer
     {
         return _array;
     }
-    
-    
+
 }

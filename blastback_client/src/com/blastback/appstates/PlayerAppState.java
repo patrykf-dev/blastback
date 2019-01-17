@@ -41,6 +41,7 @@ import java.util.logging.Logger;
  */
 public class PlayerAppState extends BaseAppState
 {
+
     private GameClient _app;
     private InputManagerAppState _inputAppState;
     private BulletAppState _bulletAppState;
@@ -53,10 +54,10 @@ public class PlayerAppState extends BaseAppState
     private CharacterHealthControl _healthControl;
     private PlayerNetworkPresenceControl _networkPresenceControl;
     private GameInterfaceControl _gameInterfaceControl;
-    
+
     private ClientListener _listener;
     private BlastbackEventListener<HitEventArgs> _deathListener;
-    
+
     private final ArrayList<HitEventArgs> _deathEventsQueue = new ArrayList<>();
 
     @Override
@@ -67,7 +68,7 @@ public class PlayerAppState extends BaseAppState
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _networkAppState = _app.getStateManager().getState(NetworkAppState.class);
         _guiAppState = _app.getStateManager().getState(GUIAppState.class);
-        
+
         initListeners();
         initPlayer();
     }
@@ -84,12 +85,12 @@ public class PlayerAppState extends BaseAppState
 
         _charControl.setPhysicsLocation(new Vector3f(0f, 2.2f, 0f));
         _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
-        
-        if(_networkPresenceControl.isEnabled() == false)
+
+        if (_networkPresenceControl.isEnabled() == false)
         {
             _networkPresenceControl.setEnabled(true);
         }
-        
+
         _networkAppState.addListener(_listener);
     }
 
@@ -102,32 +103,30 @@ public class PlayerAppState extends BaseAppState
         _app.getRootNode().detachChild(_player);
 
         _bulletAppState.getPhysicsSpace().remove(_charControl);
-        
-        if(_networkPresenceControl.isEnabled() == true)
+
+        if (_networkPresenceControl.isEnabled() == true)
         {
             _networkPresenceControl.setEnabled(false);
         }
-        
+
         _networkAppState.removeListener(_listener);
     }
 
     @Override
     public void update(float tpf)
     {
-        synchronized(_deathEventsQueue)
+        synchronized (_deathEventsQueue)
         {
-            while(_deathEventsQueue.isEmpty() == false)
+            while (_deathEventsQueue.isEmpty() == false)
             {
                 String killer = _deathEventsQueue.get(0).getShooterData().getUsername();
                 String killed = _deathEventsQueue.get(0).getTargetData().getUsername();
-                
+
                 _gameInterfaceControl.displayKillEvent(killer, killed);
                 _deathEventsQueue.remove(0);
             }
         }
     }
-    
-    
 
     @Override
     protected void cleanup(Application app)
@@ -148,19 +147,19 @@ public class PlayerAppState extends BaseAppState
         _player.addControl(new PlayerMovementControl());
         _gameInterfaceControl = new GameInterfaceControl(_guiAppState.getNifty());
         _player.addControl(_gameInterfaceControl);
-        _player.addControl(new PlayerShootingControl(new Vector3f(0f,0.0f, -1.85f))); //to adjust
+        _player.addControl(new PlayerShootingControl(new Vector3f(0f, 0.0f, -1.85f))); //to adjust
         _healthControl = new CharacterHealthControl();
         _player.addControl(_healthControl);
         _healthControl.onDeathEvent.addListener(_deathListener);
-        
+
         _networkPresenceControl = new PlayerNetworkPresenceControl(_networkAppState);
         _player.addControl(_networkPresenceControl);
         _networkPresenceControl.setEnabled(true);
-        
+
         _inputControl = new PlayerInputControl();
         _player.addControl(_inputControl);
     }
-    
+
     private void initListeners()
     {
         _listener = new ClientListener()
@@ -168,37 +167,34 @@ public class PlayerAppState extends BaseAppState
             @Override
             public void messageReceived(Client source, Message message)
             {
-                if(message instanceof PlayerHitMessage)
+                if (message instanceof PlayerHitMessage)
                 {
-                    PlayerHitMessage msg = (PlayerHitMessage)message;
+                    PlayerHitMessage msg = (PlayerHitMessage) message;
                     HitEventArgs data = msg.deserialize();
                     _healthControl.takeDamage(data);
                     _gameInterfaceControl.updateHealthBar(_healthControl.getCurrentHealth());
-                }
-                else if(message instanceof PlayerDeathMessage)
+                } else if (message instanceof PlayerDeathMessage)
                 {
-                    PlayerDeathMessage msg = (PlayerDeathMessage)message;
+                    PlayerDeathMessage msg = (PlayerDeathMessage) message;
                     HitEventArgs data = msg.deserialize();
-                    synchronized(_deathEventsQueue)
+                    synchronized (_deathEventsQueue)
                     {
                         _deathEventsQueue.add(data);
                     }
-                }
-                else if(message instanceof MatchStartedMessage)
+                } else if (message instanceof MatchStartedMessage)
                 {
-                    MatchStartedMessage msg = (MatchStartedMessage)message;
+                    MatchStartedMessage msg = (MatchStartedMessage) message;
                     MatchSettings settings = msg.deserialize();
                     //set timer
                     respawnPlayer();
-                }
-                else if(message instanceof MatchEndedMessage)
+                } else if (message instanceof MatchEndedMessage)
                 {
                     //show gameresults
                 }
             }
-            
+
         };
-        
+
         _deathListener = new BlastbackEventListener<HitEventArgs>()
         {
             @Override
@@ -213,40 +209,50 @@ public class PlayerAppState extends BaseAppState
     {
         return _charControl.getPhysicsLocation().clone();
     }
-    
+
     private void respawnPlayer()
     {
         _healthControl.resetHealth();
-        
-        Random generator = new Random(); 
+
+        Random generator = new Random();
         int i = generator.nextInt(4);
         Vector3f playerPosition = _charControl.getPhysicsLocation();
         Vector3f temp = new Vector3f(0, 2.2f, 0);
-        
-        switch (i) {
+
+        switch (i)
+        {
             case 0:
                 temp = new Vector3f(10f, 2.2f, 20f);
-                if(temp.distance(playerPosition) > 4f)
-                    break; 
+                if (temp.distance(playerPosition) > 4f)
+                {
+                    break;
+                }
             case 1:
                 temp = new Vector3f(8f, 2.2f, -20f);
-                if(temp.distance(playerPosition) > 4f)
-                    break; 
+                if (temp.distance(playerPosition) > 4f)
+                {
+                    break;
+                }
             case 2:
                 temp = new Vector3f(-8f, 2.2f, -20f);
-                if(temp.distance(playerPosition) > 4f)
-                    break; 
+                if (temp.distance(playerPosition) > 4f)
+                {
+                    break;
+                }
             case 3:
                 temp = new Vector3f(-8f, 2.2f, 20f);
-                if(temp.distance(playerPosition) > 4f)
-                    break; 
+                if (temp.distance(playerPosition) > 4f)
+                {
+                    break;
+                }
             default:
                 break;
         }
         _charControl.setPhysicsLocation(temp);
-       
+
         _charControl.setViewDirection(new Vector3f(1f, 0f, 0f));
     }
+
     private void Log(String msg)
     {
         Logger.getLogger(GameClient.class.getName()).log(Level.INFO, "\t[LOG] {0}", msg);
@@ -256,5 +262,5 @@ public class PlayerAppState extends BaseAppState
     {
         return _gameInterfaceControl;
     }
-    
+
 }

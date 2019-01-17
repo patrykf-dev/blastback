@@ -12,12 +12,12 @@ import com.jme3.scene.control.AbstractControl;
 
 public class PlayerInputControl extends AbstractControl
 {
+
     private ActionListener _keyboardListener;
     private AnalogListener _mouseListener;
     private PlayerMovementControl _movementControl;
     private PlayerShootingControl _shootingControl;
     private GameInterfaceControl _gameInterfaceControl;
-
 
     public PlayerInputControl()
     {
@@ -42,7 +42,7 @@ public class PlayerInputControl extends AbstractControl
 
         WeaponInfo wi = _shootingControl.getWeaponControl().getCurrentWeapon();
         _gameInterfaceControl.updateAmmo(wi.getCurrentAmmo(), wi.getAmmoCapacity());
-        
+
     }
 
     @Override
@@ -74,11 +74,11 @@ public class PlayerInputControl extends AbstractControl
                 {
                     _movementControl.setDown(keyPressed);
                 }
-                 if (name.equals("Tab"))
+                if (name.equals("Tab"))
                 {
                     _gameInterfaceControl.displayScoreboard(keyPressed);
                 }
-                
+
                 if (name.equals("Shoot"))
                 {
                     _shootingControl.shoot(keyPressed);
@@ -100,7 +100,7 @@ public class PlayerInputControl extends AbstractControl
                 }
                 if (name.equals("R") && keyPressed)
                 {
-                    _shootingControl.getWeaponControl().getCurrentWeapon().Reload();
+                    _shootingControl.getWeaponControl().getCurrentWeapon().reload();
                 }
 
             }

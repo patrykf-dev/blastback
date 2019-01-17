@@ -11,14 +11,16 @@ import com.jme3.math.Vector3f;
  *
  * @author Artur
  */
-public class ClientCoordinates {
+public class ClientCoordinates
+{
 
     //coordinates
-    private String _username;
+    private final String _username;
     private final float _x, _y, _z; //translation coordinates
     private final float _rX, _rY, _rZ; //rotation coordinates
 
-    public ClientCoordinates(Vector3f localTranslation, Vector3f localRotation,String username) {
+    public ClientCoordinates(Vector3f localTranslation, Vector3f localRotation, String username)
+    {
         _x = localTranslation.x;
         _rX = localRotation.x;
 
@@ -35,16 +37,19 @@ public class ClientCoordinates {
     {
         return _username;
     }
-    
-    public String getCoordinates() {
+
+    public String getCoordinates()
+    {
         return "Coordinates: [" + _x + "," + _y + "," + _z + "]";
     }
 
-    public Vector3f geTranslationVector() {
+    public Vector3f geTranslationVector()
+    {
         return new Vector3f(_x, _y, _z);
     }
 
-    public Vector3f getRotationVector() {
+    public Vector3f getRotationVector()
+    {
         return new Vector3f(_rX, _rY, _rZ);
     }
 

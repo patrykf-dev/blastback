@@ -29,16 +29,16 @@ public class ClientListener implements MessageListener<Client>
             System.out.println("Client #" + source.getId() + " received: '" + helloMessage.getContent() + "'");
         } // else...
 
-        if(message instanceof PlayerShotMessage)
+        if (message instanceof PlayerShotMessage)
         {
-            PlayerShotMessage PSMessage  = (PlayerShotMessage) message;
+            PlayerShotMessage PSMessage = (PlayerShotMessage) message;
         }
-        
-        if(message instanceof SimulationDataMessage)
+
+        if (message instanceof SimulationDataMessage)
         {
-            SimulationDataMessage PSIMessage  = (SimulationDataMessage) message;
-           
+            SimulationDataMessage PSIMessage = (SimulationDataMessage) message;
+
         }
-        
+
     }
 }

@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 public class NetworkAppState extends BaseAppState
 {
+
     private GameClient _app;
     private PlayerAppState _playerAppState;
     private GameInterfaceControl _interfaceControl;
@@ -41,13 +42,13 @@ public class NetworkAppState extends BaseAppState
     private final String _ip;
     private final String _username;
     private final List<MessageListener> _messageListeners;
-    
+
     private ClientListener _connectionListener;
     private final float _timeThreshold = 5f;
     private boolean _isDisconnected = false;
-    
+
     private final MutableFloat _timeSinceLastMessage = new MutableFloat(0f);
-    
+
     public NetworkAppState()
     {
         initListener();
@@ -55,7 +56,7 @@ public class NetworkAppState extends BaseAppState
         _port = 7777;
         _messageListeners = new ArrayList<>();
         _messageListeners.add(_connectionListener);
-        _username= "Clyde";
+        _username = "Clyde";
     }
 
     public NetworkAppState(String ip, int port, String username)
@@ -77,12 +78,12 @@ public class NetworkAppState extends BaseAppState
     {
         return _username;
     }
-                
+
     @Override
     protected void initialize(Application app)
     {
         registerMessages();
-        _app = (GameClient)app;
+        _app = (GameClient) app;
         _playerAppState = _app.getStateManager().getState(PlayerAppState.class);
         _interfaceControl = _playerAppState.getGameInterfaceControl();
     }
@@ -107,12 +108,12 @@ public class NetworkAppState extends BaseAppState
         }
         if (_clientInstance != null)
         {
-            if(_clientInstance.isConnected())
+            if (_clientInstance.isConnected())
             {
                 _clientInstance.close();
             }
         }
-        
+
     }
 
     @Override
@@ -162,7 +163,7 @@ public class NetworkAppState extends BaseAppState
 
     private void registerListener(MessageListener listener)
     {
-        if(_clientInstance != null)
+        if (_clientInstance != null)
         {
             _clientInstance.addMessageListener(listener);
         }
@@ -170,7 +171,7 @@ public class NetworkAppState extends BaseAppState
 
     private void unregisterListener(MessageListener listener)
     {
-        if(_clientInstance != null)
+        if (_clientInstance != null)
         {
             _clientInstance.removeMessageListener(listener);
         }
@@ -179,26 +180,23 @@ public class NetworkAppState extends BaseAppState
     @Override
     public void update(float tpf)
     {
-        if(_isDisconnected == false)
+        if (_isDisconnected == false)
         {
-            synchronized(_timeSinceLastMessage)
+            synchronized (_timeSinceLastMessage)
             {
                 float val = _timeSinceLastMessage.getValue();
-                if(val > _timeThreshold)
+                if (val > _timeThreshold)
                 {
                     _interfaceControl.displayConnectionLostNotification(true);
                     _isDisconnected = true;
-                }
-                else
+                } else
                 {
                     _timeSinceLastMessage.setValue(val + tpf);
                 }
             }
         }
     }
-    
-    
-    
+
     private void initListener()
     {
         _connectionListener = new ClientListener()
@@ -206,11 +204,11 @@ public class NetworkAppState extends BaseAppState
             @Override
             public void messageReceived(Client source, Message message)
             {
-                synchronized(_timeSinceLastMessage)
+                synchronized (_timeSinceLastMessage)
                 {
                     _timeSinceLastMessage.setValue(0f);
                 }
-            }  
+            }
         };
     }
 
@@ -226,16 +224,17 @@ public class NetworkAppState extends BaseAppState
         Serializer.registerClass(MatchStartedMessage.class);
         Serializer.registerClass(MatchEndedMessage.class);
     }
-    
+
     private class MutableFloat
     {
+
         private float _value;
-        
+
         public MutableFloat(float value)
         {
             _value = value;
         }
-        
+
         public float getValue()
         {
             return _value;

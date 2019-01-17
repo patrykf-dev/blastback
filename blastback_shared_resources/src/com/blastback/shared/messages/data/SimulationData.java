@@ -15,7 +15,7 @@ import java.util.List;
 public class SimulationData
 {
 
-    private List<PlayerStateInfo> _data;
+    private final List<PlayerStateInfo> _data;
 
     public SimulationData()
     {

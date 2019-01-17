@@ -6,7 +6,6 @@
 package com.blastback.appstates;
 
 import com.blastback.GameServer;
-import com.blastback.listeners.ServerListener;
 import com.blastback.shared.messages.BaseBlastbackMessage;
 import com.blastback.shared.messages.HelloMessage;
 import com.blastback.shared.messages.MatchEndedMessage;
@@ -17,7 +16,6 @@ import com.blastback.shared.messages.PlayerMovedMessage;
 import com.blastback.shared.messages.PlayerShotMessage;
 import com.blastback.shared.messages.SimulationDataMessage;
 import com.blastback.shared.networking.BlastbackClient;
-import com.blastback.shared.networking.data.PlayerState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.Vector3f;
@@ -40,9 +38,10 @@ import java.util.logging.Logger;
  */
 public class ServerNetworkAppState extends BaseAppState
 {
-    private List<MessageListener> _messageListeners;
+
+    private final List<MessageListener> _messageListeners;
     private Server _serverInstance;
-    private List<BlastbackClient> _clients;
+    private final List<BlastbackClient> _clients;
     private final int _port;
 
     public ServerNetworkAppState()
@@ -98,29 +97,29 @@ public class ServerNetworkAppState extends BaseAppState
         Collection<HostedConnection> connections = _serverInstance.getConnections();
         //Log(Integer.toString(connections.size()));
         String msg = createBroadcastMessage();
-        
+
         Message message = new HelloMessage(msg);
-       // _serverInstance.broadcast(message);
+        // _serverInstance.broadcast(message);
     }
 
     public Server getServer()
     {
         return _serverInstance;
     }
-    
+
     private String createBroadcastMessage()
     {
         String rc = "";
-        
+
         for (BlastbackClient c : _clients)
         {
             Vector3f tr = c.getState().getLocalTranslation();
-            rc += String.format("%d;%f;%f;%f\n", c.getId() , tr.x, tr.y, tr.z);
+            rc += String.format("%d;%f;%f;%f\n", c.getId(), tr.x, tr.y, tr.z);
         }
-        
+
         return rc;
     }
-    
+
     private void registerMessages()
     {
         Serializer.registerClass(HelloMessage.class);
@@ -184,5 +183,4 @@ public class ServerNetworkAppState extends BaseAppState
         _serverInstance.removeMessageListener(listener);
     }
 
-    
 }

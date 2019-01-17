@@ -36,10 +36,11 @@ public class InputManagerAppState extends BaseAppState
     private Camera _cam;
 
     /**
-     * Cursor position in OpenGL-like coordinates ((-1,-1) is bottom-left, (1,1) is top-right).
+     * Cursor position in OpenGL-like coordinates ((-1,-1) is bottom-left, (1,1)
+     * is top-right).
      */
     public static Vector2f cursorPosition = new Vector2f(0.0f, 0.0f);
-    
+
     /**
      * Direction determined by cursor position (used for raycasting).
      */
@@ -156,7 +157,7 @@ public class InputManagerAppState extends BaseAppState
         _inputManager.addMapping("3", new KeyTrigger(KeyInput.KEY_3));
         _inputManager.addMapping("R", new KeyTrigger(KeyInput.KEY_R));
         _inputManager.addMapping("Tab", new KeyTrigger(KeyInput.KEY_TAB));
-       
+
         _inputManager.addMapping("MouseMoved", new MouseAxisTrigger(MouseInput.AXIS_X, true),
                 new MouseAxisTrigger(MouseInput.AXIS_X, false),
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true),
@@ -176,7 +177,7 @@ public class InputManagerAppState extends BaseAppState
             _inputManager.addListener(listener, "MouseMoved");
         } else if (listener instanceof ActionListener)
         {
-            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot", "1", "2", "3","R", "Tab");
+            _inputManager.addListener(listener, "Right", "Left", "Up", "Down", "Shoot", "1", "2", "3", "R", "Tab");
         }
     }
 

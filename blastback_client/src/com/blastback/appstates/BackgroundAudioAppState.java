@@ -20,40 +20,40 @@ public class BackgroundAudioAppState extends BaseAppState
 
     private GameClient _app;
     private AudioNode Sound;
-    
+
     @Override
-    protected void initialize(Application app) 
+    protected void initialize(Application app)
     {
-        _app = (GameClient) app;    
+        _app = (GameClient) app;
         initAudio();
     }
 
     @Override
-    protected void cleanup(Application app) 
+    protected void cleanup(Application app)
     {
-        
+
     }
 
     @Override
-    protected void onEnable() 
+    protected void onEnable()
     {
         _app.getRootNode().attachChild(Sound);
         Sound.play();
     }
 
     @Override
-    protected void onDisable() 
+    protected void onDisable()
     {
         _app.getRootNode().detachChild(Sound);
     }
-    
-    private void initAudio() 
+
+    private void initAudio()
     {
-    /* nature sound - keeps playing in a loop. */
-    Sound = new AudioNode(_app.getAssetManager(), "Sound/Background.wav", DataType.Stream);
-    Sound.setLooping(true);
-    Sound.setPositional(false);
-    Sound.setVolume(1);
-  }
-    
+        /* nature sound - keeps playing in a loop. */
+        Sound = new AudioNode(_app.getAssetManager(), "Sound/Background.wav", DataType.Stream);
+        Sound.setLooping(true);
+        Sound.setPositional(false);
+        Sound.setVolume(1);
+    }
+
 }

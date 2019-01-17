@@ -1,6 +1,5 @@
 package com.blastback.shared.networking;
 
-
 public enum RoomState
 {
     Idle,

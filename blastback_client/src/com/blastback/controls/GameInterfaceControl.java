@@ -17,11 +17,11 @@ import java.util.List;
 public class GameInterfaceControl extends AbstractControl
 {
 
-    private Nifty _niftyInstance;
+    private final Nifty _niftyInstance;
     private Element _scoreboardPopup;
     private Element _connectionLostPopup;
 
-    private DateTimeFormatter _formatter = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter _formatter = DateTimeFormatter.ofPattern("HH:mm");
 
     public GameInterfaceControl(Nifty niftyInstance)
     {

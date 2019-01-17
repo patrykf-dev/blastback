@@ -142,7 +142,6 @@ public class GUIAppState extends BaseAppState implements ScreenController
 
         return available;
     }
-    
 
     private boolean verifyStartScreenInput()
     {

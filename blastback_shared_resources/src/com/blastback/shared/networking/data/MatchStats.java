@@ -11,25 +11,26 @@ package com.blastback.shared.networking.data;
  */
 public class MatchStats
 {
+
     private int _score;
     private int _deaths;
-    
+
     public MatchStats()
     {
         resetStats();
     }
-    
+
     public final void resetStats()
     {
         _score = 0;
         _deaths = 0;
     }
-    
+
     public void addScore(int score)
     {
         _score += score;
     }
-    
+
     public void addDeath()
     {
         _deaths++;

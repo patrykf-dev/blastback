@@ -15,17 +15,18 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class MatchStartedMessage extends BaseBlastbackMessage<MatchSettings>
 {
+
     public MatchStartedMessage()
     {
         super();
     }
-    
+
     public MatchStartedMessage(MatchSettings param)
     {
         super(param);
         _content = _gsonInstance.toJson(param);
     }
-    
+
     @Override
     public MatchSettings deserialize()
     {

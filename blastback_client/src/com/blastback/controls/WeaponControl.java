@@ -17,42 +17,41 @@ import java.util.HashMap;
  */
 public class WeaponControl extends AbstractControl
 {
-    
+
     private WeaponInfo _currentWeapon;
-    private HashMap<Integer,WeaponInfo> _weapons;
-    
+    private HashMap<Integer, WeaponInfo> _weapons;
+
     public WeaponControl()
     {
         InitWeapons();
         _currentWeapon = _weapons.get(1);
-    }    
+    }
 
     public WeaponInfo getCurrentWeapon()
     {
         return _currentWeapon;
-    }   
-    
+    }
+
     public void ChangeWeapon(int weaponNumber)
     {
-     
-      
+
         _currentWeapon = _weapons.get(weaponNumber);
-        
+
     }
-    
+
     private void InitWeapons()
     {
         _weapons = new HashMap<>();
-        _weapons.put(1, new WeaponInfo(35, 20, 200,35,1000,1,"Sound/Gun.wav","Models/Bullet_1.j3o"));
-        _weapons.put(2, new WeaponInfo(1000,15f,1000,1,3000,1,"Sound/Shotgun.wav","Models/Missile.j3o"));
-        _weapons.put(3, new WeaponInfo(10, 20, 100,10,1500,11,"Sound/Uzi.wav","Models/Bullet.j3o"));
-        
+        _weapons.put(1, new WeaponInfo(35, 20, 200, 35, 1000, 1, "Sound/Gun.wav", "Models/Bullet_1.j3o"));
+        _weapons.put(2, new WeaponInfo(1000, 15f, 1000, 1, 3000, 1, "Sound/Shotgun.wav", "Models/Missile.j3o"));
+        _weapons.put(3, new WeaponInfo(10, 20, 100, 10, 1500, 11, "Sound/Uzi.wav", "Models/Bullet.j3o"));
+
     }
-    
+
     @Override
     protected void controlUpdate(float tpf)
     {
-        
+
     }
 
     @Override
@@ -60,5 +59,4 @@ public class WeaponControl extends AbstractControl
     {
     }
 
-   
 }

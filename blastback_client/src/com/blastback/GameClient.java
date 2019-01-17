@@ -9,7 +9,6 @@ import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.RenderManager;
 
-
 public class GameClient extends SimpleApplication
 {
 
