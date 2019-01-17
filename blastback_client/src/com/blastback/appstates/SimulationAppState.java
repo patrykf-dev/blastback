@@ -29,6 +29,7 @@ public class SimulationAppState extends BaseAppState
     private NetworkAppState _network;
     private InputManagerAppState _inputManager;
     private GameInterfaceControl _gameInterfaceControl;
+    private PlayerAppState _playerAppState;
     private TimerTask task;
     private java.util.Timer timer;
 
@@ -81,6 +82,8 @@ public class SimulationAppState extends BaseAppState
         _network = _app.getStateManager().getState(NetworkAppState.class);
         _gameInterfaceControl = _app.getStateManager().getState(PlayerAppState.class).getGameInterfaceControl();
         _inputManager = _app.getStateManager().getState(InputManagerAppState.class);
+        _playerAppState = _app.getStateManager().getState(PlayerAppState.class);
+        
     }
 
     @Override
@@ -158,7 +161,7 @@ public class SimulationAppState extends BaseAppState
                             
                             
                             _gameInterfaceControl.displayScoreboard(false);
-                            
+                            _playerAppState.resetInput();
                             _inputManager.setEnabled(true);
                             timer.cancel();
                             timer = null;

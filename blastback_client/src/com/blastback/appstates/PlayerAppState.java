@@ -263,4 +263,8 @@ public class PlayerAppState extends BaseAppState
         return _gameInterfaceControl;
     }
 
+    public void resetInput()
+    {
+        _inputControl.resetInput();
+    }
 }

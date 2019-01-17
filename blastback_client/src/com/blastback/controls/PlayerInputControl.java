@@ -131,4 +131,12 @@ public class PlayerInputControl extends AbstractControl
         return _mouseListener;
     }
 
+    public void resetInput()
+    {
+        _movementControl.setLeft(false);
+        _movementControl.setRight(false);
+        _movementControl.setUp(false);
+        _movementControl.setDown(false);
+
+    }
 }
