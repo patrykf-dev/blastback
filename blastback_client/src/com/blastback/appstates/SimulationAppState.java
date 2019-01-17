@@ -19,6 +19,8 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TimerTask;
 
 public class SimulationAppState extends BaseAppState
 {
@@ -26,7 +28,10 @@ public class SimulationAppState extends BaseAppState
     private GameClient _app;
     private BulletAppState _bulletAppState;
     private NetworkAppState _network;
+    private InputManagerAppState _inputManager;
     private GameInterfaceControl _gameInterfaceControl;
+    private TimerTask task;
+    private java.util.Timer timer;
 
     private final ArrayList<CharacterManagerControl> _characters;
 
@@ -34,6 +39,7 @@ public class SimulationAppState extends BaseAppState
     private final List<ShootEventArgs> _pendingBullets = new ArrayList<>();
 
     private ClientListener _listener;
+    
 
     public SimulationAppState()
     {
@@ -72,6 +78,7 @@ public class SimulationAppState extends BaseAppState
         _bulletAppState = _app.getStateManager().getState(BulletAppState.class);
         _network = _app.getStateManager().getState(NetworkAppState.class);
         _gameInterfaceControl = _app.getStateManager().getState(PlayerAppState.class).getGameInterfaceControl();
+        _inputManager = _app.getStateManager().getState(InputManagerAppState.class);
     }
 
     @Override
@@ -117,6 +124,7 @@ public class SimulationAppState extends BaseAppState
                 {
                     SimulationDataMessage msg = (SimulationDataMessage) message;
                     PlayerStateInfo[] arr = msg.deserialize().getArray();
+                    timerUpdate((int) msg.deserialize().getRemainingTime());
                     List<PlayerStateInfo> infos = new ArrayList<>(Arrays.asList(arr));
                     synchronized (_pendingInfos)
                     {
@@ -135,6 +143,32 @@ public class SimulationAppState extends BaseAppState
                         _pendingBullets.add(e);
                     }
                 }
+            }
+
+            private void timerUpdate(int time) 
+            {
+                _gameInterfaceControl.updateTimer(time);
+                if(time <= 0)
+                {
+                    task = new TimerTask() {
+                        public void run() {
+                            _gameInterfaceControl.displayScoreboard(false);
+                            _inputManager.setEnabled(true);
+                            timer.cancel();
+                            timer = null;
+                        }
+                    };
+                    if(timer == null)
+                    {
+                        _gameInterfaceControl.displayScoreboard(true);
+                        _inputManager.setEnabled(false);
+                        timer = new java.util.Timer("Timer");
+                        long delay = 6100L;
+                        timer.schedule(task, delay);
+                    }
+
+                }
+
             }
         };
     }
