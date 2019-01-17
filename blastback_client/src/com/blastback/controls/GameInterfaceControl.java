@@ -46,11 +46,12 @@ public class GameInterfaceControl extends AbstractControl
 
     public void displayConnectionLostNotification(boolean value)
     {
-        if (_scoreboardPopup == null)
+        if (_connectionLostPopup == null)
         {
-            _connectionLostPopup = _niftyInstance.createPopup("popup_connection_lost");
+           _connectionLostPopup = _niftyInstance.createPopup("popup_connection_lost");
         }
-
+        
+        
         if (value)
         {
             _niftyInstance.showPopup(_niftyInstance.getCurrentScreen(), _connectionLostPopup.getId(), null);
