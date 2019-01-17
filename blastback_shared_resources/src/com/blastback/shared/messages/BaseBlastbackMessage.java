@@ -16,7 +16,7 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
 {
     protected String _content;
     protected Gson _gsonInstance;
-
+    
     public String getContent()
     {
         return _content;
@@ -24,7 +24,9 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
     
     public BaseBlastbackMessage()
     {
+        super(false);
         _gsonInstance = new Gson();
+        
     }
 
     /**
@@ -33,6 +35,7 @@ public abstract class BaseBlastbackMessage<T> extends AbstractMessage
      */
     public BaseBlastbackMessage(T param)
     {
+        super(false);
         _gsonInstance = new Gson();
     }
 
