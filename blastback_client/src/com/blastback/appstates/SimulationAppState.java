@@ -19,7 +19,6 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.TimerTask;
 
 public class SimulationAppState extends BaseAppState
@@ -37,14 +36,17 @@ public class SimulationAppState extends BaseAppState
 
     private final List<PlayerStateInfo> _pendingInfos = new ArrayList<>();
     private final List<ShootEventArgs> _pendingBullets = new ArrayList<>();
-
+    
     private ClientListener _listener;
+    
+    private String _leaderUsername;
     
 
     public SimulationAppState()
     {
         initListener();
         _characters = new ArrayList<>();
+        _leaderUsername = "Noone";
     }
 
     @Override
@@ -151,8 +153,12 @@ public class SimulationAppState extends BaseAppState
                 if(time <= 0)
                 {
                     task = new TimerTask() {
+                        @Override
                         public void run() {
+                            
+                            
                             _gameInterfaceControl.displayScoreboard(false);
+                            
                             _inputManager.setEnabled(true);
                             timer.cancel();
                             timer = null;
@@ -160,6 +166,7 @@ public class SimulationAppState extends BaseAppState
                     };
                     if(timer == null)
                     {
+                        _gameInterfaceControl.displayRoundEnded(_leaderUsername);
                         _gameInterfaceControl.displayScoreboard(true);
                         _inputManager.setEnabled(false);
                         timer = new java.util.Timer("Timer");
@@ -182,7 +189,7 @@ public class SimulationAppState extends BaseAppState
     public void updateSimulation(List<PlayerStateInfo> playerStates)
     {
         _gameInterfaceControl.updateScoreboard(playerStates);
-
+        updateLeader(playerStates);
         removeLocalPlayerState(playerStates);
 
         if (playerStates.size() != _characters.size())
@@ -310,6 +317,26 @@ public class SimulationAppState extends BaseAppState
         while (_characters.size() > size)
         {
             _characters.remove(_characters.size() - 1);
+        }
+    }
+    
+    private void updateLeader(List<PlayerStateInfo> playerStates)
+    {
+        int max = 0;    
+        int ldDeaths = 0;
+        for(PlayerStateInfo psi : playerStates)
+        {
+            if(psi.getMatchStats().getScore()>max)
+            {
+                _leaderUsername = psi.getIdentityData().getUsername();
+                max = psi.getMatchStats().getScore();
+                ldDeaths = psi.getMatchStats().getDeaths();
+            }
+            if(psi.getMatchStats().getScore() == max && psi.getMatchStats().getDeaths()<ldDeaths)
+            {
+                _leaderUsername = psi.getIdentityData().getUsername();
+                ldDeaths = psi.getMatchStats().getDeaths();
+            }
         }
     }
 }

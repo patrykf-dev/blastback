@@ -113,6 +113,40 @@ public class GameInterfaceControl extends AbstractControl
         }
     }
 
+    public void displayRoundStarted()
+    {
+        ListBox listBox = _niftyInstance.getCurrentScreen().findNiftyControl("listbox_kill_messages", ListBox.class);
+        if (listBox != null)
+        {
+            int maxItems = listBox.getDisplayItemCount();
+            if (listBox.getItems().size() == maxItems)
+            {
+                listBox.removeItemByIndex(4);
+            }
+
+            String roundMessage = "[" + LocalDateTime.now().format(_formatter) + "] Round started" ;
+            listBox.insertItem(roundMessage, 0);
+        }
+    }
+    
+    public void displayRoundEnded(String winner)
+    {
+        ListBox listBox = _niftyInstance.getCurrentScreen().findNiftyControl("listbox_kill_messages", ListBox.class);
+        if (listBox != null)
+        {
+            int maxItems = listBox.getDisplayItemCount();
+            if (listBox.getItems().size() == maxItems)
+            {
+                listBox.removeItemByIndex(4);
+            }
+
+            String roundMessage = "[" + LocalDateTime.now().format(_formatter) + "] Round ended. "+winner+" wins!";
+            listBox.insertItem(roundMessage, 0);
+        }
+    }
+    
+    
+    
     /**
      * Update ammo label (only in hud-screen).
      *

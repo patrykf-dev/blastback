@@ -12,7 +12,7 @@ public class GameServer extends SimpleApplication
     public GameServer()
     {
         super(new ServerNetworkAppState(),
-                new GameMatchAppState(60),
+                new GameMatchAppState(120),
                 new SimulationDataAppState());
     }
 
