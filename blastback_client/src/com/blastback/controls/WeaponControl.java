@@ -42,9 +42,9 @@ public class WeaponControl extends AbstractControl
     private void InitWeapons()
     {
         _weapons = new HashMap<>();
-        _weapons.put(1, new WeaponInfo(35, 20, 200, 35, 1000, 1, "Sound/Gun.wav", "Models/Bullet_1.j3o"));
-        _weapons.put(2, new WeaponInfo(1000, 15f, 1000, 1, 3000, 1, "Sound/Shotgun.wav", "Models/Missile.j3o"));
-        _weapons.put(3, new WeaponInfo(10, 20, 100, 10, 1500, 11, "Sound/Uzi.wav", "Models/Bullet.j3o"));
+        _weapons.put(1, new WeaponInfo(35, 20, 200, 35, 1000, 1, "Sound/Gun.wav", "Sound/Reload.wav", "Models/Bullet_1.j3o"));
+        _weapons.put(2, new WeaponInfo(1000, 15f, 1000, 1, 3000, 1, "Sound/Shotgun.wav", "Sound/RocketReload.wav", "Models/Missile.j3o"));
+        _weapons.put(3, new WeaponInfo(10, 20, 100, 10, 1500, 11, "Sound/Uzi.wav", "Sound/Reload.wav", "Models/Bullet.j3o"));
 
     }
 

@@ -70,15 +70,26 @@ public class BulletFactoryAppState extends BaseAppState
         bulletControl.setCcdMotionThreshold(0.02f);
         bulletControl.setCcdSweptSphereRadius(0.12f);
 
-        ShootSound(eventArgs.getWeaponInfo().getSound());
+        shootSound(eventArgs.getWeaponInfo().getShootSound());
 
         return bulletControl;
     }
 
-    private static void ShootSound(String sound)
+    private static void shootSound(String sound)
     {
         Sound = new AudioNode(_assetManager, sound, DataType.Buffer);
         Sound.setPositional(true);
+        Sound.setDirectional(false);
+        Sound.setVolume(5);
+        _app.getRootNode().attachChild(Sound);
+        Sound.playInstance();
+        _app.getRootNode().detachChild(Sound);
+    }
+    
+    public static void playSound(String sound)
+    {
+        Sound = new AudioNode(_assetManager, sound, DataType.Buffer);
+        Sound.setPositional(false);
         Sound.setDirectional(false);
         Sound.setVolume(5);
         _app.getRootNode().attachChild(Sound);

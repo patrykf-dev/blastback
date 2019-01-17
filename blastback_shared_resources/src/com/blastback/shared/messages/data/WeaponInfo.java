@@ -28,7 +28,8 @@ public class WeaponInfo
     private float _reloadTime; // in miliseconds       
 
     private Timer _reloading;
-    private String _sound;
+    private String _shootSound;
+    private String _reloadSound;
     private String _model;
 
     public WeaponInfo()
@@ -44,7 +45,7 @@ public class WeaponInfo
         _bulletCooldown = bulletFrequency;
     }
 
-    public WeaponInfo(int dmg, float speed, float bulletFrequency, int ammoCap, float reloadTime, int burst, String sound, String model)
+    public WeaponInfo(int dmg, float speed, float bulletFrequency, int ammoCap, float reloadTime, int burst, String shootSound, String reloadSound, String model)
     {
         _damage = dmg;
         _speed = speed;
@@ -54,7 +55,8 @@ public class WeaponInfo
         _reloadTime = reloadTime;
         _burst = burst;
         _burstCounter = burst;
-        _sound = sound;
+        _shootSound = shootSound;
+        _reloadSound = reloadSound;
         _model = model;
     }
 
@@ -88,9 +90,14 @@ public class WeaponInfo
         return _bulletCooldown;
     }
 
-    public String getSound()
+    public String getShootSound()
     {
-        return _sound;
+        return _shootSound;
+    }
+
+    public String getReloadSound()
+    {
+        return _reloadSound;
     }
 
     public String getModel()
@@ -128,7 +135,7 @@ public class WeaponInfo
         return false;
     }
 
-    public void reload()
+    public boolean reload()
     {
         if (_reloading == null)
         {
@@ -142,7 +149,9 @@ public class WeaponInfo
                 }
             };
             _reloading.schedule(tt, (long) _reloadTime);
+            return true;
         }
+        return false;
     }
 
     private void resetAmmo()

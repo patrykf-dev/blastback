@@ -1,5 +1,6 @@
 package com.blastback.controls;
 
+import com.blastback.appstates.BulletFactoryAppState;
 import com.blastback.appstates.InputManagerAppState;
 import com.blastback.shared.messages.data.WeaponInfo;
 import com.jme3.input.controls.ActionListener;
@@ -100,7 +101,10 @@ public class PlayerInputControl extends AbstractControl
                 }
                 if (name.equals("R") && keyPressed)
                 {
-                    _shootingControl.getWeaponControl().getCurrentWeapon().reload();
+                    if(_shootingControl.getWeaponControl().getCurrentWeapon().reload())
+                    {
+                        BulletFactoryAppState.playSound(_shootingControl.getWeaponControl().getCurrentWeapon().getReloadSound());
+                    }
                 }
 
             }
