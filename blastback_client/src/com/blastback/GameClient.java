@@ -8,6 +8,7 @@ import com.jme3.app.StatsAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.RenderManager;
+import com.jme3.system.AppSettings;
 
 public class GameClient extends SimpleApplication
 {
@@ -23,7 +24,10 @@ public class GameClient extends SimpleApplication
 
     public static void main(String[] args)
     {
+        AppSettings setting= new AppSettings(true);
+        setting.setTitle("BlastBack");
         GameClient app = new GameClient();
+        app.setSettings(setting);
         app.setPauseOnLostFocus(false);
         app.start();
     }

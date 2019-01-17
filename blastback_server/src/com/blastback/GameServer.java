@@ -4,8 +4,8 @@ import com.blastback.appstates.GameMatchAppState;
 import com.blastback.appstates.ServerNetworkAppState;
 import com.blastback.appstates.SimulationDataAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
-
 public class GameServer extends SimpleApplication
 {
 
@@ -18,13 +18,17 @@ public class GameServer extends SimpleApplication
 
     public static void main(String[] args)
     {
+        AppSettings setting= new AppSettings(true);
+        setting.setTitle("BlastBack Server");
         GameServer app = new GameServer();
-        app.start(JmeContext.Type.Headless);
+        app.setSettings(setting);
+        app.start(JmeContext.Type.Display);
     }
 
     @Override
     public void simpleInitApp()
     {
+        
     }
 
     @Override
